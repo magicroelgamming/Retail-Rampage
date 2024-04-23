@@ -338,7 +338,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f2d5f559304f6e4e84146d92da19ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerCount: 0
+  PlayerCount: 4
+  _prefabBasePlate: {fileID: 8504792149921471396, guid: dbf33d06d85092e469d5959a536655f6, type: 3}
+  _playerColors:
+  - {fileID: 2100000, guid: 8295e10ad3955db42bc96a90f024d06a, type: 2}
+  - {fileID: 2100000, guid: 5715d4ae19aeb77419f6168eef144d22, type: 2}
+  - {fileID: 2100000, guid: 1d9065f57cbc6874193ca557d1e5e3ff, type: 2}
+  - {fileID: 2100000, guid: 355b755573e4d144fa2095b3eeb78de9, type: 2}
+  - {fileID: 2100000, guid: 02c7de4dfe4748d4f95371e199e2eafd, type: 2}
+  _selected: {fileID: 2100000, guid: a3486942ed1a2af4c87226c655150a4e, type: 2}
 --- !u!4 &1696435475
 Transform:
   m_ObjectHideFlags: 0
