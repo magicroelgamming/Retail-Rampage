@@ -3,6 +3,7 @@ using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 
 public class BoardControl : MonoBehaviour
@@ -21,6 +22,12 @@ public class BoardControl : MonoBehaviour
     private Material _selected;
     //
 
+    [SerializeField]
+    float waitedtime;
+
+    [SerializeField]
+    Canvas _cameraCanvas;
+
     private ArrayList[] _PlayerInfo;
 
     private GameObject[,] _tileSpots;
@@ -37,6 +44,9 @@ public class BoardControl : MonoBehaviour
 
     private int[] _selectedTile = new int[2];
 
+    private int _tileView;
+
+    private Button _buyButton;
     
 
     // Start is called before the first frame update
@@ -358,16 +368,38 @@ public class BoardControl : MonoBehaviour
     {
         if (_playerTurn == 0) PlayerTurn();
 
+        waitedtime += Time.deltaTime;
 
-        if ((Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) && !(Input.GetAxis("Horizontal") != 0 && Input.GetAxis("Vertical") != 0))
+        if ((Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) && ((Input.GetAxis("Horizontal") != 0) && (Input.GetAxis("Vertical") != 0))==false &&(waitedtime >= 0.25f))
         {
-            SelectedTileChanged((int)Input.GetAxis("Horizontal"), (int)Input.GetAxis("Vertical"));
+            waitedtime = 0;
+            int HorizontalInput = 0;
+            if (Input.GetAxis("Horizontal") > 0 && _selectedTile[1] < 4) HorizontalInput = 1;
+            if (Input.GetAxis("Horizontal") < 0 && _selectedTile[1] > 0) HorizontalInput = -1;
+
+            int VerticalInput = 0;
+            if (Input.GetAxis("Vertical") < 0 && _selectedTile[0] < 4) VerticalInput = 1;
+            if (Input.GetAxis("Vertical") > 0 && _selectedTile[0] > 0) VerticalInput = -1;
+
+            Debug.Log("----------------------------------");
+            Debug.Log(Input.GetAxis("Horizontal"));
+            Debug.Log(HorizontalInput);
+            Debug.Log(Input.GetAxis("Vertical"));
+            Debug.Log(VerticalInput);
+            Debug.Log("----------------------------------");
+            SelectedTileChanged(VerticalInput, HorizontalInput);
         }
 
+
+        if (Input.GetButton("Jump") && waitedtime >= 0.25f)
+        {
+            TheShowDetailAndBuyMethod();
+        }
     }
 
     private void PlayerTurn()
     {
+
         for (int i = 0; i < PlayerCount; i++)
         {
             if ((int)_PlayerInfo[i][0] == _playerTurn)
@@ -382,22 +414,48 @@ public class BoardControl : MonoBehaviour
                     _selectedTile[1] = int.Parse(_PlayerInfo[i][0].ToString().Substring(0, 1));
                     _selectedTile[0] = int.Parse(_PlayerInfo[i][0].ToString().Substring(1, 1));
                 }
-                
-                
-                break;
             }
         }
 
         _playerTurn++;
+
 
         SelectedTileChanged(0,0);
     }
 
     private void SelectedTileChanged(int row, int col)
     {
-        _tileSpots[_selectedTile[0], _selectedTile[1]].GetComponent<MeshRenderer>().material = (Material)_tiles[_selectedTile[0], _selectedTile[1]][0];
+        Debug.Log("");
+        Debug.Log("Materials");
+        Debug.Log("--------------------------------------------------------------");
+        _tileSpots[_selectedTile[0], _selectedTile[1]].GetComponent<MeshRenderer>().material = (Material)((ArrayList)_tiles[_selectedTile[0], _selectedTile[1]])[0];
+        Debug.Log((Material)((ArrayList)_tiles[_selectedTile[0], _selectedTile[1]])[0]);
         _selectedTile[0] += row;
         _selectedTile[1] += col;
+        Debug.Log(_selectedTile[0].ToString() + " _ "+ _selectedTile[1].ToString());
         _tileSpots[_selectedTile[0], _selectedTile[1]].GetComponent<MeshRenderer>().material = _selected;
+        Debug.Log("--------------------------------------------------------------");
+    }
+
+    private void TheShowDetailAndBuyMethod()
+    {
+        switch (_tileView)
+        {
+            case 0:
+
+                _buyButton = ;
+
+                _tileView = 1;
+
+                break;
+            case 1:
+
+                break;
+        }
+    }
+
+    private Action BuyTheProperty()
+    {
+        
     }
 }
