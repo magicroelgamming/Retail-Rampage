@@ -2,8 +2,10 @@ using System;
 using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class BoardControl : MonoBehaviour
@@ -22,16 +24,33 @@ public class BoardControl : MonoBehaviour
     private Material _selected;
     //
 
-    [SerializeField]
     float waitedtime;
 
     [SerializeField]
-    Canvas _cameraCanvas;
+    private GameObject _TildeDetailDisplay;
 
+    [SerializeField]
+    private GameObject _BuyButtonDisplay;
+
+    [SerializeField]
+    private TextMeshProUGUI _nameBuildingDisplay;
+
+    [SerializeField]
+    private TextMeshProUGUI _ownerBuildingDisplay;
+
+    [SerializeField]
+    private TextMeshProUGUI _levelBuildingDisplay;
+
+    [SerializeField]
+    private TextMeshProUGUI _costBuildingDisplay;
+
+    [SerializeField]
     private ArrayList[] _PlayerInfo;
 
+    [SerializeField]
     private GameObject[,] _tileSpots;
 
+    [SerializeField]
     private ArrayList[,] _tiles;
 
     private int _rows, _columns;
@@ -42,16 +61,22 @@ public class BoardControl : MonoBehaviour
 
     private int _playerTurn;
 
+    private int _currentPlayer;
+
     private int[] _selectedTile = new int[2];
 
     private int _tileView;
 
-    private Button _buyButton;
+    private bool _allowedToMove;
     
 
     // Start is called before the first frame update
     void Start()
     {
+        
+
+        _allowedToMove = true;
+
         _tiles = new ArrayList[0, 0];
 
         _tileSpots = new GameObject[0, 0];
@@ -77,7 +102,10 @@ public class BoardControl : MonoBehaviour
         MapGeneration();
         PlayerInitialization();
         GroundPlatePlacing();
-        
+
+        _TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
+
+        PlayerTurn();
     }
 
     private void MapGeneration()
@@ -117,7 +145,7 @@ public class BoardControl : MonoBehaviour
 
                                 AllTileInfo = new ArrayList();
                                 AllTileInfo.Add(_playerColors[4]);
-                                int TileLevel = rn.Next(0, 5);
+                                int TileLevel = rn.Next(1, 5);
                                 AllTileInfo.Add(TileLevel);
                                 int TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
@@ -188,7 +216,7 @@ public class BoardControl : MonoBehaviour
 
                                 AllTileInfo = new ArrayList();
                                 AllTileInfo.Add(_playerColors[4]);
-                                int TileLevel = rn.Next(0, 5);
+                                int TileLevel = rn.Next(1, 5);
                                 AllTileInfo.Add(TileLevel);
                                 int TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
@@ -264,7 +292,7 @@ public class BoardControl : MonoBehaviour
 
                                 AllTileInfo = new ArrayList();
                                 AllTileInfo.Add(_playerColors[4]);
-                                int TileLevel = rn.Next(0, 5);
+                                int TileLevel = rn.Next(1, 5);
                                 AllTileInfo.Add(TileLevel);
                                 int TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
@@ -366,19 +394,19 @@ public class BoardControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_playerTurn == 0) PlayerTurn();
+        
 
         waitedtime += Time.deltaTime;
 
-        if ((Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) && ((Input.GetAxis("Horizontal") != 0) && (Input.GetAxis("Vertical") != 0))==false &&(waitedtime >= 0.25f))
+        if (_allowedToMove && (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) && ((Input.GetAxis("Horizontal") != 0) && (Input.GetAxis("Vertical") != 0))==false &&(waitedtime >= 0.25f))
         {
             waitedtime = 0;
             int HorizontalInput = 0;
-            if (Input.GetAxis("Horizontal") > 0 && _selectedTile[1] < 4) HorizontalInput = 1;
+            if (Input.GetAxis("Horizontal") > 0 && _selectedTile[1] < _columns-1) HorizontalInput = 1;
             if (Input.GetAxis("Horizontal") < 0 && _selectedTile[1] > 0) HorizontalInput = -1;
 
             int VerticalInput = 0;
-            if (Input.GetAxis("Vertical") < 0 && _selectedTile[0] < 4) VerticalInput = 1;
+            if (Input.GetAxis("Vertical") < 0 && _selectedTile[0] < _rows-1) VerticalInput = 1;
             if (Input.GetAxis("Vertical") > 0 && _selectedTile[0] > 0) VerticalInput = -1;
 
             Debug.Log("----------------------------------");
@@ -391,9 +419,9 @@ public class BoardControl : MonoBehaviour
         }
 
 
-        if (Input.GetButton("Jump") && waitedtime >= 0.25f)
+        if (Input.GetButton("Jump") && waitedtime >= 1f)
         {
-            TheShowDetailAndBuyMethod();
+            TheShowDetailAndBuyMethod(1);
         }
     }
 
@@ -414,10 +442,10 @@ public class BoardControl : MonoBehaviour
                     _selectedTile[1] = int.Parse(_PlayerInfo[i][0].ToString().Substring(0, 1));
                     _selectedTile[0] = int.Parse(_PlayerInfo[i][0].ToString().Substring(1, 1));
                 }
+
+                _currentPlayer = i;
             }
         }
-
-        _playerTurn++;
 
 
         SelectedTileChanged(0,0);
@@ -437,25 +465,87 @@ public class BoardControl : MonoBehaviour
         Debug.Log("--------------------------------------------------------------");
     }
 
-    private void TheShowDetailAndBuyMethod()
+    private void TheShowDetailAndBuyMethod(int changeBy)
     {
+        if (changeBy == 1 && _tileView !=2 )
+        {
+            _tileView++;
+        }
+        if (changeBy == -1 && _tileView != 0)
+        {
+            _tileView--;
+        }
+
         switch (_tileView)
         {
             case 0:
 
-                _buyButton = ;
-
-                _tileView = 1;
-
                 break;
             case 1:
+                _allowedToMove = false;
+                _TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 1;
+
+                _ownerBuildingDisplay.text = "Owner: "+ (("Grey" == ((Material)_tiles[_selectedTile[0], _selectedTile[1]][0]).name.ToString())? "No One" : ((Material)_tiles[_selectedTile[0], _selectedTile[1]][0]).name.ToString());
+                Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1]][0]).name.ToString());
+                _levelBuildingDisplay.text = "LVL: " + _tiles[_selectedTile[0], _selectedTile[1]][1].ToString();
+
+                _costBuildingDisplay.text = "Cost: " + _tiles[_selectedTile[0], _selectedTile[1]][2].ToString();
+
+                bool SomthingNextToIt = false;
+
+                if (_selectedTile[0] != 0)
+                {
+                    if ((Material)_tiles[_selectedTile[0]-1, _selectedTile[1]][0] == (Material)_playerColors[_currentPlayer]) SomthingNextToIt = true;
+                    Debug.Log(((Material)_tiles[_selectedTile[0] - 1, _selectedTile[1]][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
+                }
+
+                if (_selectedTile[0] != _rows-1)
+                {
+                    if ((Material)_tiles[_selectedTile[0] + 1, _selectedTile[1]][0] == (Material)_playerColors[_currentPlayer]) SomthingNextToIt = true;
+                    Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] + 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
+                }
+
+                if (_selectedTile[1] != 0)
+                {
+                    if ((Material)_tiles[_selectedTile[0], _selectedTile[1] - 1][0] == (Material)_playerColors[_currentPlayer]) SomthingNextToIt = true;
+                    Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] - 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
+                }
+
+                if (_selectedTile[1] != _columns-1)
+                {
+                    if ((Material)_tiles[_selectedTile[0], _selectedTile[1] + 1][0] == (Material)_playerColors[_currentPlayer]) SomthingNextToIt = true;
+                    Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] + 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
+                }
+
+                if ((_tiles[_selectedTile[0], _selectedTile[1]][0] != _playerColors[_currentPlayer]) && ((int)_tiles[_selectedTile[0], _selectedTile[1]][2] != 0) && (SomthingNextToIt))
+                {
+                    _BuyButtonDisplay.SetActive(true);
+                }
+                else
+                {
+                    _BuyButtonDisplay.SetActive(false);
+                }
+
+                break;
+            case 2:
+                if (_BuyButtonDisplay.active)
+                {
+                    BuyTile();
+                    
+                }
+                else { _tileView = 1; }
 
                 break;
         }
     }
 
-    private Action BuyTheProperty()
+    private void BuyTile()
     {
-        
+        if ((int)_PlayerInfo[_currentPlayer][1] >= (int)_tiles[_selectedTile[0], _selectedTile[1]][2]) 
+        {
+            _PlayerInfo[_currentPlayer][1] = (int)_PlayerInfo[_currentPlayer][1] - (int)_tiles[_selectedTile[0], _selectedTile[1]][2];
+            _tiles[_selectedTile[0], _selectedTile[1]][0] = _playerColors[_currentPlayer];
+            _tileView = 0;
+        }
     }
 }
