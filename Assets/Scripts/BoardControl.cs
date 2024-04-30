@@ -13,6 +13,12 @@ public class BoardControl : MonoBehaviour
     [SerializeField]
     private Camera _cameraMain;
 
+    private bool _animRotation;
+
+    private float _animRotationSpeed = 0.15f;
+
+    private float _animRotationHeight = 0.8f;
+
     [SerializeField]
     public int PlayerCount;
 
@@ -122,12 +128,16 @@ public class BoardControl : MonoBehaviour
 
     private void CameraStartPlacement()
     {
-        float fieldWidth = _rows;
-        float fieldHeight = _columns;
-        float cameraMainX = (float)Math.Ceiling(fieldWidth / 2) * _prefabBasePlate.transform.localScale.x;
-        float cameraMainZ = (float)Math.Ceiling(fieldHeight / 2) * _prefabBasePlate.transform.localScale.z;
-        _cameraMain.transform.position = new Vector3(cameraMainX, 7, cameraMainZ);
-        _cameraMain.transform.rotation = Quaternion.AngleAxis(90, Vector3.right);
+        float fieldWidth = _columns;
+        float fieldHeight = _rows;
+        int centralTileX = (int)Math.Ceiling(fieldWidth / 2) - 1;
+        int centralTileZ = (int)Math.Ceiling(fieldHeight / 2) - 1;
+        Debug.Log(centralTileX);
+        Debug.Log(centralTileZ);
+        Vector3 centralTilePosition = _tileSpots[centralTileZ, centralTileX].transform.position;
+        _cameraMain.transform.parent.position = centralTilePosition;
+        _cameraMain.transform.localPosition = Vector3.up * 7;
+        _cameraMain.transform.localEulerAngles = new Vector3(90, 0, 0);
     }
 
     private void MapGeneration()
@@ -448,14 +458,26 @@ public class BoardControl : MonoBehaviour
             TheShowDetailAndBuyMethod(1);
             CameraIfTileSelected();
         }
+
+
+        if (_animRotation)
+        {
+            _cameraMain.transform.parent.eulerAngles += Vector3.up * _animRotationSpeed;
+            _cameraMain.transform.localPosition = new Vector3(_cameraMain.transform.localPosition.x,
+                _animRotationHeight + Mathf.Sin(Time.time * 1.5f) * 0.15f, _cameraMain.transform.localPosition.z);
+        }
     }
 
     private void CameraIfTileSelected()
     {
         int row = _selectedTile[0];
         int column = _selectedTile[1];
-        //_cameraMain.GetComponentInParent<Transform>().position = _tileSpots[row, column].transform.position;
+        _cameraMain.transform.parent.position = _tileSpots[row, column].transform.position;
+        _cameraMain.transform.localPosition = new Vector3(0, _animRotationHeight, -1);
+        _cameraMain.transform.localEulerAngles = new Vector3(30, 0, 0);
+        _animRotation = true;
     }
+
 
     private void PlayerTurn()
     {
