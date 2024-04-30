@@ -410,12 +410,12 @@ public class BoardControl : MonoBehaviour
         {
             waitedtime = 0;
             int HorizontalInput = 0;
-            if (Input.GetAxis("Horizontal") > 0 && _selectedTile[1] < _columns-1) HorizontalInput = 1;
+            if (Input.GetAxis("Horizontal") > 0 && _selectedTile[1] < _rows-1) HorizontalInput = 1;
             if (Input.GetAxis("Horizontal") < 0 && _selectedTile[1] > 0) HorizontalInput = -1;
 
             int VerticalInput = 0;
-            if (Input.GetAxis("Vertical") < 0 && _selectedTile[0] < _rows-1) VerticalInput = 1;
-            if (Input.GetAxis("Vertical") > 0 && _selectedTile[0] > 0) VerticalInput = -1;
+            if (Input.GetAxis("Vertical") < 0 && _selectedTile[0] > 0) VerticalInput = -1;
+            if (Input.GetAxis("Vertical") > 0 && _selectedTile[0] < _columns-1) VerticalInput = 1;
 
             Debug.Log("----------------------------------");
             Debug.Log(Input.GetAxis("Horizontal"));
