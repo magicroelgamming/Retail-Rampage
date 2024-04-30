@@ -639,8 +639,27 @@ public class BoardControl : MonoBehaviour
         if ((int)_PlayerInfo[_currentPlayer][1] >= (int)_tiles[_selectedTile[0], _selectedTile[1]][2]) 
         {
             _PlayerInfo[_currentPlayer][1] = (int)_PlayerInfo[_currentPlayer][1] - (int)_tiles[_selectedTile[0], _selectedTile[1]][2];
+            if (_tiles[_selectedTile[0], _selectedTile[1]][0] != _playerColors[4])
+            {
+                StartBattle();
+            }
+            BattleConceeded(true);
+        }
+    }
+
+    private void StartBattle()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void BattleConceeded(bool succeed)
+    {
+        if (true)
+        {
             _tiles[_selectedTile[0], _selectedTile[1]][0] = _playerColors[_currentPlayer];
             _tileView = 0;
         }
+        
     }
+
 }
