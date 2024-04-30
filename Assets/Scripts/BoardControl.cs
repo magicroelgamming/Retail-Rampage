@@ -113,7 +113,7 @@ public class BoardControl : MonoBehaviour
         MapGeneration();
         PlayerInitialization();
         GroundPlatePlacing();
-        //CameraStartPlacement();
+        CameraStartPlacement();
 
         _TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
 
@@ -122,12 +122,12 @@ public class BoardControl : MonoBehaviour
 
     private void CameraStartPlacement()
     {
-        /*float fieldWidth = _rows;
+        float fieldWidth = _rows;
         float fieldHeight = _columns;
         float cameraMainX = (float)Math.Ceiling(fieldWidth / 2) * _prefabBasePlate.transform.localScale.x;
         float cameraMainZ = (float)Math.Ceiling(fieldHeight / 2) * _prefabBasePlate.transform.localScale.z;
         _cameraMain.transform.position = new Vector3(cameraMainX, 7, cameraMainZ);
-        _cameraMain.transform.rotation = Quaternion.AngleAxis(90, Vector3.right);*/
+        _cameraMain.transform.rotation = Quaternion.AngleAxis(90, Vector3.right);
     }
 
     private void MapGeneration()
