@@ -113,7 +113,7 @@ public class BoardControl : MonoBehaviour
         MapGeneration();
         PlayerInitialization();
         GroundPlatePlacing();
-        CameraStartPlacement();
+        //CameraStartPlacement();
 
         _TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
 
@@ -122,12 +122,12 @@ public class BoardControl : MonoBehaviour
 
     private void CameraStartPlacement()
     {
-        float fieldWidth = _rows;
+        /*float fieldWidth = _rows;
         float fieldHeight = _columns;
         float cameraMainX = (float)Math.Ceiling(fieldWidth / 2) * _prefabBasePlate.transform.localScale.x;
         float cameraMainZ = (float)Math.Ceiling(fieldHeight / 2) * _prefabBasePlate.transform.localScale.z;
         _cameraMain.transform.position = new Vector3(cameraMainX, 7, cameraMainZ);
-        _cameraMain.transform.rotation = Quaternion.AngleAxis(90, Vector3.right);
+        _cameraMain.transform.rotation = Quaternion.AngleAxis(90, Vector3.right);*/
     }
 
     private void MapGeneration()
@@ -285,23 +285,23 @@ public class BoardControl : MonoBehaviour
                         switch (i + (j * 10))
                         {
                             case 0:
-                                ArrayList AllTileInfo = new ArrayList() { _playerColors[0], 9, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
+                                ArrayList AllTileInfo = new ArrayList() { _playerColors[0], 10, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
                                 _tiles[i, j] = AllTileInfo;
 
                                 break;
 
                             case 4:
-                                AllTileInfo = new ArrayList() { _playerColors[2], 11, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[11] };
+                                AllTileInfo = new ArrayList() { _playerColors[2], 12, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[11] };
                                 _tiles[i, j] = AllTileInfo;
                                 break;
 
                             case 40:
-                                AllTileInfo = new ArrayList() { _playerColors[1], 10, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[10] };
+                                AllTileInfo = new ArrayList() { _playerColors[1], 11, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[10] };
                                 _tiles[i, j] = AllTileInfo;
                                 break;
 
                             case 44:
-                                AllTileInfo = new ArrayList() { _playerColors[3], 12, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[12] };
+                                AllTileInfo = new ArrayList() { _playerColors[3], 13, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[12] };
                                 _tiles[i, j] = AllTileInfo;
                                 break;
 
@@ -403,7 +403,8 @@ public class BoardControl : MonoBehaviour
                 //NewBuilding.transform.localPosition += new Vector3(0, 0.2f, 0);
                 NewBuilding.transform.localScale = NewBuilding.transform.localScale / 4;
                 NewBuilding.transform.parent = NewGroundPlate.transform;
-                NewBuilding.transform.position = NewGroundPlate.transform.position + new Vector3(0,0.05f,0);
+                NewBuilding.transform.position = NewGroundPlate.transform.position + new Vector3(0,0.1f,0);
+                NewBuilding.transform.localEulerAngles = new Vector3(0, 90 * rn.Next(0, 4), 0);
 
                 //Tell me te explain this if you don't get this part -M
                 Material NewGroundPlateMaterial = (Material)((ArrayList)_tiles[i, j])[0];
@@ -422,6 +423,21 @@ public class BoardControl : MonoBehaviour
                 }
 
                 NewGroundPlate.GetComponent<MeshRenderer>().material = NewGroundPlateMaterial;
+                
+                Material[] buildingMaterials = NewBuilding.GetComponent<MeshRenderer>().materials;
+
+                for (int k = 0; k < NewBuilding.GetComponent<MeshRenderer>().materials.Length; k++)
+                {
+                    if (NewBuilding.GetComponent<MeshRenderer>().materials[k].name == "PlayerColour (Instance)")
+                    {
+                        
+                        buildingMaterials[k] = NewGroundPlateMaterial;
+                        
+                        Debug.Log("skreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeech");
+                    }
+                }
+                NewBuilding.GetComponent<MeshRenderer>().materials = buildingMaterials;
+
                 _tileSpots[i,j] = NewGroundPlate;
 
             }
