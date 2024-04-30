@@ -11,6 +11,9 @@ using UnityEngine.UIElements;
 public class BoardControl : MonoBehaviour
 {
     [SerializeField]
+    private Camera _cameraMain;
+
+    [SerializeField]
     public int PlayerCount;
 
     [SerializeField]
@@ -59,7 +62,7 @@ public class BoardControl : MonoBehaviour
     private string[] _shopNames, _brandNames;
 
 
-    private int _rows, _columns;
+    private int _columns, _rows;
 
     System.Random rn = new System.Random();
 
@@ -94,15 +97,15 @@ public class BoardControl : MonoBehaviour
         switch (PlayerCount)
         {
             case 2:
-                _rows = 4; _columns = 4;
-                _tiles = new ArrayList[_rows, _columns];
-                _tileSpots = new GameObject[_rows, _columns];
+                _columns = 4; _rows = 4;
+                _tiles = new ArrayList[_columns, _rows];
+                _tileSpots = new GameObject[_columns, _rows];
                 break;
 
             default:
-                _rows = 5; _columns = 5;
-                _tiles = new ArrayList[_rows, _columns];
-                _tileSpots = new GameObject[_rows, _columns];
+                _columns = 5; _rows = 5;
+                _tiles = new ArrayList[_columns, _rows];
+                _tileSpots = new GameObject[_columns, _rows];
                 break;
         }
 
@@ -110,19 +113,30 @@ public class BoardControl : MonoBehaviour
         MapGeneration();
         PlayerInitialization();
         GroundPlatePlacing();
+        CameraStartPlacement();
 
         _TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
 
         PlayerTurn();
     }
 
+    private void CameraStartPlacement()
+    {
+        float fieldWidth = _rows;
+        float fieldHeight = _columns;
+        float cameraMainX = (float)Math.Ceiling(fieldWidth / 2) * _prefabBasePlate.transform.localScale.x;
+        float cameraMainZ = (float)Math.Ceiling(fieldHeight / 2) * _prefabBasePlate.transform.localScale.z;
+        _cameraMain.transform.position = new Vector3(cameraMainX, 7, cameraMainZ);
+        _cameraMain.transform.rotation = Quaternion.AngleAxis(90, Vector3.right);
+    }
+
     private void MapGeneration()
     {
         
 
-        for (int i = 0; i < _rows; i++)
+        for (int i = 0; i < _columns; i++)
         {
-            for (int j = 0; j < _columns; j++)
+            for (int j = 0; j < _rows; j++)
             {
                 Debug.Log("-------------------------------------------------------------------------------");
                 Debug.Log("Start");
@@ -378,9 +392,9 @@ public class BoardControl : MonoBehaviour
 
     private void GroundPlatePlacing()
     {
-        for (int i = 0; i < _rows; i++)
+        for (int i = 0; i < _columns; i++)
         {
-            for (int j = 0; j < _columns; j++)
+            for (int j = 0; j < _rows; j++)
             {
 
                 GameObject NewGroundPlate = GameObject.Instantiate(_prefabBasePlate, transform, true);
@@ -427,20 +441,20 @@ public class BoardControl : MonoBehaviour
         {
             waitedtime = 0;
             int HorizontalInput = 0;
-            if (Input.GetAxis("Horizontal") > 0 && _selectedTile[0] < _rows-1) HorizontalInput = 1;
+            if (Input.GetAxis("Horizontal") > 0 && _selectedTile[0] < _columns-1) HorizontalInput = 1;
             if (Input.GetAxis("Horizontal") < 0 && _selectedTile[0] > 0) HorizontalInput = -1;
 
             int VerticalInput = 0;
             if (Input.GetAxis("Vertical") < 0 && _selectedTile[1] > 0) VerticalInput = -1;
-            if (Input.GetAxis("Vertical") > 0 && _selectedTile[1] < _columns-1) VerticalInput = 1;
+            if (Input.GetAxis("Vertical") > 0 && _selectedTile[1] < _rows-1) VerticalInput = 1;
 
             Debug.Log("----------------------------------");
             Debug.Log(Input.GetAxis("Horizontal"));
             Debug.Log(HorizontalInput);
             Debug.Log(Input.GetAxis("Vertical"));
             Debug.Log(VerticalInput);
-            Debug.Log(_rows);
             Debug.Log(_columns);
+            Debug.Log(_rows);
             Debug.Log("----------------------------------");
             SelectedTileChanged(HorizontalInput, VerticalInput);
         }
@@ -449,7 +463,15 @@ public class BoardControl : MonoBehaviour
         if (Input.GetButton("Jump") && waitedtime >= 1f)
         {
             TheShowDetailAndBuyMethod(1);
+            CameraIfTileSelected();
         }
+    }
+
+    private void CameraIfTileSelected()
+    {
+        int row = _selectedTile[0];
+        int column = _selectedTile[1];
+        //_cameraMain.GetComponentInParent<Transform>().position = _tileSpots[row, column].transform.position;
     }
 
     private void PlayerTurn()
@@ -527,7 +549,7 @@ public class BoardControl : MonoBehaviour
                     Debug.Log(((Material)_tiles[_selectedTile[0] - 1, _selectedTile[1]][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
                 }
 
-                if (_selectedTile[0] != _rows-1)
+                if (_selectedTile[0] != _columns-1)
                 {
                     if ((Material)_tiles[_selectedTile[0] + 1, _selectedTile[1]][0] == (Material)_playerColors[_currentPlayer]) SomthingNextToIt = true;
                     Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] + 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
@@ -539,7 +561,7 @@ public class BoardControl : MonoBehaviour
                     Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] - 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
                 }
 
-                if (_selectedTile[1] != _columns-1)
+                if (_selectedTile[1] != _rows-1)
                 {
                     if ((Material)_tiles[_selectedTile[0], _selectedTile[1] + 1][0] == (Material)_playerColors[_currentPlayer]) SomthingNextToIt = true;
                     Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] + 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
