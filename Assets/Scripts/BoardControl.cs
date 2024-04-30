@@ -56,6 +56,12 @@ public class BoardControl : MonoBehaviour
     [SerializeField]
     private ArrayList[,] _tiles;
 
+    [SerializeField]
+    private GameObject[] _shopPrefabs;
+
+    private string[] _shopNames, _brandNames;
+
+
     private int _rows, _columns;
 
     System.Random rn = new System.Random();
@@ -76,7 +82,9 @@ public class BoardControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        _brandNames = new string[] { "Garry's", "Aïki noodle", "Mike", "WcDonalds", "Jeff's", "Yuri's", "Roel's", "André's", "Evy's", "Sander's", "Jasper's", "Grigory's", "Finn's" };
+
+        _shopNames = new string[] { "Stand", "Parking Lot", "Gas Station", "Shop", "Restaurant", "Super Market", "Electronics Store", "Mall", "Mega Mall"};
 
         _allowedToMove = true;
 
@@ -416,20 +424,22 @@ public class BoardControl : MonoBehaviour
         {
             waitedtime = 0;
             int HorizontalInput = 0;
-            if (Input.GetAxis("Horizontal") > 0 && _selectedTile[1] < _columns-1) HorizontalInput = 1;
-            if (Input.GetAxis("Horizontal") < 0 && _selectedTile[1] > 0) HorizontalInput = -1;
+            if (Input.GetAxis("Horizontal") > 0 && _selectedTile[0] < _rows-1) HorizontalInput = 1;
+            if (Input.GetAxis("Horizontal") < 0 && _selectedTile[0] > 0) HorizontalInput = -1;
 
             int VerticalInput = 0;
-            if (Input.GetAxis("Vertical") < 0 && _selectedTile[0] < _rows-1) VerticalInput = 1;
-            if (Input.GetAxis("Vertical") > 0 && _selectedTile[0] > 0) VerticalInput = -1;
+            if (Input.GetAxis("Vertical") < 0 && _selectedTile[1] > 0) VerticalInput = -1;
+            if (Input.GetAxis("Vertical") > 0 && _selectedTile[1] < _columns-1) VerticalInput = 1;
 
             Debug.Log("----------------------------------");
             Debug.Log(Input.GetAxis("Horizontal"));
             Debug.Log(HorizontalInput);
             Debug.Log(Input.GetAxis("Vertical"));
             Debug.Log(VerticalInput);
+            Debug.Log(_rows);
+            Debug.Log(_columns);
             Debug.Log("----------------------------------");
-            SelectedTileChanged(VerticalInput, HorizontalInput);
+            SelectedTileChanged(HorizontalInput, VerticalInput);
         }
 
 
@@ -465,15 +475,15 @@ public class BoardControl : MonoBehaviour
         SelectedTileChanged(0,0);
     }
 
-    private void SelectedTileChanged(int row, int col)
+    private void SelectedTileChanged(int col, int row)
     {
         Debug.Log("");
         Debug.Log("Materials");
         Debug.Log("--------------------------------------------------------------");
         _tileSpots[_selectedTile[0], _selectedTile[1]].GetComponent<MeshRenderer>().material = (Material)((ArrayList)_tiles[_selectedTile[0], _selectedTile[1]])[0];
         Debug.Log((Material)((ArrayList)_tiles[_selectedTile[0], _selectedTile[1]])[0]);
-        _selectedTile[0] += row;
-        _selectedTile[1] += col;
+        _selectedTile[0] += col;
+        _selectedTile[1] += row;
         Debug.Log(_selectedTile[0].ToString() + " _ "+ _selectedTile[1].ToString());
         _tileSpots[_selectedTile[0], _selectedTile[1]].GetComponent<MeshRenderer>().material = _selected;
         Debug.Log("--------------------------------------------------------------");
