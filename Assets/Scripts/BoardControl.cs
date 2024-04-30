@@ -17,7 +17,7 @@ public class BoardControl : MonoBehaviour
 
     private float _animRotationSpeed = 0.15f;
 
-    private float _animRotationHeight = 0.8f;
+    private float _animRotationHeight = 1f;
 
     [SerializeField]
     public int PlayerCount;
@@ -136,8 +136,8 @@ public class BoardControl : MonoBehaviour
         Debug.Log(centralTileZ);
         Vector3 centralTilePosition = _tileSpots[centralTileZ, centralTileX].transform.position;
         _cameraMain.transform.parent.position = centralTilePosition;
-        _cameraMain.transform.localPosition = Vector3.up * 7;
-        _cameraMain.transform.localEulerAngles = new Vector3(90, 0, 0);
+        _cameraMain.transform.localPosition = new Vector3(0, 4, -5);
+        _cameraMain.transform.localEulerAngles = new Vector3(45, 0, 0);
     }
 
     private void MapGeneration()
@@ -497,7 +497,7 @@ public class BoardControl : MonoBehaviour
         {
             _cameraMain.transform.parent.eulerAngles += Vector3.up * _animRotationSpeed;
             _cameraMain.transform.localPosition = new Vector3(_cameraMain.transform.localPosition.x,
-                _animRotationHeight + Mathf.Sin(Time.time * 1.5f) * 0.15f, _cameraMain.transform.localPosition.z);
+                _animRotationHeight + Mathf.Sin(Time.time * 1.5f) * 0.1f, _cameraMain.transform.localPosition.z);
         }
     }
 

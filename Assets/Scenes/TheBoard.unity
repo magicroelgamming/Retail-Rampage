@@ -1318,7 +1318,20 @@ MonoBehaviour:
   _ownerBuildingDisplay: {fileID: 429434550}
   _levelBuildingDisplay: {fileID: 895335212}
   _costBuildingDisplay: {fileID: 651559285}
-  _shopPrefabs: []
+  _shopPrefabs:
+  - {fileID: 919132149155446097, guid: f7f6c5262893d644a9392ec00f8180bb, type: 3}
+  - {fileID: 919132149155446097, guid: b641ed4320d0e7f4caa68fa0a98b930b, type: 3}
+  - {fileID: 919132149155446097, guid: 97623ed4b8cf98a478e43a7ec12d45d5, type: 3}
+  - {fileID: 919132149155446097, guid: e5edddcf6f55ad04fb1e0e4e762b21c8, type: 3}
+  - {fileID: 919132149155446097, guid: cb2c86ed7f06d7340b287abe99fa0834, type: 3}
+  - {fileID: 919132149155446097, guid: d4ad9f288aac79c4598a96b91f443ff3, type: 3}
+  - {fileID: 919132149155446097, guid: dd01e8c17b3ef5a4abfb2fc618acd014, type: 3}
+  - {fileID: 919132149155446097, guid: fb0a51de1a27062499911328f2c6977a, type: 3}
+  - {fileID: 919132149155446097, guid: 7035a96ecc7e92e4bb0c76123105c6c6, type: 3}
+  - {fileID: 919132149155446097, guid: 667974dc8644c7b438cbedf0dafd4390, type: 3}
+  - {fileID: 919132149155446097, guid: 667974dc8644c7b438cbedf0dafd4390, type: 3}
+  - {fileID: 919132149155446097, guid: 667974dc8644c7b438cbedf0dafd4390, type: 3}
+  - {fileID: 919132149155446097, guid: 667974dc8644c7b438cbedf0dafd4390, type: 3}
 --- !u!4 &1696435475
 Transform:
   m_ObjectHideFlags: 0
