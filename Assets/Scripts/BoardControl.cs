@@ -90,7 +90,7 @@ public class BoardControl : MonoBehaviour
     {
         _brandNames = new string[] { "Garry's", "Aïki noodle", "Mike", "WcDonalds", "Jeff's", "Yuri's", "Roel's", "André's", "Evy's", "Sander's", "Jasper's", "Grigory's", "Finn's" };
 
-        _shopNames = new string[] { "Stand", "Parking Lot", "Gas Station", "Shop", "Restaurant", "Super Market", "Electronics Store", "Mall", "Mega Mall"};
+        _shopNames = new string[] { "Stand", "Parking Lot", "Gas Station", "Shop", "Restaurant", "Super Market", "Electronics Store", "Mall", "Mega Mall", "Headquarters", "Headquarters", "Headquarters", "Headquarters"};
 
         _allowedToMove = true;
 
@@ -252,6 +252,8 @@ public class BoardControl : MonoBehaviour
                                 AllTileInfo.Add(TileLevel);
                                 int TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
+                                string TileName = _brandNames[rn.Next(0,_brandNames.Length)] + " " + _shopNames[TileLevel-1];
+                                AllTileInfo.Add(TileName);
                                 _tiles[i, j] = AllTileInfo;
 
                                 break;
@@ -265,6 +267,8 @@ public class BoardControl : MonoBehaviour
                                 AllTileInfo.Add(TileLevel);
                                 TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
+                                TileName = _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[TileLevel - 1];
+                                AllTileInfo.Add(TileName);
                                 _tiles[i, j] = AllTileInfo;
 
                                 break;
@@ -277,6 +281,8 @@ public class BoardControl : MonoBehaviour
                                 AllTileInfo.Add(TileLevel);
                                 TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
+                                TileName = _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[TileLevel - 1];
+                                AllTileInfo.Add(TileName);
                                 _tiles[i, j] = AllTileInfo;
 
                                 break;
@@ -289,23 +295,23 @@ public class BoardControl : MonoBehaviour
                         switch (i + (j * 10))
                         {
                             case 0:
-                                ArrayList AllTileInfo = new ArrayList() { _playerColors[0], 9, 0 };
+                                ArrayList AllTileInfo = new ArrayList() { _playerColors[0], 10, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
                                 _tiles[i, j] = AllTileInfo;
 
                                 break;
 
                             case 4:
-                                AllTileInfo = new ArrayList() { _playerColors[2], 11, 0 };
+                                AllTileInfo = new ArrayList() { _playerColors[2], 12, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[11] };
                                 _tiles[i, j] = AllTileInfo;
                                 break;
 
                             case 40:
-                                AllTileInfo = new ArrayList() { _playerColors[1], 10, 0 };
+                                AllTileInfo = new ArrayList() { _playerColors[1], 11, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[10] };
                                 _tiles[i, j] = AllTileInfo;
                                 break;
 
                             case 44:
-                                AllTileInfo = new ArrayList() { _playerColors[3], 12, 0 };
+                                AllTileInfo = new ArrayList() { _playerColors[3], 13, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[12] };
                                 _tiles[i, j] = AllTileInfo;
                                 break;
 
@@ -328,6 +334,8 @@ public class BoardControl : MonoBehaviour
                                 AllTileInfo.Add(TileLevel);
                                 int TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
+                                string TileName = _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[TileLevel - 1];
+                                AllTileInfo.Add(TileName);
                                 _tiles[i, j] = AllTileInfo;
 
                                 break;
@@ -340,6 +348,8 @@ public class BoardControl : MonoBehaviour
                                 AllTileInfo.Add(TileLevel);
                                 TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
+                                TileName = _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[TileLevel - 1];
+                                AllTileInfo.Add(TileName);
                                 _tiles[i, j] = AllTileInfo;
 
                                 break;
@@ -352,6 +362,8 @@ public class BoardControl : MonoBehaviour
                                 AllTileInfo.Add(TileLevel);
                                 TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
+                                TileName = _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[TileLevel - 1];
+                                AllTileInfo.Add(TileName);
                                 _tiles[i, j] = AllTileInfo;
 
                                 break;
@@ -396,7 +408,13 @@ public class BoardControl : MonoBehaviour
             {
 
                 GameObject NewGroundPlate = GameObject.Instantiate(_prefabBasePlate, transform, true);
-                NewGroundPlate.transform.localPosition += new Vector3(i * 1.5f, 0, j * 1.5f);
+                NewGroundPlate.transform.position += new Vector3(i * 1.5f, 0, j * 1.5f);
+                GameObject NewBuilding = GameObject.Instantiate(_shopPrefabs[(int)_tiles[i, j][1] -1], transform, true);
+                //NewBuilding.transform.localPosition += new Vector3(0, 0.2f, 0);
+                NewBuilding.transform.localScale = NewBuilding.transform.localScale / 4;
+                NewBuilding.transform.parent = NewGroundPlate.transform;
+                NewBuilding.transform.position = NewGroundPlate.transform.position + new Vector3(0,0.1f,0);
+                NewBuilding.transform.localEulerAngles = new Vector3(0, 90 * rn.Next(0, 4), 0);
 
                 //Tell me te explain this if you don't get this part -M
                 Material NewGroundPlateMaterial = (Material)((ArrayList)_tiles[i, j])[0];
@@ -415,6 +433,21 @@ public class BoardControl : MonoBehaviour
                 }
 
                 NewGroundPlate.GetComponent<MeshRenderer>().material = NewGroundPlateMaterial;
+                
+                Material[] buildingMaterials = NewBuilding.GetComponent<MeshRenderer>().materials;
+
+                for (int k = 0; k < NewBuilding.GetComponent<MeshRenderer>().materials.Length; k++)
+                {
+                    if (NewBuilding.GetComponent<MeshRenderer>().materials[k].name == "PlayerColour (Instance)")
+                    {
+                        
+                        buildingMaterials[k] = NewGroundPlateMaterial;
+                        
+                        Debug.Log("skreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeech");
+                    }
+                }
+                NewBuilding.GetComponent<MeshRenderer>().materials = buildingMaterials;
+
                 _tileSpots[i,j] = NewGroundPlate;
 
             }
@@ -545,6 +578,7 @@ public class BoardControl : MonoBehaviour
 
                 _costBuildingDisplay.text = "Cost: " + _tiles[_selectedTile[0], _selectedTile[1]][2].ToString();
 
+                _nameBuildingDisplay.text = _tiles[_selectedTile[0], _selectedTile[1]][3].ToString();
                 bool SomthingNextToIt = false;
 
                 if (_selectedTile[0] != 0)
