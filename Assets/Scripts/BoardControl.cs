@@ -11,6 +11,9 @@ using UnityEngine.UIElements;
 public class BoardControl : MonoBehaviour
 {
     [SerializeField]
+    private Camera _cameraMain;
+
+    [SerializeField]
     public int PlayerCount;
 
     [SerializeField]
@@ -102,10 +105,21 @@ public class BoardControl : MonoBehaviour
         MapGeneration();
         PlayerInitialization();
         GroundPlatePlacing();
+        CameraPlacement();
 
         _TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
 
         PlayerTurn();
+    }
+
+    private void CameraPlacement()
+    {
+        float fieldWidth = _columns;
+        float fieldHeight = _rows;
+        float cameraMainX = (float)Math.Ceiling(fieldWidth / 2) * _prefabBasePlate.transform.localScale.z;
+        float cameraMainZ = (float)Math.Ceiling(fieldHeight / 2) * _prefabBasePlate.transform.localScale.x;
+        _cameraMain.transform.position = new Vector3(cameraMainX, 7, cameraMainZ);
+        _cameraMain.transform.rotation = Quaternion.AngleAxis(90, Vector3.right);
     }
 
     private void MapGeneration()
