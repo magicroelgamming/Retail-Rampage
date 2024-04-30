@@ -410,11 +410,10 @@ public class BoardControl : MonoBehaviour
                 GameObject NewGroundPlate = GameObject.Instantiate(_prefabBasePlate, transform, true);
                 NewGroundPlate.transform.position += new Vector3(i * 1.5f, 0, j * 1.5f);
                 GameObject NewBuilding = GameObject.Instantiate(_shopPrefabs[(int)_tiles[i, j][1] -1], transform, true);
-                //NewBuilding.transform.localPosition += new Vector3(0, 0.2f, 0);
                 NewBuilding.transform.localScale = NewBuilding.transform.localScale / 4;
                 NewBuilding.transform.parent = NewGroundPlate.transform;
                 NewBuilding.transform.position = NewGroundPlate.transform.position + new Vector3(0,0.1f,0);
-                NewBuilding.transform.localEulerAngles = new Vector3(0, 90 * rn.Next(0, 4), 0);
+                
 
                 //Tell me te explain this if you don't get this part -M
                 Material NewGroundPlateMaterial = (Material)((ArrayList)_tiles[i, j])[0];
@@ -490,8 +489,14 @@ public class BoardControl : MonoBehaviour
         {
             TheShowDetailAndBuyMethod(1);
             CameraIfTileSelected();
+            TheShowDetailAndBuyMethod(0);
         }
 
+        if (Input.GetButton("Cancel") && waitedtime >= 1f)
+        {
+            TheShowDetailAndBuyMethod(-1);
+            
+        }
 
         if (_animRotation)
         {
@@ -566,6 +571,8 @@ public class BoardControl : MonoBehaviour
         switch (_tileView)
         {
             case 0:
+                _allowedToMove = true;
+                _TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
 
                 break;
             case 1:
