@@ -410,20 +410,22 @@ public class BoardControl : MonoBehaviour
         {
             waitedtime = 0;
             int HorizontalInput = 0;
-            if (Input.GetAxis("Horizontal") > 0 && _selectedTile[1] < _rows-1) HorizontalInput = 1;
-            if (Input.GetAxis("Horizontal") < 0 && _selectedTile[1] > 0) HorizontalInput = -1;
+            if (Input.GetAxis("Horizontal") > 0 && _selectedTile[0] < _rows-1) HorizontalInput = 1;
+            if (Input.GetAxis("Horizontal") < 0 && _selectedTile[0] > 0) HorizontalInput = -1;
 
             int VerticalInput = 0;
-            if (Input.GetAxis("Vertical") < 0 && _selectedTile[0] > 0) VerticalInput = -1;
-            if (Input.GetAxis("Vertical") > 0 && _selectedTile[0] < _columns-1) VerticalInput = 1;
+            if (Input.GetAxis("Vertical") < 0 && _selectedTile[1] > 0) VerticalInput = -1;
+            if (Input.GetAxis("Vertical") > 0 && _selectedTile[1] < _columns-1) VerticalInput = 1;
 
             Debug.Log("----------------------------------");
             Debug.Log(Input.GetAxis("Horizontal"));
             Debug.Log(HorizontalInput);
             Debug.Log(Input.GetAxis("Vertical"));
             Debug.Log(VerticalInput);
+            Debug.Log(_rows);
+            Debug.Log(_columns);
             Debug.Log("----------------------------------");
-            SelectedTileChanged(VerticalInput, HorizontalInput);
+            SelectedTileChanged(HorizontalInput, VerticalInput);
         }
 
 
@@ -459,7 +461,7 @@ public class BoardControl : MonoBehaviour
         SelectedTileChanged(0,0);
     }
 
-    private void SelectedTileChanged(int row, int col)
+    private void SelectedTileChanged(int col, int row)
     {
         Debug.Log("");
         Debug.Log("Materials");
