@@ -53,6 +53,12 @@ public class BoardControl : MonoBehaviour
     [SerializeField]
     private ArrayList[,] _tiles;
 
+    [SerializeField]
+    private GameObject[] _shopPrefabs;
+
+    private string[] _shopNames, _brandNames;
+
+
     private int _rows, _columns;
 
     System.Random rn = new System.Random();
@@ -73,7 +79,9 @@ public class BoardControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        _brandNames = new string[] { "Garry's", "Aïki noodle", "Mike", "WcDonalds", "Jeff's", "Yuri's", "Roel's", "André's", "Evy's", "Sander's", "Jasper's", "Grigory's", "Finn's" };
+
+        _shopNames = new string[] { "Stand", "Parking Lot", "Gas Station", "Shop", "Restaurant", "Super Market", "Electronics Store", "Mall", "Mega Mall"};
 
         _allowedToMove = true;
 
@@ -458,8 +466,8 @@ public class BoardControl : MonoBehaviour
         Debug.Log("--------------------------------------------------------------");
         _tileSpots[_selectedTile[0], _selectedTile[1]].GetComponent<MeshRenderer>().material = (Material)((ArrayList)_tiles[_selectedTile[0], _selectedTile[1]])[0];
         Debug.Log((Material)((ArrayList)_tiles[_selectedTile[0], _selectedTile[1]])[0]);
-        _selectedTile[0] += row;
-        _selectedTile[1] += col;
+        _selectedTile[0] += col;
+        _selectedTile[1] += row;
         Debug.Log(_selectedTile[0].ToString() + " _ "+ _selectedTile[1].ToString());
         _tileSpots[_selectedTile[0], _selectedTile[1]].GetComponent<MeshRenderer>().material = _selected;
         Debug.Log("--------------------------------------------------------------");
