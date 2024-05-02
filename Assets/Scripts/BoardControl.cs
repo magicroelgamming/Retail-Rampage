@@ -52,6 +52,8 @@ public class BoardControl : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI _costBuildingDisplay;
+    [SerializeField]
+    private TextMeshProUGUI _playerMoneyDisplay;
 
     [SerializeField]
     private ArrayList[] _PlayerInfo;
@@ -122,6 +124,7 @@ public class BoardControl : MonoBehaviour
         CameraStartPlacement();
 
         _TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
+        
 
         PlayerTurn();
     }
@@ -397,6 +400,7 @@ public class BoardControl : MonoBehaviour
             NewPlayerIntialization.Add(i);
             NewPlayerIntialization.Add(500);
             _PlayerInfo[i] = NewPlayerIntialization;
+            _playerMoneyDisplay.text = ((int)_PlayerInfo[_currentPlayer][1]).ToString();
         }
     }
 
@@ -490,12 +494,13 @@ public class BoardControl : MonoBehaviour
             TheShowDetailAndBuyMethod(1);
             CameraIfTileSelected();
             TheShowDetailAndBuyMethod(0);
+            waitedtime = 0f;
         }
 
         if (Input.GetButton("Cancel") && waitedtime >= 1f)
         {
             TheShowDetailAndBuyMethod(-1);
-            
+            waitedtime = 0f;
         }
 
         if (_animRotation)
@@ -568,6 +573,8 @@ public class BoardControl : MonoBehaviour
             _tileView--;
         }
 
+        Debug.Log(_tileView);
+
         switch (_tileView)
         {
             case 0:
@@ -580,7 +587,7 @@ public class BoardControl : MonoBehaviour
                 _TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 1;
 
                 _ownerBuildingDisplay.text = "Owner: "+ (("Grey" == ((Material)_tiles[_selectedTile[0], _selectedTile[1]][0]).name.ToString())? "No One" : ((Material)_tiles[_selectedTile[0], _selectedTile[1]][0]).name.ToString());
-                Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1]][0]).name.ToString());
+                //Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1]][0]).name.ToString());
                 _levelBuildingDisplay.text = "LVL: " + _tiles[_selectedTile[0], _selectedTile[1]][1].ToString();
 
                 _costBuildingDisplay.text = "Cost: " + _tiles[_selectedTile[0], _selectedTile[1]][2].ToString();
@@ -591,25 +598,25 @@ public class BoardControl : MonoBehaviour
                 if (_selectedTile[0] != 0)
                 {
                     if ((Material)_tiles[_selectedTile[0]-1, _selectedTile[1]][0] == (Material)_playerColors[_currentPlayer]) SomthingNextToIt = true;
-                    Debug.Log(((Material)_tiles[_selectedTile[0] - 1, _selectedTile[1]][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
+                    //Debug.Log(((Material)_tiles[_selectedTile[0] - 1, _selectedTile[1]][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
                 }
 
                 if (_selectedTile[0] != _columns-1)
                 {
                     if ((Material)_tiles[_selectedTile[0] + 1, _selectedTile[1]][0] == (Material)_playerColors[_currentPlayer]) SomthingNextToIt = true;
-                    Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] + 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
+                    //Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] + 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
                 }
 
                 if (_selectedTile[1] != 0)
                 {
                     if ((Material)_tiles[_selectedTile[0], _selectedTile[1] - 1][0] == (Material)_playerColors[_currentPlayer]) SomthingNextToIt = true;
-                    Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] - 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
+                    //Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] - 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
                 }
 
                 if (_selectedTile[1] != _rows-1)
                 {
                     if ((Material)_tiles[_selectedTile[0], _selectedTile[1] + 1][0] == (Material)_playerColors[_currentPlayer]) SomthingNextToIt = true;
-                    Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] + 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
+                    //Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] + 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
                 }
 
                 if ((_tiles[_selectedTile[0], _selectedTile[1]][0] != _playerColors[_currentPlayer]) && ((int)_tiles[_selectedTile[0], _selectedTile[1]][2] != 0) && (SomthingNextToIt))
@@ -639,11 +646,16 @@ public class BoardControl : MonoBehaviour
         if ((int)_PlayerInfo[_currentPlayer][1] >= (int)_tiles[_selectedTile[0], _selectedTile[1]][2]) 
         {
             _PlayerInfo[_currentPlayer][1] = (int)_PlayerInfo[_currentPlayer][1] - (int)_tiles[_selectedTile[0], _selectedTile[1]][2];
+            _playerMoneyDisplay.text = ((int)_PlayerInfo[_currentPlayer][1]).ToString();
             if (_tiles[_selectedTile[0], _selectedTile[1]][0] != _playerColors[4])
             {
+                
                 StartBattle();
             }
-            BattleConceeded(true);
+            else
+            {
+                BattleConceeded(true);
+            }
         }
     }
 
