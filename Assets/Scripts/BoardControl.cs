@@ -90,6 +90,8 @@ public class BoardControl : MonoBehaviour
 
     private bool _contest;
 
+    private int _battleNumber;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -515,7 +517,7 @@ public class BoardControl : MonoBehaviour
         }
         if (_batteling)
         {
-
+            Battle();
         }
         if (_contest)
         {
@@ -661,8 +663,9 @@ public class BoardControl : MonoBehaviour
             _playerMoneyDisplay.text = ((int)_PlayerInfo[_currentPlayer][1]).ToString();
             if (_tiles[_selectedTile[0], _selectedTile[1]][0] != _playerColors[4])
             {
-                
-                Battle(rn.Next(1,5));
+                _battleNumber = rn.Next(1, 5);
+                _batteling = true;
+                Battle();
             }
             else
             {
@@ -671,11 +674,11 @@ public class BoardControl : MonoBehaviour
         }
     }
 
-    private void Battle(int whichBattle)
+    private void Battle()
     {
         // if you want to send who won the fight you do BattleConceeded(bool) the bool will be true if the attacker wins falls if the attacker looses -M
 
-        switch (whichBattle)
+        switch (_battleNumber)
         {
             case 1:
                 // you can put your minigames 1v1's in here -M
@@ -697,7 +700,7 @@ public class BoardControl : MonoBehaviour
 
     private void BattleConceeded(bool succeed)
     {
-        if (true)
+        if (succeed)
         {
             _tiles[_selectedTile[0], _selectedTile[1]][0] = _playerColors[_currentPlayer];
             _tileView = 0;
