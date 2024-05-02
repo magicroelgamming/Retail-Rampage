@@ -85,7 +85,10 @@ public class BoardControl : MonoBehaviour
     private int _tileView;
 
     private bool _allowedToMove;
-    
+
+    private bool _batteling;
+
+    private bool _contest;
 
     // Start is called before the first frame update
     void Start()
@@ -462,52 +465,61 @@ public class BoardControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-
-        waitedtime += Time.deltaTime;
-
-        if (_allowedToMove && (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) && ((Input.GetAxis("Horizontal") != 0) && (Input.GetAxis("Vertical") != 0))==false &&(waitedtime >= 0.25f))
+        if (!_batteling && !_contest)
         {
-            waitedtime = 0;
-            int HorizontalInput = 0;
-            if (Input.GetAxis("Horizontal") > 0 && _selectedTile[0] < _columns-1) HorizontalInput = 1;
-            if (Input.GetAxis("Horizontal") < 0 && _selectedTile[0] > 0) HorizontalInput = -1;
+            waitedtime += Time.deltaTime;
 
-            int VerticalInput = 0;
-            if (Input.GetAxis("Vertical") < 0 && _selectedTile[1] > 0) VerticalInput = -1;
-            if (Input.GetAxis("Vertical") > 0 && _selectedTile[1] < _rows-1) VerticalInput = 1;
+            if (_allowedToMove && (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) && ((Input.GetAxis("Horizontal") != 0) && (Input.GetAxis("Vertical") != 0)) == false && (waitedtime >= 0.25f))
+            {
+                waitedtime = 0;
+                int HorizontalInput = 0;
+                if (Input.GetAxis("Horizontal") > 0 && _selectedTile[0] < _columns - 1) HorizontalInput = 1;
+                if (Input.GetAxis("Horizontal") < 0 && _selectedTile[0] > 0) HorizontalInput = -1;
 
-            Debug.Log("----------------------------------");
-            Debug.Log(Input.GetAxis("Horizontal"));
-            Debug.Log(HorizontalInput);
-            Debug.Log(Input.GetAxis("Vertical"));
-            Debug.Log(VerticalInput);
-            Debug.Log(_columns);
-            Debug.Log(_rows);
-            Debug.Log("----------------------------------");
-            SelectedTileChanged(HorizontalInput, VerticalInput);
+                int VerticalInput = 0;
+                if (Input.GetAxis("Vertical") < 0 && _selectedTile[1] > 0) VerticalInput = -1;
+                if (Input.GetAxis("Vertical") > 0 && _selectedTile[1] < _rows - 1) VerticalInput = 1;
+
+                Debug.Log("----------------------------------");
+                Debug.Log(Input.GetAxis("Horizontal"));
+                Debug.Log(HorizontalInput);
+                Debug.Log(Input.GetAxis("Vertical"));
+                Debug.Log(VerticalInput);
+                Debug.Log(_columns);
+                Debug.Log(_rows);
+                Debug.Log("----------------------------------");
+                SelectedTileChanged(HorizontalInput, VerticalInput);
+            }
+
+
+            if (Input.GetButton("Jump") && waitedtime >= 1f)
+            {
+                TheShowDetailAndBuyMethod(1);
+                CameraIfTileSelected();
+                TheShowDetailAndBuyMethod(0);
+                waitedtime = 0f;
+            }
+
+            if (Input.GetButton("Cancel") && waitedtime >= 1f)
+            {
+                TheShowDetailAndBuyMethod(-1);
+                waitedtime = 0f;
+            }
+
+            if (_animRotation)
+            {
+                _cameraMain.transform.parent.eulerAngles += Vector3.up * _animRotationSpeed;
+                _cameraMain.transform.localPosition = new Vector3(_cameraMain.transform.localPosition.x,
+                    _animRotationHeight + Mathf.Sin(Time.time * 1.5f) * 0.1f, _cameraMain.transform.localPosition.z);
+            }
         }
-
-
-        if (Input.GetButton("Jump") && waitedtime >= 1f)
+        if (_batteling)
         {
-            TheShowDetailAndBuyMethod(1);
-            CameraIfTileSelected();
-            TheShowDetailAndBuyMethod(0);
-            waitedtime = 0f;
+
         }
-
-        if (Input.GetButton("Cancel") && waitedtime >= 1f)
+        if (_contest)
         {
-            TheShowDetailAndBuyMethod(-1);
-            waitedtime = 0f;
-        }
 
-        if (_animRotation)
-        {
-            _cameraMain.transform.parent.eulerAngles += Vector3.up * _animRotationSpeed;
-            _cameraMain.transform.localPosition = new Vector3(_cameraMain.transform.localPosition.x,
-                _animRotationHeight + Mathf.Sin(Time.time * 1.5f) * 0.1f, _cameraMain.transform.localPosition.z);
         }
     }
 
@@ -650,7 +662,7 @@ public class BoardControl : MonoBehaviour
             if (_tiles[_selectedTile[0], _selectedTile[1]][0] != _playerColors[4])
             {
                 
-                StartBattle();
+                Battle(rn.Next(1,5));
             }
             else
             {
@@ -659,9 +671,28 @@ public class BoardControl : MonoBehaviour
         }
     }
 
-    private void StartBattle()
+    private void Battle(int whichBattle)
     {
-        throw new NotImplementedException();
+        // if you want to send who won the fight you do BattleConceeded(bool) the bool will be true if the attacker wins falls if the attacker looses -M
+
+        switch (whichBattle)
+        {
+            case 1:
+                // you can put your minigames 1v1's in here -M
+                break;
+
+            case 2:
+                // you can put your minigames 1v1's in here -M
+                break;
+
+            case 3:
+                // you can put your minigames 1v1's in here -M
+                break;
+
+            case 4:
+                // you can put your minigames 1v1's in here -M
+                break;
+        }
     }
 
     private void BattleConceeded(bool succeed)
