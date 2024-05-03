@@ -1540,7 +1540,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cameraMain: {fileID: 55595178}
-  PlayerCount: 4
+  PlayerCount: 2
   _prefabBasePlate: {fileID: 8504792149921471396, guid: dbf33d06d85092e469d5959a536655f6, type: 3}
   _playerColors:
   - {fileID: 2100000, guid: 8295e10ad3955db42bc96a90f024d06a, type: 2}

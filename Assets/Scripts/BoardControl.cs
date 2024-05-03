@@ -95,7 +95,7 @@ public class BoardControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _brandNames = new string[] { "Garry's", "Aïki noodle", "Mike", "WcDonalds", "Jeff's", "Yuri's", "Roel's", "André's", "Evy's", "Sander's", "Jasper's", "Grigory's", "Finn's" };
+        _brandNames = new string[] { "Garry's", "Irish", "WcDonalds", "Jeff's", "Roel's", "André's", "Evy's", "Sander's", "Jasper's", "Grigory's", "Mintendo", "OCircle", "Moist", "TrainConsole", "Baldur Studios"};
 
         _shopNames = new string[] { "Stand", "Parking Lot", "Gas Station", "Shop", "Restaurant", "Super Market", "Electronics Store", "Mall", "Mega Mall", "Headquarters", "Headquarters", "Headquarters", "Headquarters"};
 
@@ -166,13 +166,13 @@ public class BoardControl : MonoBehaviour
                         switch (i + (j * 10))
                         {
                             case 0:
-                                ArrayList AllTileInfo = new ArrayList() { _playerColors[0], 9, 0 };
+                                ArrayList AllTileInfo = new ArrayList() { _playerColors[0], 10, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
                                 _tiles[i, j] = AllTileInfo;
 
                                 break;
 
                             case 33:
-                                AllTileInfo = new ArrayList() { _playerColors[3], 12, 0 };
+                                AllTileInfo = new ArrayList() { _playerColors[3], 13, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
                                 _tiles[i, j] = AllTileInfo;
                                 break;
 
@@ -189,6 +189,8 @@ public class BoardControl : MonoBehaviour
                                 AllTileInfo.Add(TileLevel);
                                 int TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
+                                string TileName = _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[TileLevel - 1];
+                                AllTileInfo.Add(TileName);
                                 _tiles[i, j] = AllTileInfo;
 
                                 break;
@@ -202,6 +204,8 @@ public class BoardControl : MonoBehaviour
                                 AllTileInfo.Add(TileLevel);
                                 TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
+                                TileName = _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[TileLevel - 1];
+                                AllTileInfo.Add(TileName);
                                 _tiles[i, j] = AllTileInfo;
 
                                 break;
@@ -214,6 +218,8 @@ public class BoardControl : MonoBehaviour
                                 AllTileInfo.Add(TileLevel);
                                 TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
+                                TileName = _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[TileLevel - 1];
+                                AllTileInfo.Add(TileName);
                                 _tiles[i, j] = AllTileInfo;
 
                                 break;
@@ -226,20 +232,20 @@ public class BoardControl : MonoBehaviour
                         switch (i + (j * 10))
                         {
                             case 0:
-                                ArrayList AllTileInfo = new ArrayList() { _playerColors[0], 9, 0 };
+                                ArrayList AllTileInfo = new ArrayList() { _playerColors[0], 10, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
                                 _tiles[i, j] = AllTileInfo;
 
                                 break;
 
                             case 22:
-                                AllTileInfo = new ArrayList() { _playerColors[2], 11, 0 };
+                                AllTileInfo = new ArrayList() { _playerColors[2], 12, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
                                 _tiles[i, j] = AllTileInfo;
                                 break;
 
 
 
                             case 44:
-                                AllTileInfo = new ArrayList() { _playerColors[3], 12, 0 };
+                                AllTileInfo = new ArrayList() { _playerColors[3], 13, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
                                 _tiles[i, j] = AllTileInfo;
                                 break;
 
@@ -431,7 +437,7 @@ public class BoardControl : MonoBehaviour
                 //This is to add the location of the HQs to the playerInfo -M
                 if ((Material)((ArrayList)_tiles[i, j])[0] != _playerColors[4])
                 {
-                    for (int k = 0; k < _playerColors.Length-1; k++)
+                    for (int k = 0; k < PlayerCount; k++)
                     {
                         if (_playerColors[k] == (Material)((ArrayList)_tiles[i, j])[0])
                         {
