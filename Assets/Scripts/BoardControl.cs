@@ -477,30 +477,22 @@ public class BoardControl : MonoBehaviour
         {
             waitedtime += Time.deltaTime;
 
-            if (_allowedToMove && (Input.GetAxis("LeftStickHorizontal1") != 0 || Input.GetAxis("LeftStickVertical1") != 0) && (waitedtime >= 0.25f))
+            if (_allowedToMove && (Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}") != 0 || Input.GetAxis($"LeftStickVertical{_playerTurn+1}") != 0) && (waitedtime >= 0.25f))
             {
+                Debug.Log("Do you work?");
                 waitedtime = 0;
                 int HorizontalInput = 0;
-                if (Input.GetAxis("LeftStickHorizontal1") > 0 && _selectedTile[0] < _columns - 1&& Input.GetAxis("LeftStickHorizontal1") > Mathf.Pow(Input.GetAxis("LeftStickVertical1"), 1)) HorizontalInput = 1;
-                if (Input.GetAxis("LeftStickHorizontal1") < 0 && _selectedTile[0] > 0 && Input.GetAxis("LeftStickVertical1") > Mathf.Pow(Input.GetAxis("LeftStickHorizontal1"), 1)) HorizontalInput = -1;
+                if (Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}") > 0 && _selectedTile[0] < _columns - 1&& Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}") > Mathf.Pow(Input.GetAxis($"LeftStickVertical{_playerTurn+1}"), 1)) HorizontalInput = 1;
+                if (Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}") < 0 && _selectedTile[0] > 0 && Input.GetAxis($"LeftStickVertical{_playerTurn+1}") > Mathf.Pow(Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}"), 1)) HorizontalInput = -1;
 
                 int VerticalInput = 0;
-                if (Input.GetAxis("LeftStickVertical1") < 0 && _selectedTile[1] > 0 && Input.GetAxis("LeftStickHorizontal1") > Mathf.Pow(Input.GetAxis("LeftStickVertical1"), 1)) VerticalInput = -1;
-                if (Input.GetAxis("LeftStickVertical1") > 0 && _selectedTile[1] < _rows - 1 && Input.GetAxis("LeftStickVertical1") > Mathf.Pow(Input.GetAxis("LeftStickHorizontal1"), 1)) VerticalInput = 1;
+                if (Input.GetAxis("LeftStickVertical" + (_playerTurn + 1)) < 0 && _selectedTile[1] > 0 && Input.GetAxis("LeftStickHorizontal" + (_playerTurn + 1)) > Mathf.Pow(Input.GetAxis($"LeftStickVertical{_playerTurn+1}"), 1)) VerticalInput = -1;
+                if (Input.GetAxis("LeftStickVertical" + (_playerTurn + 1)) > 0 && _selectedTile[1] < _rows - 1 && Input.GetAxis("LeftStickVertical" + (_playerTurn + 1)) > Mathf.Pow(Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}"), 1)) VerticalInput = 1;
 
-                Debug.Log("----------------------------------");
-                Debug.Log(Input.GetAxis("LeftStickHorizontal1"));
-                Debug.Log(HorizontalInput);
-                Debug.Log(Input.GetAxis("LeftStickVertical1"));
-                Debug.Log(VerticalInput);
-                Debug.Log(_columns);
-                Debug.Log(_rows);
-                Debug.Log("----------------------------------");
                 SelectedTileChanged(HorizontalInput, VerticalInput);
             }
 
-
-            if (Input.GetButton("AButton1") && waitedtime >= 1f)
+            if (Input.GetButton($"AButton{_playerTurn+1}") && waitedtime >= 0.2f)
             {
                 TheShowDetailAndBuyMethod(1);
                 CameraIfTileSelected();
@@ -508,10 +500,15 @@ public class BoardControl : MonoBehaviour
                 waitedtime = 0f;
             }
 
-            if (Input.GetButton("BButton1") && waitedtime >= 1f)
+            if (Input.GetButton($"BButton{_playerTurn+1}") && waitedtime >= 0.2f)
             {
                 TheShowDetailAndBuyMethod(-1);
                 waitedtime = 0f;
+            }
+
+            if (Input.GetButton($"YButton{_playerTurn+1}") && waitedtime >= 0.2f && _tileView == 0)
+            {
+                EndTurnMethod();
             }
 
             if (_animRotation)
@@ -525,9 +522,19 @@ public class BoardControl : MonoBehaviour
         {
             Battle();
         }
+
         if (_contest)
         {
 
+        }
+    }
+
+    private void EndTurnMethod()
+    {
+        if (_playerTurn != PlayerCount)
+        {
+            _playerTurn++;
+            PlayerTurn();
         }
     }
 
