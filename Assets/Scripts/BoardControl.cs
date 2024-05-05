@@ -88,9 +88,12 @@ public class BoardControl : MonoBehaviour
 
     private bool _batteling;
 
-    private bool _contest;
+    private bool _contesting;
 
     private int _battleNumber;
+
+    private int _contestNumber;
+
 
     // Start is called before the first frame update
     void Start()
@@ -172,7 +175,7 @@ public class BoardControl : MonoBehaviour
                                 break;
 
                             case 33:
-                                AllTileInfo = new ArrayList() { _playerColors[3], 13, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
+                                AllTileInfo = new ArrayList() { _playerColors[1], 13, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
                                 _tiles[i, j] = AllTileInfo;
                                 break;
 
@@ -238,14 +241,14 @@ public class BoardControl : MonoBehaviour
                                 break;
 
                             case 22:
-                                AllTileInfo = new ArrayList() { _playerColors[2], 12, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
+                                AllTileInfo = new ArrayList() { _playerColors[1], 12, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
                                 _tiles[i, j] = AllTileInfo;
                                 break;
 
 
 
                             case 44:
-                                AllTileInfo = new ArrayList() { _playerColors[3], 13, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
+                                AllTileInfo = new ArrayList() { _playerColors[2], 13, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
                                 _tiles[i, j] = AllTileInfo;
                                 break;
 
@@ -315,12 +318,12 @@ public class BoardControl : MonoBehaviour
                                 break;
 
                             case 4:
-                                AllTileInfo = new ArrayList() { _playerColors[2], 12, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[11] };
+                                AllTileInfo = new ArrayList() { _playerColors[1], 12, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[11] };
                                 _tiles[i, j] = AllTileInfo;
                                 break;
 
                             case 40:
-                                AllTileInfo = new ArrayList() { _playerColors[1], 11, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[10] };
+                                AllTileInfo = new ArrayList() { _playerColors[2], 11, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[10] };
                                 _tiles[i, j] = AllTileInfo;
                                 break;
 
@@ -457,7 +460,6 @@ public class BoardControl : MonoBehaviour
                         
                         buildingMaterials[k] = NewGroundPlateMaterial;
                         
-                        Debug.Log("skreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeech");
                     }
                 }
                 NewBuilding.GetComponent<MeshRenderer>().materials = buildingMaterials;
@@ -473,7 +475,7 @@ public class BoardControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!_batteling && !_contest)
+        if (!_batteling && !_contesting)
         {
             waitedtime += Time.deltaTime;
 
@@ -523,18 +525,49 @@ public class BoardControl : MonoBehaviour
             Battle();
         }
 
-        if (_contest)
+        if (_contesting)
         {
+            Contest();
+        }
+    }
 
+    private void Contest()
+    {
+        // You need to add the method ContestConceeded(int[]) to add the money and who goes when to each player. the int[] is to see which spot they ended in the contest spot 0 in the array is always player 1 the number you add on that spot is how well player 1 did and so on for the other players -M
+
+        //change _contestNumber to whezre your code is and make _contesting = true to test your minigame;
+        switch (_contestNumber)
+        {
+            case 1:
+                // you can put your 2-4 player minigame in here -M
+                break;
+
+            case 2:
+                // you can put your 2-4 player minigame in here -M
+                break;
+
+            case 3:
+                // you can put your 2-4 player minigame in here -M
+                break;
+
+            case 4:
+                // you can put your 2-4 player minigame in here -M
+                break;
         }
     }
 
     private void EndTurnMethod()
     {
-        if (_playerTurn != PlayerCount)
+        if (_playerTurn+1 != PlayerCount)
         {
             _playerTurn++;
+            _tileSpots[_selectedTile[0], _selectedTile[1]].GetComponent<MeshRenderer>().material = (Material)((ArrayList)_tiles[_selectedTile[0], _selectedTile[1]])[0];
             PlayerTurn();
+        }
+        else
+        {
+            _contesting = true;
+            _contestNumber = rn.Next(1, 4);
         }
     }
 
@@ -719,6 +752,17 @@ public class BoardControl : MonoBehaviour
             _tileView = 0;
         }
         
+    }
+
+    private void ContestConceeded(int[] playerFinishingSpots)
+    {
+        for (int i = 0; i < PlayerCount; i++)
+        {
+            _PlayerInfo[i][0] = playerFinishingSpots[i];
+            _PlayerInfo[i][1] = ((int)_PlayerInfo[i][1]) + (30*(11- playerFinishingSpots[i]));
+        }
+        _playerTurn = 0;
+        PlayerTurn();
     }
 
 }
