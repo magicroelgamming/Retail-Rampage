@@ -761,6 +761,7 @@ public class BoardControl : MonoBehaviour
             _PlayerInfo[i][0] = playerFinishingSpots[i];
             _PlayerInfo[i][1] = ((int)_PlayerInfo[i][1]) + (30*(11- playerFinishingSpots[i]));
         }
+        _contesting = false;
         _playerTurn = 0;
         PlayerTurn();
     }
