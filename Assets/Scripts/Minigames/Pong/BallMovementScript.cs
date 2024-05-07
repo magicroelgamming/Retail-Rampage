@@ -4,7 +4,7 @@ public class BallMovementScript : MonoBehaviour
 {
     private float speed = 25f;
     private float speedIncreaseInterval = 5f;
-    private float speedIncreaseAmount = 5f;
+    private float speedIncreaseAmount = 7.5f;
     private float currentSpeed;
     private Vector3 moveDirection;
     private float timer;
