@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -43,6 +44,7 @@ public class HudPongScript : MonoBehaviour
             Player1Loose.enabled = true;
             Player1Loose.text = "Player 1 LOOSES!";
             SceneManager.LoadScene("TheBoard");
+            
         }
     }
     public void Scored(int amount, float ballPositionZ)
