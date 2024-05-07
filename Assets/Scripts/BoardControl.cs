@@ -62,6 +62,8 @@ public class BoardControl : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI _costBuildingDisplay;
+    [SerializeField]
+    private TextMeshProUGUI _playerMoneyDisplay;
 
     [SerializeField]
     private ArrayList[] _PlayerInfo;
@@ -93,12 +95,20 @@ public class BoardControl : MonoBehaviour
     private int _tileView;
 
     private bool _allowedToMove;
-    
+
+    private bool _batteling;
+
+    private bool _contesting;
+
+    private int _battleNumber;
+
+    private int _contestNumber;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        _brandNames = new string[] { "Garry's", "Aïki noodle", "Mike", "WcDonalds", "Jeff's", "Yuri's", "Roel's", "André's", "Evy's", "Sander's", "Jasper's", "Grigory's", "Finn's" };
+        _brandNames = new string[] { "Garry's", "Irish", "WcDonalds", "Jeff's", "Roel's", "Andrï¿½'s", "Evy's", "Sander's", "Jasper's", "Grigory's", "Mintendo", "OCircle", "Moist", "TrainConsole", "Baldur Studios"};
 
         _shopNames = new string[] { "Stand", "Parking Lot", "Gas Station", "Shop", "Restaurant", "Super Market", "Electronics Store", "Mall", "Mega Mall", "Headquarters", "Headquarters", "Headquarters", "Headquarters"};
 
@@ -132,6 +142,7 @@ public class BoardControl : MonoBehaviour
         CameraStartPlacement();
 
         _TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
+        
 
         PlayerTurn();
     }
@@ -170,13 +181,13 @@ public class BoardControl : MonoBehaviour
                         switch (i + (j * 10))
                         {
                             case 0:
-                                ArrayList AllTileInfo = new ArrayList() { _playerColors[0], 9, 0 };
+                                ArrayList AllTileInfo = new ArrayList() { _playerColors[0], 10, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
                                 _tiles[i, j] = AllTileInfo;
 
                                 break;
 
                             case 33:
-                                AllTileInfo = new ArrayList() { _playerColors[3], 12, 0 };
+                                AllTileInfo = new ArrayList() { _playerColors[1], 13, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
                                 _tiles[i, j] = AllTileInfo;
                                 break;
 
@@ -193,6 +204,8 @@ public class BoardControl : MonoBehaviour
                                 AllTileInfo.Add(TileLevel);
                                 int TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
+                                string TileName = _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[TileLevel - 1];
+                                AllTileInfo.Add(TileName);
                                 _tiles[i, j] = AllTileInfo;
 
                                 break;
@@ -206,6 +219,8 @@ public class BoardControl : MonoBehaviour
                                 AllTileInfo.Add(TileLevel);
                                 TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
+                                TileName = _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[TileLevel - 1];
+                                AllTileInfo.Add(TileName);
                                 _tiles[i, j] = AllTileInfo;
 
                                 break;
@@ -218,6 +233,8 @@ public class BoardControl : MonoBehaviour
                                 AllTileInfo.Add(TileLevel);
                                 TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
+                                TileName = _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[TileLevel - 1];
+                                AllTileInfo.Add(TileName);
                                 _tiles[i, j] = AllTileInfo;
 
                                 break;
@@ -230,20 +247,20 @@ public class BoardControl : MonoBehaviour
                         switch (i + (j * 10))
                         {
                             case 0:
-                                ArrayList AllTileInfo = new ArrayList() { _playerColors[0], 9, 0 };
+                                ArrayList AllTileInfo = new ArrayList() { _playerColors[0], 10, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
                                 _tiles[i, j] = AllTileInfo;
 
                                 break;
 
                             case 22:
-                                AllTileInfo = new ArrayList() { _playerColors[2], 11, 0 };
+                                AllTileInfo = new ArrayList() { _playerColors[1], 12, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
                                 _tiles[i, j] = AllTileInfo;
                                 break;
 
 
 
                             case 44:
-                                AllTileInfo = new ArrayList() { _playerColors[3], 12, 0 };
+                                AllTileInfo = new ArrayList() { _playerColors[2], 13, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
                                 _tiles[i, j] = AllTileInfo;
                                 break;
 
@@ -313,12 +330,12 @@ public class BoardControl : MonoBehaviour
                                 break;
 
                             case 4:
-                                AllTileInfo = new ArrayList() { _playerColors[2], 12, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[11] };
+                                AllTileInfo = new ArrayList() { _playerColors[1], 12, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[11] };
                                 _tiles[i, j] = AllTileInfo;
                                 break;
 
                             case 40:
-                                AllTileInfo = new ArrayList() { _playerColors[1], 11, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[10] };
+                                AllTileInfo = new ArrayList() { _playerColors[2], 11, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[10] };
                                 _tiles[i, j] = AllTileInfo;
                                 break;
 
@@ -409,6 +426,7 @@ public class BoardControl : MonoBehaviour
             NewPlayerIntialization.Add(i);
             NewPlayerIntialization.Add(500);
             _PlayerInfo[i] = NewPlayerIntialization;
+            _playerMoneyDisplay.text = ((int)_PlayerInfo[_currentPlayer][1]).ToString();
         }
     }
 
@@ -434,7 +452,7 @@ public class BoardControl : MonoBehaviour
                 //This is to add the location of the HQs to the playerInfo -M
                 if ((Material)((ArrayList)_tiles[i, j])[0] != _playerColors[4])
                 {
-                    for (int k = 0; k < _playerColors.Length-1; k++)
+                    for (int k = 0; k < PlayerCount; k++)
                     {
                         if (_playerColors[k] == (Material)((ArrayList)_tiles[i, j])[0])
                         {
@@ -454,7 +472,6 @@ public class BoardControl : MonoBehaviour
                         
                         buildingMaterials[k] = NewGroundPlateMaterial;
                         
-                        Debug.Log("skreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeech");
                     }
                 }
                 NewBuilding.GetComponent<MeshRenderer>().materials = buildingMaterials;
@@ -470,20 +487,17 @@ public class BoardControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-
-        waitedtime += Time.deltaTime;
-
-        if (_allowedToMove && (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) && ((Input.GetAxis("Horizontal") != 0) && (Input.GetAxis("Vertical") != 0))==false &&(waitedtime >= 0.25f))
+        if (!_batteling && !_contesting)
         {
-            waitedtime = 0;
-            int HorizontalInput = 0;
-            if (Input.GetAxis("Horizontal") > 0 && _selectedTile[0] < _columns-1) HorizontalInput = 1;
-            if (Input.GetAxis("Horizontal") < 0 && _selectedTile[0] > 0) HorizontalInput = -1;
+            waitedtime += Time.deltaTime;
 
-            int VerticalInput = 0;
-            if (Input.GetAxis("Vertical") < 0 && _selectedTile[1] > 0) VerticalInput = -1;
-            if (Input.GetAxis("Vertical") > 0 && _selectedTile[1] < _rows-1) VerticalInput = 1;
+            if (_allowedToMove && (Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}") != 0 || Input.GetAxis($"LeftStickVertical{_playerTurn+1}") != 0) && (waitedtime >= 0.25f))
+            {
+                Debug.Log("Do you work?");
+                waitedtime = 0;
+                int HorizontalInput = 0;
+                if (Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}") > 0 && _selectedTile[0] < _columns - 1&& Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}") > Mathf.Pow(Input.GetAxis($"LeftStickVertical{_playerTurn+1}"), 1)) HorizontalInput = 1;
+                if (Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}") < 0 && _selectedTile[0] > 0 && Input.GetAxis($"LeftStickVertical{_playerTurn+1}") > Mathf.Pow(Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}"), 1)) HorizontalInput = -1;
 
             Debug.Log("----------------------------------");
             Debug.Log(Input.GetAxis("Horizontal"));
@@ -499,28 +513,87 @@ public class BoardControl : MonoBehaviour
             _tileToCameraZ = (float)_selectedTile[1] / 2;
             _animOnBoardFrame = 0;
             _animOnBoard = true;
+                int VerticalInput = 0;
+                if (Input.GetAxis("LeftStickVertical" + (_playerTurn + 1)) < 0 && _selectedTile[1] > 0 && Input.GetAxis("LeftStickHorizontal" + (_playerTurn + 1)) > Mathf.Pow(Input.GetAxis($"LeftStickVertical{_playerTurn+1}"), 1)) VerticalInput = -1;
+                if (Input.GetAxis("LeftStickVertical" + (_playerTurn + 1)) > 0 && _selectedTile[1] < _rows - 1 && Input.GetAxis("LeftStickVertical" + (_playerTurn + 1)) > Mathf.Pow(Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}"), 1)) VerticalInput = 1;
+
+                SelectedTileChanged(HorizontalInput, VerticalInput);
+            }
+
+            if (Input.GetButton($"AButton{_playerTurn+1}") && waitedtime >= 0.2f)
+            {
+                TheShowDetailAndBuyMethod(1);
+                CameraIfTileSelected();
+                TheShowDetailAndBuyMethod(0);
+                waitedtime = 0f;
+            }
+
+            if (Input.GetButton($"BButton{_playerTurn+1}") && waitedtime >= 0.2f)
+            {
+                TheShowDetailAndBuyMethod(-1);
+                waitedtime = 0f;
+            }
+
+            if (Input.GetButton($"YButton{_playerTurn+1}") && waitedtime >= 0.2f && _tileView == 0)
+            {
+                EndTurnMethod();
+            }
+
+            if (_animRotation)
+            {
+                _cameraMain.transform.parent.eulerAngles += Vector3.up * _animRotationSpeed;
+                _cameraMain.transform.localPosition = new Vector3(_cameraMain.transform.localPosition.x,
+                    _animRotationHeight + Mathf.Sin(Time.time * 1.5f) * 0.1f, _cameraMain.transform.localPosition.z);
+            }
+        }
+        if (_batteling)
+        {
+            Battle();
         }
 
-
-        if (Input.GetButton("Jump") && waitedtime >= 1f)
+        if (_contesting)
         {
-            TheShowDetailAndBuyMethod(1);
-            CameraIfTileSelected();
-            TheShowDetailAndBuyMethod(0);
-            _animOnBoard = false;
+            Contest();
         }
+    }
 
-        if (Input.GetButton("Cancel") && waitedtime >= 1f)
+    private void Contest()
+    {
+        // You need to add the method ContestConceeded(int[]) to add the money and who goes when to each player. the int[] is to see which spot they ended in the contest spot 0 in the array is always player 1 the number you add on that spot is how well player 1 did and so on for the other players -M
+
+        //change _contestNumber to whezre your code is and make _contesting = true to test your minigame;
+        switch (_contestNumber)
         {
-            TheShowDetailAndBuyMethod(-1);
-            CameraStartPlacement();
+            case 1:
+                // you can put your 2-4 player minigame in here -M
+                break;
+
+            case 2:
+                // you can put your 2-4 player minigame in here -M
+                break;
+
+            case 3:
+                // you can put your 2-4 player minigame in here -M
+                break;
+
+            case 4:
+                // you can put your 2-4 player minigame in here -M
+                break;
         }
+    }
 
-        if (_animRotation)
+    private void EndTurnMethod()
+    {
+        if (_playerTurn+1 != PlayerCount)
         {
-            _cameraMain.transform.parent.eulerAngles += Vector3.up * _animRotationSpeed;
-            _cameraMain.transform.localPosition = new Vector3(_cameraMain.transform.localPosition.x,
-                _animRotationHeight + Mathf.Sin(Time.time * 1.5f) * 0.1f, _cameraMain.transform.localPosition.z);
+            _playerTurn++;
+            _tileSpots[_selectedTile[0], _selectedTile[1]].GetComponent<MeshRenderer>().material = (Material)((ArrayList)_tiles[_selectedTile[0], _selectedTile[1]])[0];
+            PlayerTurn();
+        }
+        else
+        {
+            _contesting = true;
+            _contestNumber = rn.Next(1, 4);
         }
         if (_animOnBoard)
         {
@@ -598,6 +671,8 @@ public class BoardControl : MonoBehaviour
             _tileView--;
         }
 
+        Debug.Log(_tileView);
+
         switch (_tileView)
         {
             case 0:
@@ -610,7 +685,7 @@ public class BoardControl : MonoBehaviour
                 _TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 1;
 
                 _ownerBuildingDisplay.text = "Owner: "+ (("Grey" == ((Material)_tiles[_selectedTile[0], _selectedTile[1]][0]).name.ToString())? "No One" : ((Material)_tiles[_selectedTile[0], _selectedTile[1]][0]).name.ToString());
-                Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1]][0]).name.ToString());
+                //Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1]][0]).name.ToString());
                 _levelBuildingDisplay.text = "LVL: " + _tiles[_selectedTile[0], _selectedTile[1]][1].ToString();
 
                 _costBuildingDisplay.text = "Cost: " + _tiles[_selectedTile[0], _selectedTile[1]][2].ToString();
@@ -621,25 +696,25 @@ public class BoardControl : MonoBehaviour
                 if (_selectedTile[0] != 0)
                 {
                     if ((Material)_tiles[_selectedTile[0]-1, _selectedTile[1]][0] == (Material)_playerColors[_currentPlayer]) SomthingNextToIt = true;
-                    Debug.Log(((Material)_tiles[_selectedTile[0] - 1, _selectedTile[1]][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
+                    //Debug.Log(((Material)_tiles[_selectedTile[0] - 1, _selectedTile[1]][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
                 }
 
                 if (_selectedTile[0] != _columns-1)
                 {
                     if ((Material)_tiles[_selectedTile[0] + 1, _selectedTile[1]][0] == (Material)_playerColors[_currentPlayer]) SomthingNextToIt = true;
-                    Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] + 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
+                    //Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] + 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
                 }
 
                 if (_selectedTile[1] != 0)
                 {
                     if ((Material)_tiles[_selectedTile[0], _selectedTile[1] - 1][0] == (Material)_playerColors[_currentPlayer]) SomthingNextToIt = true;
-                    Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] - 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
+                    //Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] - 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
                 }
 
                 if (_selectedTile[1] != _rows-1)
                 {
                     if ((Material)_tiles[_selectedTile[0], _selectedTile[1] + 1][0] == (Material)_playerColors[_currentPlayer]) SomthingNextToIt = true;
-                    Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] + 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
+                    //Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] + 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
                 }
 
                 if ((_tiles[_selectedTile[0], _selectedTile[1]][0] != _playerColors[_currentPlayer]) && ((int)_tiles[_selectedTile[0], _selectedTile[1]][2] != 0) && (SomthingNextToIt))
@@ -669,8 +744,64 @@ public class BoardControl : MonoBehaviour
         if ((int)_PlayerInfo[_currentPlayer][1] >= (int)_tiles[_selectedTile[0], _selectedTile[1]][2]) 
         {
             _PlayerInfo[_currentPlayer][1] = (int)_PlayerInfo[_currentPlayer][1] - (int)_tiles[_selectedTile[0], _selectedTile[1]][2];
+            _playerMoneyDisplay.text = ((int)_PlayerInfo[_currentPlayer][1]).ToString();
+            if (_tiles[_selectedTile[0], _selectedTile[1]][0] != _playerColors[4])
+            {
+                _battleNumber = rn.Next(1, 5);
+                _batteling = true;
+                Battle();
+            }
+            else
+            {
+                BattleConceeded(true);
+            }
+        }
+    }
+
+    private void Battle()
+    {
+        // if you want to send who won the fight you do BattleConceeded(bool) the bool will be true if the attacker wins falls if the attacker looses -M
+
+        switch (_battleNumber)
+        {
+            case 1:
+                // you can put your minigames 1v1's in here -M
+                break;
+
+            case 2:
+                // you can put your minigames 1v1's in here -M
+                break;
+
+            case 3:
+                // you can put your minigames 1v1's in here -M
+                break;
+
+            case 4:
+                // you can put your minigames 1v1's in here -M
+                break;
+        }
+    }
+
+    private void BattleConceeded(bool succeed)
+    {
+        if (succeed)
+        {
             _tiles[_selectedTile[0], _selectedTile[1]][0] = _playerColors[_currentPlayer];
             _tileView = 0;
         }
+        
     }
+
+    private void ContestConceeded(int[] playerFinishingSpots)
+    {
+        for (int i = 0; i < PlayerCount; i++)
+        {
+            _PlayerInfo[i][0] = playerFinishingSpots[i];
+            _PlayerInfo[i][1] = ((int)_PlayerInfo[i][1]) + (30*(11- playerFinishingSpots[i]));
+        }
+        _contesting = false;
+        _playerTurn = 0;
+        PlayerTurn();
+    }
+
 }
