@@ -12,6 +12,10 @@ public class HudPongScript : MonoBehaviour
     [SerializeField] private Text Player2Loose;
     public int player1Score = 0;
     public int player2Score = 0;
+
+    public bool startDelayBeforeMainBoard = false;
+    private float delayTimer = 4f;
+    private float delayTime = 0;
     void Start()
     {
         Player1Loose.enabled = false;
@@ -24,6 +28,15 @@ public class HudPongScript : MonoBehaviour
     void Update()
     {
         ScoreText();
+
+        if (startDelayBeforeMainBoard)
+        {
+            delayTime += Time.deltaTime;
+            if (delayTime > delayTimer)
+            {
+                SceneManager.LoadScene("TheBoard");
+            }
+        }
     }
     void ScoreText()
     {
@@ -35,7 +48,9 @@ public class HudPongScript : MonoBehaviour
             Player1Win.text = "Player 1 WINS!";
             Player2Loose.enabled = true;
             Player2Loose.text = "Player 2 LOOSES!";
-            SceneManager.LoadScene("TheBoard");
+            GameOver();
+
+
         }
         else if (player2Score == 3)
         {
@@ -43,8 +58,7 @@ public class HudPongScript : MonoBehaviour
             Player2Win.text = "Player 2 WINS!";
             Player1Loose.enabled = true;
             Player1Loose.text = "Player 1 LOOSES!";
-            SceneManager.LoadScene("TheBoard");
-            
+            GameOver();
         }
     }
     public void Scored(int amount, float ballPositionZ)
@@ -57,5 +71,9 @@ public class HudPongScript : MonoBehaviour
         {
             player1Score += amount;
         }
+    }
+    public void GameOver()
+    {
+        startDelayBeforeMainBoard = true;
     }
 }
