@@ -20,7 +20,7 @@ public class BoardControl : MonoBehaviour
 
     private float _animRotationHeight = 1f;
 
-    private bool _animOnBoard;
+    private bool _animOnBoardMovement;
 
     private float _animOnBoardSmoothness = 500;
 
@@ -29,6 +29,8 @@ public class BoardControl : MonoBehaviour
     private float _tileToCameraX;
 
     private float _tileToCameraZ;
+
+    private float _onBoardCameraOffset = 5;
 
     [SerializeField]
     public int PlayerCount;
@@ -148,16 +150,17 @@ public class BoardControl : MonoBehaviour
 
     private void CameraStartPlacement()
     {
-        float fieldWidth = _columns;
-        float fieldHeight = _rows;
-        int centralTileX = (int)Math.Ceiling(fieldWidth / 2) - 1;
-        int centralTileZ = (int)Math.Ceiling(fieldHeight / 2) - 1;
+        //float fieldWidth = _columns;
+        //float fieldHeight = _rows;
+        //int centralTileX = (int)Math.Ceiling(fieldWidth / 2) - 1;
+        //int centralTileZ = (int)Math.Ceiling(fieldHeight / 2) - 1;
         _tileToCameraX = (float)_selectedTile[0] / 2 - 1;
         _tileToCameraZ = (float)_selectedTile[1] / 2;
-        Vector3 centralTilePosition = _tileSpots[centralTileZ, centralTileX].transform.position;
+        //Vector3 centralTilePosition = _tileSpots[centralTileZ, centralTileX].transform.position;
+        Vector3 centralTilePosition = Vector3.Lerp(_tileSpots[0,0].transform.position, _tileSpots[_columns-1, _rows-1].transform.position, 0.5f);
         _cameraMain.transform.parent.position = centralTilePosition;
         _cameraMain.transform.parent.localEulerAngles = Vector3.zero;
-        _cameraMain.transform.localPosition = new Vector3(_tileToCameraX, 4, _tileToCameraZ - 5);
+        _cameraMain.transform.localPosition = new Vector3(_tileToCameraX, 4, _tileToCameraZ - (_tileSpots[0, 0].transform.position.z + _onBoardCameraOffset));
         _cameraMain.transform.localEulerAngles = new Vector3(45, 0, 0);
         _animRotation = false;
     }
@@ -514,12 +517,24 @@ public class BoardControl : MonoBehaviour
                 Debug.Log("----------------------------------");
                 SelectedTileChanged(HorizontalInput, VerticalInput);
 
-                _tileToCameraX = (float)_selectedTile[0] / 2 - 1;
-                _tileToCameraZ = (float)_selectedTile[1] / 2;
+                //if (PlayerCount > 2)
+                //{
+                //    _tileToCameraX = (float)_selectedTile[0] / 2 - 1;
+                //    _tileToCameraZ = (float)_selectedTile[1] / 2;
+                //}
+                //if (PlayerCount == 2)
+                //{
+                //    _tileToCameraX = (float)_selectedTile[0] / 2 - 1;
+                //    _tileToCameraZ = (float)_selectedTile[1] / 2;
+                //}
+                float _animStep = ((_columns - 1f) / 2f);
+                _tileToCameraX = (float)_selectedTile[0] / _animStep - 1f;
+                _tileToCameraZ = (float)_selectedTile[1] / _animStep;
                 _animOnBoardFrame = 0;
-                _animOnBoard = true;
+                _animOnBoardMovement = true;
               
             }
+            Debug.Log((float)_selectedTile[0] / 1.5f - 1);
 
             if (Input.GetButton($"AButton{_playerTurn+1}") && waitedtime >= 0.2f)
             {
@@ -547,6 +562,17 @@ public class BoardControl : MonoBehaviour
                     _animRotationHeight + Mathf.Sin(Time.time * 1.5f) * 0.1f, _cameraMain.transform.localPosition.z);
             }
         }
+
+        if (_animOnBoardMovement)
+        {
+            if (_animOnBoardFrame <= 1)
+            {
+                Vector3 cameraPosition = Vector3.Lerp(_cameraMain.transform.localPosition, new Vector3(_tileToCameraX, 4, _tileToCameraZ - (_tileSpots[0,0].transform.position.z + _onBoardCameraOffset)), _animOnBoardFrame);
+                _cameraMain.transform.localPosition = cameraPosition;
+                _animOnBoardFrame += 1f / _animOnBoardSmoothness;
+            }
+        }
+
         if (_batteling)
         {
             Battle();
@@ -599,22 +625,12 @@ public class BoardControl : MonoBehaviour
             _contesting = true;
             _contestNumber = rn.Next(1, 2);
         }
-        if (_animOnBoard)
-        {
-            if (_animOnBoardFrame <= 1)
-            {
-                Vector3 cameraPosition = Vector3.Lerp(_cameraMain.transform.localPosition, new Vector3(_tileToCameraX, 4, _tileToCameraZ - 5), _animOnBoardFrame);
-                _cameraMain.transform.localPosition = cameraPosition;
-                Debug.Log(cameraPosition);
-                Debug.Log(_animOnBoardFrame);
-                _animOnBoardFrame += 1f / _animOnBoardSmoothness;
-            }
-        }
+        
     }
 
     private void CameraIfTileSelected()
     {
-        _animOnBoard = false;
+        _animOnBoardMovement = false;
         int row = _selectedTile[0];
         int column = _selectedTile[1];
         _cameraMain.transform.parent.position = _tileSpots[row, column].transform.position;
