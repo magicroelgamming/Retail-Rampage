@@ -19,6 +19,16 @@ public class BoardControl : MonoBehaviour
 
     private float _animRotationHeight = 1f;
 
+    private bool _animOnBoard;
+
+    private float _animOnBoardSmoothness = 500;
+
+    private float _animOnBoardFrame = 0;
+
+    private float _tileToCameraX;
+
+    private float _tileToCameraZ;
+
     [SerializeField]
     public int PlayerCount;
 
@@ -132,12 +142,14 @@ public class BoardControl : MonoBehaviour
         float fieldHeight = _rows;
         int centralTileX = (int)Math.Ceiling(fieldWidth / 2) - 1;
         int centralTileZ = (int)Math.Ceiling(fieldHeight / 2) - 1;
-        Debug.Log(centralTileX);
-        Debug.Log(centralTileZ);
+        _tileToCameraX = (float)_selectedTile[0] / 2 - 1;
+        _tileToCameraZ = (float)_selectedTile[1] / 2;
         Vector3 centralTilePosition = _tileSpots[centralTileZ, centralTileX].transform.position;
         _cameraMain.transform.parent.position = centralTilePosition;
-        _cameraMain.transform.localPosition = new Vector3(0, 4, -5);
+        _cameraMain.transform.parent.localEulerAngles = Vector3.zero;
+        _cameraMain.transform.localPosition = new Vector3(_tileToCameraX, 4, _tileToCameraZ - 5);
         _cameraMain.transform.localEulerAngles = new Vector3(45, 0, 0);
+        _animRotation = false;
     }
 
     private void MapGeneration()
@@ -482,6 +494,11 @@ public class BoardControl : MonoBehaviour
             Debug.Log(_rows);
             Debug.Log("----------------------------------");
             SelectedTileChanged(HorizontalInput, VerticalInput);
+
+            _tileToCameraX = (float)_selectedTile[0] / 2 - 1;
+            _tileToCameraZ = (float)_selectedTile[1] / 2;
+            _animOnBoardFrame = 0;
+            _animOnBoard = true;
         }
 
 
@@ -490,12 +507,13 @@ public class BoardControl : MonoBehaviour
             TheShowDetailAndBuyMethod(1);
             CameraIfTileSelected();
             TheShowDetailAndBuyMethod(0);
+            _animOnBoard = false;
         }
 
         if (Input.GetButton("Cancel") && waitedtime >= 1f)
         {
             TheShowDetailAndBuyMethod(-1);
-            
+            CameraStartPlacement();
         }
 
         if (_animRotation)
@@ -504,10 +522,22 @@ public class BoardControl : MonoBehaviour
             _cameraMain.transform.localPosition = new Vector3(_cameraMain.transform.localPosition.x,
                 _animRotationHeight + Mathf.Sin(Time.time * 1.5f) * 0.1f, _cameraMain.transform.localPosition.z);
         }
+        if (_animOnBoard)
+        {
+            if (_animOnBoardFrame <= 1)
+            {
+                Vector3 cameraPosition = Vector3.Lerp(_cameraMain.transform.localPosition, new Vector3(_tileToCameraX, 4, _tileToCameraZ - 5), _animOnBoardFrame);
+                _cameraMain.transform.localPosition = cameraPosition;
+                Debug.Log(cameraPosition);
+                Debug.Log(_animOnBoardFrame);
+                _animOnBoardFrame += 1f / _animOnBoardSmoothness;
+            }
+        }
     }
 
     private void CameraIfTileSelected()
     {
+        _animOnBoard = false;
         int row = _selectedTile[0];
         int column = _selectedTile[1];
         _cameraMain.transform.parent.position = _tileSpots[row, column].transform.position;
