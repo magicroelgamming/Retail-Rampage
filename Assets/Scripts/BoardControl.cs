@@ -227,9 +227,9 @@ public class BoardControl : MonoBehaviour
 
     private void CameraStartPlacement()
     {
-        _tileToCameraX = (float)_selectedTile[0] / 2 - 1;
-        _tileToCameraZ = (float)_selectedTile[1] / 2;
-        Vector3 centralTilePosition = Vector3.Lerp(_tileSpots[0,0].transform.position, _tileSpots[_columns-1, _rows-1].transform.position, 0.5f);
+        _tileToCameraX = (float)DataManager._selectedTile[0] / 2 - 1;
+        _tileToCameraZ = (float)DataManager._selectedTile[1] / 2;
+        Vector3 centralTilePosition = Vector3.Lerp(DataManager._tilespots[0,0].transform.position, DataManager._tilespots[DataManager._columns -1, DataManager._rows -1].transform.position, 0.5f);
         _cameraMain.transform.parent.position = centralTilePosition;
         _cameraMain.transform.parent.localEulerAngles = Vector3.zero;
         _cameraMain.transform.localPosition = new Vector3(_tileToCameraX, 4, _tileToCameraZ + _onBoardCameraOffset);
@@ -581,9 +581,9 @@ public class BoardControl : MonoBehaviour
 
                 SelectedTileChanged(HorizontalInput, VerticalInput);
 
-                float _animStep = ((_columns - 1f) / 2f);
-                _tileToCameraX = (float)_selectedTile[0] / _animStep - 1f;
-                _tileToCameraZ = (float)_selectedTile[1] / _animStep;
+                float _animStep = ((DataManager._columns - 1f) / 2f);
+                _tileToCameraX = (float)DataManager._selectedTile[0] / _animStep - 1f;
+                _tileToCameraZ = (float)DataManager._selectedTile[1] / _animStep;
                 _animOnBoardFrame = 0;
                 _animOnBoardMovement = true;
               
