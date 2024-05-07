@@ -29,6 +29,10 @@ TagManager:
   - Player/3
   - Player/4
   - Ball
+  - FinishLine/1
+  - FinishLine/2
+  - FinishLine/3
+  - FinishLine/4
   layers:
   - Default
   - TransparentFX
