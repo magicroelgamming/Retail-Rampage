@@ -30,7 +30,7 @@ public class BoardControl : MonoBehaviour
 
     private float _tileToCameraZ;
 
-    private float _onBoardCameraOffset = 5;
+    private float _onBoardCameraOffset = -5;
 
     [SerializeField]
     public int PlayerCount;
@@ -150,17 +150,12 @@ public class BoardControl : MonoBehaviour
 
     private void CameraStartPlacement()
     {
-        //float fieldWidth = _columns;
-        //float fieldHeight = _rows;
-        //int centralTileX = (int)Math.Ceiling(fieldWidth / 2) - 1;
-        //int centralTileZ = (int)Math.Ceiling(fieldHeight / 2) - 1;
         _tileToCameraX = (float)_selectedTile[0] / 2 - 1;
         _tileToCameraZ = (float)_selectedTile[1] / 2;
-        //Vector3 centralTilePosition = _tileSpots[centralTileZ, centralTileX].transform.position;
         Vector3 centralTilePosition = Vector3.Lerp(_tileSpots[0,0].transform.position, _tileSpots[_columns-1, _rows-1].transform.position, 0.5f);
         _cameraMain.transform.parent.position = centralTilePosition;
         _cameraMain.transform.parent.localEulerAngles = Vector3.zero;
-        _cameraMain.transform.localPosition = new Vector3(_tileToCameraX, 4, _tileToCameraZ - (_tileSpots[0, 0].transform.position.z + _onBoardCameraOffset));
+        _cameraMain.transform.localPosition = new Vector3(_tileToCameraX, 4, _tileToCameraZ + _onBoardCameraOffset);
         _cameraMain.transform.localEulerAngles = new Vector3(45, 0, 0);
         _animRotation = false;
     }
@@ -507,26 +502,8 @@ public class BoardControl : MonoBehaviour
                 if (Input.GetAxis("LeftStickVertical" + (_playerTurn + 1)) < 0 && _selectedTile[1] > 0 && Input.GetAxis("LeftStickHorizontal" + (_playerTurn + 1)) > Mathf.Pow(Input.GetAxis($"LeftStickVertical{_playerTurn + 1}"), 1)) VerticalInput = -1;
                 if (Input.GetAxis("LeftStickVertical" + (_playerTurn + 1)) > 0 && _selectedTile[1] < _rows - 1 && Input.GetAxis("LeftStickVertical" + (_playerTurn + 1)) > Mathf.Pow(Input.GetAxis($"LeftStickHorizontal{_playerTurn + 1}"), 1)) VerticalInput = 1;
 
-                Debug.Log("----------------------------------");
-                Debug.Log(Input.GetAxis("Horizontal"));
-                Debug.Log(HorizontalInput);
-                Debug.Log(Input.GetAxis("Vertical"));
-                Debug.Log(VerticalInput);
-                Debug.Log(_columns);
-                Debug.Log(_rows);
-                Debug.Log("----------------------------------");
                 SelectedTileChanged(HorizontalInput, VerticalInput);
 
-                //if (PlayerCount > 2)
-                //{
-                //    _tileToCameraX = (float)_selectedTile[0] / 2 - 1;
-                //    _tileToCameraZ = (float)_selectedTile[1] / 2;
-                //}
-                //if (PlayerCount == 2)
-                //{
-                //    _tileToCameraX = (float)_selectedTile[0] / 2 - 1;
-                //    _tileToCameraZ = (float)_selectedTile[1] / 2;
-                //}
                 float _animStep = ((_columns - 1f) / 2f);
                 _tileToCameraX = (float)_selectedTile[0] / _animStep - 1f;
                 _tileToCameraZ = (float)_selectedTile[1] / _animStep;
@@ -567,7 +544,7 @@ public class BoardControl : MonoBehaviour
         {
             if (_animOnBoardFrame <= 1)
             {
-                Vector3 cameraPosition = Vector3.Lerp(_cameraMain.transform.localPosition, new Vector3(_tileToCameraX, 4, _tileToCameraZ - (_tileSpots[0,0].transform.position.z + _onBoardCameraOffset)), _animOnBoardFrame);
+                Vector3 cameraPosition = Vector3.Lerp(_cameraMain.transform.localPosition, new Vector3(_tileToCameraX, 4, _tileToCameraZ + _onBoardCameraOffset), _animOnBoardFrame);
                 _cameraMain.transform.localPosition = cameraPosition;
                 _animOnBoardFrame += 1f / _animOnBoardSmoothness;
             }
