@@ -499,25 +499,26 @@ public class BoardControl : MonoBehaviour
                 if (Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}") > 0 && _selectedTile[0] < _columns - 1&& Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}") > Mathf.Pow(Input.GetAxis($"LeftStickVertical{_playerTurn+1}"), 1)) HorizontalInput = 1;
                 if (Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}") < 0 && _selectedTile[0] > 0 && Input.GetAxis($"LeftStickVertical{_playerTurn+1}") > Mathf.Pow(Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}"), 1)) HorizontalInput = -1;
 
-            Debug.Log("----------------------------------");
-            Debug.Log(Input.GetAxis("Horizontal"));
-            Debug.Log(HorizontalInput);
-            Debug.Log(Input.GetAxis("Vertical"));
-            Debug.Log(VerticalInput);
-            Debug.Log(_columns);
-            Debug.Log(_rows);
-            Debug.Log("----------------------------------");
-            SelectedTileChanged(HorizontalInput, VerticalInput);
 
-            _tileToCameraX = (float)_selectedTile[0] / 2 - 1;
-            _tileToCameraZ = (float)_selectedTile[1] / 2;
-            _animOnBoardFrame = 0;
-            _animOnBoard = true;
                 int VerticalInput = 0;
-                if (Input.GetAxis("LeftStickVertical" + (_playerTurn + 1)) < 0 && _selectedTile[1] > 0 && Input.GetAxis("LeftStickHorizontal" + (_playerTurn + 1)) > Mathf.Pow(Input.GetAxis($"LeftStickVertical{_playerTurn+1}"), 1)) VerticalInput = -1;
-                if (Input.GetAxis("LeftStickVertical" + (_playerTurn + 1)) > 0 && _selectedTile[1] < _rows - 1 && Input.GetAxis("LeftStickVertical" + (_playerTurn + 1)) > Mathf.Pow(Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}"), 1)) VerticalInput = 1;
+                if (Input.GetAxis("LeftStickVertical" + (_playerTurn + 1)) < 0 && _selectedTile[1] > 0 && Input.GetAxis("LeftStickHorizontal" + (_playerTurn + 1)) > Mathf.Pow(Input.GetAxis($"LeftStickVertical{_playerTurn + 1}"), 1)) VerticalInput = -1;
+                if (Input.GetAxis("LeftStickVertical" + (_playerTurn + 1)) > 0 && _selectedTile[1] < _rows - 1 && Input.GetAxis("LeftStickVertical" + (_playerTurn + 1)) > Mathf.Pow(Input.GetAxis($"LeftStickHorizontal{_playerTurn + 1}"), 1)) VerticalInput = 1;
 
+                Debug.Log("----------------------------------");
+                Debug.Log(Input.GetAxis("Horizontal"));
+                Debug.Log(HorizontalInput);
+                Debug.Log(Input.GetAxis("Vertical"));
+                Debug.Log(VerticalInput);
+                Debug.Log(_columns);
+                Debug.Log(_rows);
+                Debug.Log("----------------------------------");
                 SelectedTileChanged(HorizontalInput, VerticalInput);
+
+                _tileToCameraX = (float)_selectedTile[0] / 2 - 1;
+                _tileToCameraZ = (float)_selectedTile[1] / 2;
+                _animOnBoardFrame = 0;
+                _animOnBoard = true;
+              
             }
 
             if (Input.GetButton($"AButton{_playerTurn+1}") && waitedtime >= 0.2f)
