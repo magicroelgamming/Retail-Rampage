@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -11,99 +12,98 @@ using UnityEngine.UIElements;
 public class BoardControl : MonoBehaviour
 {
     [SerializeField]
-    static private Camera _cameraMain;
+    private Camera _cameraMain;
 
-    static private bool _animRotation;
+    private bool _animRotation;
 
-    static private float _animRotationSpeed = 0.15f;
+    private float _animRotationSpeed = 0.15f;
 
-    static private float _animRotationHeight = 1f;
+    private float _animRotationHeight = 1f;
 
-    static private bool _animOnBoard;
+    private bool _animOnBoard;
 
-    static private float _animOnBoardSmoothness = 500;
+    private float _animOnBoardSmoothness = 500;
 
-    static private float _animOnBoardFrame = 0;
+    private float _animOnBoardFrame = 0;
 
-    static private float _tileToCameraX;
+    private float _tileToCameraX;
 
-    static private float _tileToCameraZ;
-
-    [SerializeField]
-    static public int PlayerCount;
+    private float _tileToCameraZ;
 
     [SerializeField]
-    static private GameObject _prefabBasePlate;
+    public int PlayerCount;
 
     [SerializeField]
-    static private Material[] _playerColors = new Material[] { };
+    private GameObject _prefabBasePlate;
+
+    [SerializeField]
+    private Material[] _playerColors = new Material[] { };
 
     //temp
     [SerializeField]
-    static private Material _selected;
+    private Material _selected;
     //
 
     float waitedtime;
 
     [SerializeField]
-    static private GameObject _TildeDetailDisplay;
+    private GameObject _TildeDetailDisplay;
 
     [SerializeField]
-    static private GameObject _BuyButtonDisplay;
+    private GameObject _BuyButtonDisplay;
 
     [SerializeField]
-    static private TextMeshProUGUI _nameBuildingDisplay;
+    private TextMeshProUGUI _nameBuildingDisplay;
 
     [SerializeField]
-    static private TextMeshProUGUI _ownerBuildingDisplay;
+    private TextMeshProUGUI _ownerBuildingDisplay;
 
     [SerializeField]
-    static private TextMeshProUGUI _levelBuildingDisplay;
+    private TextMeshProUGUI _levelBuildingDisplay;
 
     [SerializeField]
-    static private TextMeshProUGUI _costBuildingDisplay;
+    private TextMeshProUGUI _costBuildingDisplay;
     [SerializeField]
-    static private TextMeshProUGUI _playerMoneyDisplay;
-
-    [SerializeField]
-    static private ArrayList[] _PlayerInfo;
+    private TextMeshProUGUI _playerMoneyDisplay;
 
     [SerializeField]
-    static private GameObject[,] _tileSpots;
+    private GameObject[] _shopPrefabs;
 
-    [SerializeField]
-    static private ArrayList[,] _tiles;
-
-    [SerializeField]
-    static private GameObject[] _shopPrefabs;
-
-    static private string[] _shopNames, _brandNames;
-
-
-    static private int _columns, _rows;
+    
 
     System.Random rn = new System.Random();
+    //public static class DataManager { 
 
-    static private int _rounds;
+        static public ArrayList[] _PlayerInfo;
 
-    static private int _playerTurn;
+        static public GameObject[,] _tileSpots;
 
-    static private int _currentPlayer;
+        static public ArrayList[,] _tiles;
 
-    static private int[] _selectedTile = new int[2];
+        static public string[] _shopNames, _brandNames;
 
-    static private int _tileView;
+        static public int _columns, _rows;
 
-    static private bool _allowedToMove;
+        static public int _rounds;
 
-    static private bool _batteling;
+        static public int _playerTurn;
 
-    static private bool _contesting;
+        static public int _currentPlayer;
 
-    static private int _battleNumber;
+        static public int[] _selectedTile = new int[2];
 
-    static private int _contestNumber;
+        static public int _tileView;
 
+        static public bool _allowedToMove;
+
+        static public bool _batteling;
+
+        static public bool _contesting;
+
+        static public int _battleNumber;
+
+        static public int _contestNumber;
+    //}
 
     // Start is called before the first frame update
     void Start()
@@ -143,7 +143,6 @@ public class BoardControl : MonoBehaviour
 
         _TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
         
-
         PlayerTurn();
     }
 
@@ -439,10 +438,11 @@ public class BoardControl : MonoBehaviour
 
                 GameObject NewGroundPlate = GameObject.Instantiate(_prefabBasePlate, transform, true);
                 NewGroundPlate.transform.position += new Vector3(i * 1.5f, 0, j * 1.5f);
+                NewGroundPlate.transform.localScale = NewGroundPlate.transform.localScale / 4;
                 GameObject NewBuilding = GameObject.Instantiate(_shopPrefabs[(int)_tiles[i, j][1] -1], transform, true);
                 NewBuilding.transform.localScale = NewBuilding.transform.localScale / 4;
                 NewBuilding.transform.parent = NewGroundPlate.transform;
-                NewBuilding.transform.position = NewGroundPlate.transform.position + new Vector3(0,0.1f,0);
+                NewBuilding.transform.position = NewGroundPlate.transform.position + new Vector3(0,0.32f,0);
                 
 
                 //Tell me te explain this if you don't get this part -M
@@ -567,6 +567,9 @@ public class BoardControl : MonoBehaviour
         {
             case 1:
                 // you can put your 2-4 player minigame in here -M
+                SceneManager.LoadScene("Pong");
+                _contesting = false;
+                _playerTurn = 0;
                 break;
 
             case 2:
@@ -594,7 +597,7 @@ public class BoardControl : MonoBehaviour
         else
         {
             _contesting = true;
-            _contestNumber = rn.Next(1, 4);
+            _contestNumber = rn.Next(1, 2);
         }
         if (_animOnBoard)
         {

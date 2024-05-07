@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1541,12 +1541,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cameraMain: {fileID: 55595178}
   PlayerCount: 2
-  _prefabBasePlate: {fileID: 8504792149921471396, guid: dbf33d06d85092e469d5959a536655f6, type: 3}
+  _prefabBasePlate: {fileID: 919132149155446097, guid: 0f9f6a282861f464e9c5b82ec24c124a, type: 3}
   _playerColors:
   - {fileID: 2100000, guid: 8295e10ad3955db42bc96a90f024d06a, type: 2}
-  - {fileID: 2100000, guid: 5715d4ae19aeb77419f6168eef144d22, type: 2}
   - {fileID: 2100000, guid: 1d9065f57cbc6874193ca557d1e5e3ff, type: 2}
   - {fileID: 2100000, guid: 355b755573e4d144fa2095b3eeb78de9, type: 2}
+  - {fileID: 2100000, guid: 5715d4ae19aeb77419f6168eef144d22, type: 2}
   - {fileID: 2100000, guid: 02c7de4dfe4748d4f95371e199e2eafd, type: 2}
   _selected: {fileID: 2100000, guid: a3486942ed1a2af4c87226c655150a4e, type: 2}
   _TildeDetailDisplay: {fileID: 2137890485}

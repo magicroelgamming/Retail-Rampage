@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class HudPongScript : MonoBehaviour
 {
@@ -33,6 +34,7 @@ public class HudPongScript : MonoBehaviour
             Player1Win.text = "Player 1 WINS!";
             Player2Loose.enabled = true;
             Player2Loose.text = "Player 2 LOOSES!";
+            SceneManager.LoadScene("TheBoard");
         }
         else if (player2Score == 3)
         {
@@ -40,6 +42,7 @@ public class HudPongScript : MonoBehaviour
             Player2Win.text = "Player 2 WINS!";
             Player1Loose.enabled = true;
             Player1Loose.text = "Player 1 LOOSES!";
+            SceneManager.LoadScene("TheBoard");
         }
     }
     public void Scored(int amount, float ballPositionZ)
