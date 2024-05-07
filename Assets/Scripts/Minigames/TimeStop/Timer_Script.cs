@@ -43,14 +43,14 @@ public class Timer : MonoBehaviour
             timerStarted = true;
         }
 
-        if (Input.GetMouseButtonDown(0) && GameObject.FindGameObjectWithTag("Camera1"))
+        if (Input.GetButtonDown("AButton1") && GameObject.FindGameObjectWithTag("Camera/1"))
         {
-            StopTimer("Camera1");
+            StopTimer("Camera/1");
         }
 
-        if (Input.GetMouseButtonDown(1) && GameObject.FindGameObjectWithTag("Camera2"))
+        if (Input.GetButtonDown("AButton2") && GameObject.FindGameObjectWithTag("Camera/2"))
         {
-            StopTimer("Camera2");
+            StopTimer("Camera/2");
         }
 
         if (timerRunningCamera1)
@@ -61,7 +61,7 @@ public class Timer : MonoBehaviour
                 currentTimeCamera1 = 0;
                 timerRunningCamera1 = false;
             }
-            UpdateTimerDisplay("Camera1");
+            UpdateTimerDisplay("Camera/1");
         }
 
         if (timerRunningCamera2)
@@ -72,7 +72,7 @@ public class Timer : MonoBehaviour
                 currentTimeCamera2 = 0;
                 timerRunningCamera2 = false;
             }
-            UpdateTimerDisplay("Camera2");
+            UpdateTimerDisplay("Camera/2");
         }
         if (!timerRunningCamera1 && !timerRunningCamera2)
         {
@@ -90,12 +90,12 @@ public class Timer : MonoBehaviour
 
     public void StopTimer(string cameraTag)
     {
-        if (cameraTag == "Camera1")
+        if (cameraTag == "Camera/1")
         {
             timerRunningCamera1 = false;
             timerTextCamera1.enabled = true;
         }
-        else if (cameraTag == "Camera2")
+        else if (cameraTag == "Camera/2")
         {
             timerRunningCamera2 = false;
             timerTextCamera2.enabled = true;
@@ -104,11 +104,11 @@ public class Timer : MonoBehaviour
 
     private void UpdateTimerDisplay(string cameraTag)
     {
-        if (cameraTag == "Camera1")
+        if (cameraTag == "Camera/1")
         {
             timerTextCamera1.text = currentTimeCamera1.ToString("F1");
         }
-        else if (cameraTag == "Camera2")
+        else if (cameraTag == "Camera/2")
         {
             timerTextCamera2.text = currentTimeCamera2.ToString("F1");
         }
