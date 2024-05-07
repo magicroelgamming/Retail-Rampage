@@ -11,100 +11,100 @@ using UnityEngine.UIElements;
 public class BoardControl : MonoBehaviour
 {
     [SerializeField]
-    private Camera _cameraMain;
+    static private Camera _cameraMain;
 
-    private bool _animRotation;
+    static private bool _animRotation;
 
-    private float _animRotationSpeed = 0.15f;
+    static private float _animRotationSpeed = 0.15f;
 
-    private float _animRotationHeight = 1f;
+    static private float _animRotationHeight = 1f;
 
     private bool _animOnBoardMovement;
 
-    private float _animOnBoardSmoothness = 500;
+    static private float _animOnBoardSmoothness = 500;
 
-    private float _animOnBoardFrame = 0;
+    static private float _animOnBoardFrame = 0;
 
-    private float _tileToCameraX;
+    static private float _tileToCameraX;
 
-    private float _tileToCameraZ;
+    static private float _tileToCameraZ;
 
     private float _onBoardCameraOffset = 5;
 
     [SerializeField]
-    public int PlayerCount;
+    static public int PlayerCount;
 
     [SerializeField]
-    private GameObject _prefabBasePlate;
+    static private GameObject _prefabBasePlate;
 
     [SerializeField]
-    private Material[] _playerColors = new Material[] { };
+    static private Material[] _playerColors = new Material[] { };
 
     //temp
     [SerializeField]
-    private Material _selected;
+    static private Material _selected;
     //
 
     float waitedtime;
 
     [SerializeField]
-    private GameObject _TildeDetailDisplay;
+    static private GameObject _TildeDetailDisplay;
 
     [SerializeField]
-    private GameObject _BuyButtonDisplay;
+    static private GameObject _BuyButtonDisplay;
 
     [SerializeField]
-    private TextMeshProUGUI _nameBuildingDisplay;
+    static private TextMeshProUGUI _nameBuildingDisplay;
 
     [SerializeField]
-    private TextMeshProUGUI _ownerBuildingDisplay;
+    static private TextMeshProUGUI _ownerBuildingDisplay;
 
     [SerializeField]
-    private TextMeshProUGUI _levelBuildingDisplay;
+    static private TextMeshProUGUI _levelBuildingDisplay;
 
     [SerializeField]
-    private TextMeshProUGUI _costBuildingDisplay;
+    static private TextMeshProUGUI _costBuildingDisplay;
     [SerializeField]
-    private TextMeshProUGUI _playerMoneyDisplay;
-
-    [SerializeField]
-    private ArrayList[] _PlayerInfo;
+    static private TextMeshProUGUI _playerMoneyDisplay;
 
     [SerializeField]
-    private GameObject[,] _tileSpots;
+    static private ArrayList[] _PlayerInfo;
 
     [SerializeField]
-    private ArrayList[,] _tiles;
+    static private GameObject[,] _tileSpots;
 
     [SerializeField]
-    private GameObject[] _shopPrefabs;
+    static private ArrayList[,] _tiles;
 
-    private string[] _shopNames, _brandNames;
+    [SerializeField]
+    static private GameObject[] _shopPrefabs;
+
+    static private string[] _shopNames, _brandNames;
 
 
-    private int _columns, _rows;
+    static private int _columns, _rows;
 
     System.Random rn = new System.Random();
 
-    private int _rounds;
+    static private int _rounds;
 
-    private int _playerTurn;
+    static private int _playerTurn;
 
-    private int _currentPlayer;
+    static private int _currentPlayer;
 
-    private int[] _selectedTile = new int[2];
+    static private int[] _selectedTile = new int[2];
 
-    private int _tileView;
+    static private int _tileView;
 
-    private bool _allowedToMove;
+    static private bool _allowedToMove;
 
-    private bool _batteling;
+    static private bool _batteling;
 
-    private bool _contesting;
+    static private bool _contesting;
 
-    private int _battleNumber;
+    static private int _battleNumber;
 
-    private int _contestNumber;
+    static private int _contestNumber;
 
 
     // Start is called before the first frame update

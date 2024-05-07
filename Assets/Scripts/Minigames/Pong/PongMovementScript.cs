@@ -2,7 +2,7 @@ using UnityEngine;
 public class PongMovementScript : MonoBehaviour
 {
     [SerializeField] private Camera camera;
-    private float speed = 15f;
+    private float speed = 20f;
     void Update()
     {
         Movement();
