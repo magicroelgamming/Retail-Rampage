@@ -217,6 +217,9 @@ public class BoardControl : MonoBehaviour
             DataManager._costBuildingDisplay = _costBuildingDisplay;
             DataManager._playerMoneyDisplay = _playerMoneyDisplay;
 
+            DataManager._batteling = false;
+            DataManager._contesting = false;
+
             DataManager._TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
             PlayerTurn();
         }
