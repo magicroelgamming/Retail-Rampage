@@ -2,6 +2,7 @@ using System;
 using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -81,7 +82,7 @@ public class BoardControl : MonoBehaviour
     System.Random rn = new System.Random();
     public static class DataManager {
 
-
+        static public string MessangerBoy;
 
         static public Camera _cameraMain;
 
@@ -209,18 +210,49 @@ public class BoardControl : MonoBehaviour
         else
         {
             DataManager._cameraMain = Camera.main;
-            DataManager._TildeDetailDisplay = _TildeDetailDisplay;
-            DataManager._BuyButtonDisplay = _BuyButtonDisplay;
-            DataManager._nameBuildingDisplay = _nameBuildingDisplay;
-            DataManager._ownerBuildingDisplay = _ownerBuildingDisplay;
-            DataManager._levelBuildingDisplay = _levelBuildingDisplay;
-            DataManager._costBuildingDisplay = _costBuildingDisplay;
-            DataManager._playerMoneyDisplay = _playerMoneyDisplay;
+            DataManager._TildeDetailDisplay = GameObject.Find("TileDetailScreen");
+            DataManager._BuyButtonDisplay = GameObject.Find("BuyButton");
+
+            DataManager._nameBuildingDisplay = GameObject.Find("Name").GetComponent<TextMeshProUGUI>();
+            DataManager._ownerBuildingDisplay = GameObject.Find("Owner").GetComponent<TextMeshProUGUI>();
+            DataManager._levelBuildingDisplay = GameObject.Find("LVL").GetComponent<TextMeshProUGUI>();
+            DataManager._costBuildingDisplay = GameObject.Find("Cost").GetComponent<TextMeshProUGUI>();
+            DataManager._playerMoneyDisplay = GameObject.Find("Money").GetComponent<TextMeshProUGUI>();
+
+            StreamReader reader = new StreamReader("Assets/Resources/MessangerBoy.txt");
+
+            DataManager.MessangerBoy = reader.ReadLine();
+
+            reader.Close();
+
+            Debug.Log(DataManager.MessangerBoy);
+
+            string[] messangerBoySplit = DataManager.MessangerBoy.Split(':');
+
+            if (messangerBoySplit[0] == "1V1")
+            {
+                if (messangerBoySplit[1] == "true")
+                {
+                    BattleConceeded(true);
+                }
+                else
+                {
+                    BattleConceeded(false);
+                }
+                
+            }
+            else
+            {
+                ContestConceeded(messangerBoySplit[1].Split(','));
+                DataManager._currentPlayer = 0;
+            }
 
             DataManager._batteling = false;
             DataManager._contesting = false;
 
             DataManager._TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
+
+            Debug.Log(DataManager._playerturn);
             PlayerTurn();
         }
     }
@@ -588,7 +620,7 @@ public class BoardControl : MonoBehaviour
                 _animOnBoardMovement = true;
               
             }
-            Debug.Log((float)DataManager._selectedTile[0] / 1.5f - 1);
+            //Debug.Log((float)DataManager._selectedTile[0] / 1.5f - 1);
 
             if (Input.GetButton($"AButton{DataManager._playerturn+1}") && waitedtime >= 0.2f)
             {
@@ -621,52 +653,13 @@ public class BoardControl : MonoBehaviour
         {
             if (_animOnBoardFrame <= 1)
             {
-                Vector3 cameraPosition = Vector3.Lerp(_cameraMain.transform.localPosition, new Vector3(_tileToCameraX, 4, _tileToCameraZ + _onBoardCameraOffset), _animOnBoardFrame);
-                _cameraMain.transform.localPosition = cameraPosition;
+                Vector3 cameraPosition = Vector3.Lerp(DataManager._cameraMain.transform.localPosition, new Vector3(_tileToCameraX, 4, _tileToCameraZ + _onBoardCameraOffset), _animOnBoardFrame);
+                DataManager._cameraMain.transform.localPosition = cameraPosition;
                 _animOnBoardFrame += 1f / _animOnBoardSmoothness;
             }
         }
-
-        if (DataManager._batteling)
-        {
-            Battle();
-        }
-
-        if (DataManager._contesting)
-        {
-            Contest();
-        }
     }
 
-    private void Contest()
-    {
-        // You need to add the method ContestConceeded(int[]) to add the money and who goes when to each player. the int[] is to see which spot they ended in the contest spot 0 in the array is always player 1 the number you add on that spot is how well player 1 did and so on for the other players -M
-
-        //change DataManager._contestNumber to whezre your code is and make DataManager._contesting = true to test your minigame;
-        switch (DataManager._contestNumber)
-        {
-            case 1:
-                // you can put your 2-4 player minigame in here -M
-                SceneManager.LoadScene("Pong");
-                DataManager._contesting = false;
-                DataManager._currentPlayer = 0;
-                DataManager._battleNumber = 1;
-                DataManager._batteling = true;
-                break;
-
-            case 2:
-                // you can put your 2-4 player minigame in here -M
-                break;
-
-            case 3:
-                // you can put your 2-4 player minigame in here -M
-                break;
-
-            case 4:
-                // you can put your 2-4 player minigame in here -M
-                break;
-        }
-    }
 
     private void EndTurnMethod()
     {
@@ -679,7 +672,28 @@ public class BoardControl : MonoBehaviour
         else
         {
             DataManager._contesting = true;
-            DataManager._contestNumber = rn.Next(1, 2);
+            // You need to add the method ContestConceeded(int[]) to add the money and who goes when to each player. the int[] is to see which spot they ended in the contest spot 0 in the array is always player 1 the number you add on that spot is how well player 1 did and so on for the other players -M
+
+            //change DataManager._contestNumber to whezre your code is and make DataManager._contesting = true to test your minigame;
+            switch (rn.Next(1, 2))
+            {
+                case 1:
+                    // you can put your 2-4 player minigame in here -M
+                    SceneManager.LoadScene("Pong");
+                    break;
+
+                case 2:
+                    // you can put your 2-4 player minigame in here -M
+                    break;
+
+                case 3:
+                    // you can put your 2-4 player minigame in here -M
+                    break;
+
+                case 4:
+                    // you can put your 2-4 player minigame in here -M
+                    break;
+            }
         }
         
     }
@@ -825,36 +839,30 @@ public class BoardControl : MonoBehaviour
             {
                 DataManager._battleNumber = rn.Next(1, 5);
                 DataManager._batteling = true;
-                Battle();
+
+                switch (DataManager._battleNumber)
+                {
+                    case 1:
+                        // you can put your minigames 1v1's in here -M
+                        break;
+
+                    case 2:
+                        // you can put your minigames 1v1's in here -M
+                        break;
+
+                    case 3:
+                        // you can put your minigames 1v1's in here -M
+                        break;
+
+                    case 4:
+                        // you can put your minigames 1v1's in here -M
+                        break;
+                }
             }
             else
             {
                 BattleConceeded(true);
             }
-        }
-    }
-
-    private void Battle()
-    {
-        // if you want to send who won the fight you do BattleConceeded(bool) the bool will be true if the attacker wins falls if the attacker looses -M
-
-        switch (DataManager._battleNumber)
-        {
-            case 1:
-                // you can put your minigames 1v1's in here -M
-                break;
-
-            case 2:
-                // you can put your minigames 1v1's in here -M
-                break;
-
-            case 3:
-                // you can put your minigames 1v1's in here -M
-                break;
-
-            case 4:
-                // you can put your minigames 1v1's in here -M
-                break;
         }
     }
 
@@ -865,15 +873,17 @@ public class BoardControl : MonoBehaviour
             DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][0] = DataManager._playerColors[DataManager._currentPlayer];
             DataManager._tileView = 0;
         }
+
+        Debug.Log("I got here hoeray");
         
     }
 
-    private void ContestConceeded(int[] playerFinishingSpots)
+    private void ContestConceeded(string[] playerFinishingSpots)
     {
         for (int i = 0; i < DataManager.PlayerCount; i++)
         {
-            DataManager._PlayerInfo[i][0] = playerFinishingSpots[i];
-            DataManager._PlayerInfo[i][1] = ((int)DataManager._PlayerInfo[i][1]) + (30*(11- playerFinishingSpots[i]));
+            DataManager._PlayerInfo[i][0] = int.Parse(playerFinishingSpots[i]);
+            DataManager._PlayerInfo[i][1] = ((int)DataManager._PlayerInfo[i][1]) + (30*(11- int.Parse(playerFinishingSpots[i])));
         }
         DataManager._contesting = false;
         DataManager._playerturn = 0;
