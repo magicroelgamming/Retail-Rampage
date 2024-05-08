@@ -33,6 +33,7 @@ TagManager:
   - FinishLine/2
   - FinishLine/3
   - FinishLine/4
+  - Board
   layers:
   - Default
   - TransparentFX

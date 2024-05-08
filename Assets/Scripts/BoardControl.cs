@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
@@ -146,6 +147,8 @@ public class BoardControl : MonoBehaviour
         static public int _battleNumber;
 
         static public int _contestNumber;
+
+        static public int _roundNumber;
     }
 
     // Start is called before the first frame update
@@ -153,6 +156,7 @@ public class BoardControl : MonoBehaviour
     {
         if (DataManager.PlayerCount == 0)
         {
+
             DataManager._cameraMain = _cameraMain;
             DataManager.PlayerCount = PlayerCount;
             DataManager._prefabBasePlate = _prefabBasePlate;
@@ -168,9 +172,10 @@ public class BoardControl : MonoBehaviour
             DataManager._shopPrefabs = _shopPrefabs;
             DataManager._orbit = _orbit;
 
+
             DontDestroyOnLoad(this);
 
-            DataManager._brandNames = new string[] { "Garry's", "Irish", "WcDonalds", "Jeff's", "Roel's", "Andr�'s", "Evy's", "Sander's", "Jasper's", "Grigory's", "Mintendo", "OCircle", "Moist", "TrainConsole", "Baldur Studios" };
+            DataManager._brandNames = new string[] { "Garry's", "Irish", "WcDonalds", "Jeff's", "Roel's", "Andre's", "Evy's", "Sander's", "Jasper's", "Grigory's", "Mintendo", "OCircle", "Moist", "TrainConsole", "Baldur Studios" };
 
             DataManager._shopNames = new string[] { "Stand", "Parking Lot", "Gas Station", "Shop", "Restaurant", "Super Market", "Electronics Store", "Mall", "Mega Mall", "Headquarters", "Headquarters", "Headquarters", "Headquarters" };
 
@@ -209,6 +214,19 @@ public class BoardControl : MonoBehaviour
         }
         else
         {
+            GameObject[] allBoards = GameObject.FindGameObjectsWithTag("Board");
+            foreach (var board in allBoards)
+            {
+                if (board.transform.childCount ==0)
+                {
+                    board.SetActive(false);
+                }
+                else
+                {
+                    board.SetActive(true);
+                }
+            }
+
             DataManager._cameraMain = Camera.main;
             DataManager._TildeDetailDisplay = GameObject.Find("TileDetailScreen");
             DataManager._BuyButtonDisplay = GameObject.Find("BuyButton");
@@ -218,6 +236,10 @@ public class BoardControl : MonoBehaviour
             DataManager._levelBuildingDisplay = GameObject.Find("LVL").GetComponent<TextMeshProUGUI>();
             DataManager._costBuildingDisplay = GameObject.Find("Cost").GetComponent<TextMeshProUGUI>();
             DataManager._playerMoneyDisplay = GameObject.Find("Money").GetComponent<TextMeshProUGUI>();
+
+            DataManager._TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
+
+            Debug.Log(DataManager._playerturn);
 
             StreamReader reader = new StreamReader("Assets/Resources/MessangerBoy.txt");
 
@@ -239,21 +261,18 @@ public class BoardControl : MonoBehaviour
                 {
                     BattleConceeded(false);
                 }
-                
+                DataManager._batteling = false;
+                DataManager._contesting = false;
             }
             else
             {
                 ContestConceeded(messangerBoySplit[1].Split(','));
                 DataManager._currentPlayer = 0;
+
+                DataManager._contesting = false;
+                PlayerTurn();
             }
-
-            DataManager._batteling = false;
-            DataManager._contesting = false;
-
-            DataManager._TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
-
-            Debug.Log(DataManager._playerturn);
-            PlayerTurn();
+            
         }
     }
 
@@ -563,7 +582,7 @@ public class BoardControl : MonoBehaviour
                     {
                         if (DataManager._playerColors[k] == (Material)((ArrayList)DataManager._tiles[i, j])[0])
                         {
-                            DataManager._PlayerInfo[k].Add(i+(j*10));
+                            DataManager._PlayerInfo[k].Add(i.ToString()+','+j.ToString());
                         }
                     }
                 }
@@ -671,29 +690,39 @@ public class BoardControl : MonoBehaviour
         }
         else
         {
-            DataManager._contesting = true;
-            // You need to add the method ContestConceeded(int[]) to add the money and who goes when to each player. the int[] is to see which spot they ended in the contest spot 0 in the array is always player 1 the number you add on that spot is how well player 1 did and so on for the other players -M
-
-            //change DataManager._contestNumber to whezre your code is and make DataManager._contesting = true to test your minigame;
-            switch (rn.Next(1, 2))
+            DataManager._roundNumber++;
+            if (DataManager._roundNumber < 5)
             {
-                case 1:
-                    // you can put your 2-4 player minigame in here -M
-                    SceneManager.LoadScene("Pong");
-                    break;
+                DataManager._contesting = true;
+                // You need to add the method ContestConceeded(int[]) to add the money and who goes when to each player. the int[] is to see which spot they ended in the contest spot 0 in the array is always player 1 the number you add on that spot is how well player 1 did and so on for the other players -M
 
-                case 2:
-                    // you can put your 2-4 player minigame in here -M
-                    break;
+                //change DataManager._contestNumber to whezre your code is and make DataManager._contesting = true to test your minigame;
+                switch (rn.Next(1, 2))
+                {
+                    case 1:
+                        // you can put your 2-4 player minigame in here -M
+                        SceneManager.LoadScene("Pong");
+                        break;
 
-                case 3:
-                    // you can put your 2-4 player minigame in here -M
-                    break;
+                    case 2:
+                        // you can put your 2-4 player minigame in here -M
+                        break;
 
-                case 4:
-                    // you can put your 2-4 player minigame in here -M
-                    break;
+                    case 3:
+                        // you can put your 2-4 player minigame in here -M
+                        break;
+
+                    case 4:
+                        // you can put your 2-4 player minigame in here -M
+                        break;
+                }
             }
+            else
+            {
+
+
+            }
+            
         }
         
     }
@@ -713,20 +742,19 @@ public class BoardControl : MonoBehaviour
     private void PlayerTurn()
     {
 
+        DataManager._tilespots[DataManager._selectedTile[0], DataManager._selectedTile[1]].GetComponent<MeshRenderer>().material = (Material)((ArrayList)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]])[0];
+
         for (int i = 0; i < DataManager.PlayerCount; i++)
         {
             if ((int)DataManager._PlayerInfo[i][0] == DataManager._playerturn)
             {
-                if (DataManager._PlayerInfo[i][0].ToString().Length == 1)
+                Debug.Log(DataManager._PlayerInfo[i][2].ToString());
+                string[] LocationNumbers = DataManager._PlayerInfo[i][2].ToString().Split(',');
+                for (int j = 0; j < LocationNumbers.Length; j++)
                 {
-                    DataManager._selectedTile[0] = int.Parse(DataManager._PlayerInfo[i][0].ToString());
-                    DataManager._selectedTile[1] = 0;
+                    DataManager._selectedTile[j] = int.Parse(LocationNumbers[j]);
                 }
-                else
-                {
-                    DataManager._selectedTile[1] = int.Parse(DataManager._PlayerInfo[i][0].ToString().Substring(0, 1));
-                    DataManager._selectedTile[0] = int.Parse(DataManager._PlayerInfo[i][0].ToString().Substring(1, 1));
-                }
+                
 
                 DataManager._currentPlayer = i;
             }
@@ -741,6 +769,8 @@ public class BoardControl : MonoBehaviour
         Debug.Log("");
         Debug.Log("Materials");
         Debug.Log("--------------------------------------------------------------");
+        Debug.Log(DataManager._selectedTile[0]);
+        Debug.Log(DataManager._selectedTile[1]);
         DataManager._tilespots[DataManager._selectedTile[0], DataManager._selectedTile[1]].GetComponent<MeshRenderer>().material = (Material)((ArrayList)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]])[0];
         Debug.Log((Material)((ArrayList)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]])[0]);
         DataManager._selectedTile[0] += col;
@@ -768,6 +798,9 @@ public class BoardControl : MonoBehaviour
             case 0:
                 DataManager._allowedToMove = true;
                 DataManager._TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
+                _animRotation = false;
+
+                CameraStartPlacement();
 
                 break;
             case 1:
