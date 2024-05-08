@@ -175,7 +175,7 @@ public class BoardControl : MonoBehaviour
 
             DontDestroyOnLoad(this);
 
-            DataManager._brandNames = new string[] { "Garry's", "Irish", "WcDonalds", "Jeff's", "Roel's", "Andre's", "Evy's", "Sander's", "Jasper's", "Grigory's", "Mintendo", "OCircle", "Moist", "TrainConsole", "Baldur Studios" };
+            DataManager._brandNames = new string[] { "Garry's", "Irish", "WcDonalds", "Jeff's", "Roel's", "Andre's", "Evy's", "Sander's", "Jasper's", "Grigory's", "Mintendo", "OCircle", "Moist", "TrainConsole", "Baldur Studios", "Sun 8", "Goal", "Trottoir", "Adequate Purchase", "Taco Hut", "Pizza Bell", "Repairing Good", "6 Woman", "Out Of The Closet", "Forever 12", "M&H", "Belgian Tomorrow", "Forest", "Florida", "Webflex", "Ball Cluster", "1/77", "StarMeadow", "M.A.H.", "8008", "Nalop", "Calm Susan", "1 Minute", "Drop In", ""  };
 
             DataManager._shopNames = new string[] { "Stand", "Parking Lot", "Gas Station", "Shop", "Restaurant", "Super Market", "Electronics Store", "Mall", "Mega Mall", "Headquarters", "Headquarters", "Headquarters", "Headquarters" };
 
