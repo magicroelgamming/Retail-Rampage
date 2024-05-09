@@ -1,7 +1,17 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using System.Linq;
+using UnityEngine.SceneManagement;
+using TMPro;
+
 public class ItemChanger : MonoBehaviour
 {
     public string __currentItem;
+
+    [SerializeField]
+    private TextMeshProUGUI _currentItemDisplay;
 
     [SerializeField]
     private float _gameCountdown = 60;
@@ -17,6 +27,8 @@ public class ItemChanger : MonoBehaviour
     void Start()
     {
         _countdown = _baseCountdown;
+
+        _currentItemDisplay.text = "Ready?";
     }
 
     // Update is called once per frame
@@ -27,7 +39,7 @@ public class ItemChanger : MonoBehaviour
 
         if (_gameCountdown <= 0)
         {
-            Debug.Log("Finish!");
+            MessengerBoy();
         }
 
 
@@ -79,7 +91,23 @@ public class ItemChanger : MonoBehaviour
                 child.gameObject.SetActive(true);
             }
 
+            _currentItemDisplay.text = "Gather " + __currentItem + "!";
             Debug.Log(__currentItem);
         }
     }
+    void MessengerBoy()
+    {
+        StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
+
+        //gets winning players
+        Player[] players = (FindObjectsOfType<Player>()).OrderBy(i => i._score).ToArray();
+
+        writer.Write("234:" + players[0]._playerID + players[1]._playerID + players[2]._playerID + players[3]._playerID);
+        Debug.Log(writer.ToString());
+        writer.Close();
+
+        SceneManager.LoadScene("TheBoard");
+    }
+
+
 }
