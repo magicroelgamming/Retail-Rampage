@@ -1,17 +1,18 @@
-<<<<<<< Updated upstream
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-=======
 using System.IO;
 using System.Linq;
-using UnityEngine;
 using UnityEngine.SceneManagement;
->>>>>>> Stashed changes
+using TMPro;
+
 public class ItemChanger : MonoBehaviour
 {
     public string __currentItem;
+
+    [SerializeField]
+    private TextMeshProUGUI _currentItemDisplay;
 
     [SerializeField]
     private float _gameCountdown = 60;
@@ -27,6 +28,8 @@ public class ItemChanger : MonoBehaviour
     void Start()
     {
         _countdown = _baseCountdown;
+
+        _currentItemDisplay.text = "Ready?";
     }
 
     // Update is called once per frame
@@ -89,6 +92,7 @@ public class ItemChanger : MonoBehaviour
                 child.gameObject.SetActive(true);
             }
 
+            _currentItemDisplay.text = "Gather " + __currentItem + "!";
             Debug.Log(__currentItem);
         }
     }
