@@ -1,7 +1,14 @@
+<<<<<<< Updated upstream
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+=======
+using System.IO;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+>>>>>>> Stashed changes
 public class ItemChanger : MonoBehaviour
 {
     public string __currentItem;
@@ -30,7 +37,7 @@ public class ItemChanger : MonoBehaviour
 
         if (_gameCountdown <= 0)
         {
-            Debug.Log("Finish!");
+            MessengerBoy();
         }
 
 
@@ -85,4 +92,19 @@ public class ItemChanger : MonoBehaviour
             Debug.Log(__currentItem);
         }
     }
+    void MessengerBoy()
+    {
+        StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
+
+        //gets winning players
+        Player[] players = (FindObjectsOfType<Player>()).OrderBy(i => i._score).ToArray();
+
+        writer.Write("234:" + players[0]._playerID + players[1]._playerID + players[2]._playerID + players[3]._playerID);
+        Debug.Log(writer.ToString());
+        writer.Close();
+
+        SceneManager.LoadScene("TheBoard");
+    }
+
+
 }

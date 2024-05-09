@@ -12,12 +12,12 @@ public class Player : MonoBehaviour
     private int _speed = 10;
 
     [SerializeField]
-    private int _playerID;
+    public int _playerID;
 
     [SerializeField]
-    ItemChanger _itemChanger;
+    private ItemChanger _itemChanger;
 
-    private int _score = 0;
+    public int _score = 0;
     
     // Start is called before the first frame update
     void Start()
