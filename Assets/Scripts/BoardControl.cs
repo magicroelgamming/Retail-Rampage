@@ -697,7 +697,7 @@ public class BoardControl : MonoBehaviour
                 // You need to add the method ContestConceeded(int[]) to add the money and who goes when to each player. the int[] is to see which spot they ended in the contest spot 0 in the array is always player 1 the number you add on that spot is how well player 1 did and so on for the other players -M
 
                 //change DataManager._contestNumber to whezre your code is and make DataManager._contesting = true to test your minigame;
-                switch (rn.Next(1, 2))
+                switch (rn.Next(1, 5))
                 {
                     case 1:
                         // you can put your 2-4 player minigame in here -M
@@ -706,14 +706,17 @@ public class BoardControl : MonoBehaviour
 
                     case 2:
                         // you can put your 2-4 player minigame in here -M
+                        SceneManager.LoadScene("Pong");
                         break;
 
                     case 3:
                         // you can put your 2-4 player minigame in here -M
+                        SceneManager.LoadScene("Pong");
                         break;
 
                     case 4:
                         // you can put your 2-4 player minigame in here -M
+                        SceneManager.LoadScene("Pong");
                         break;
                 }
             }
@@ -877,18 +880,22 @@ public class BoardControl : MonoBehaviour
                 {
                     case 1:
                         // you can put your minigames 1v1's in here -M
+                        SceneManager.LoadScene("Pong");
                         break;
 
                     case 2:
                         // you can put your minigames 1v1's in here -M
+                        SceneManager.LoadScene("Pong");
                         break;
 
                     case 3:
                         // you can put your minigames 1v1's in here -M
+                        SceneManager.LoadScene("Pong");
                         break;
 
                     case 4:
                         // you can put your minigames 1v1's in here -M
+                        SceneManager.LoadScene("Pong");
                         break;
                 }
             }
