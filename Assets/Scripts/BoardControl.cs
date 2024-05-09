@@ -2,8 +2,11 @@ using System;
 using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -11,13 +14,10 @@ using UnityEngine.UIElements;
 public class BoardControl : MonoBehaviour
 {
     [SerializeField]
+    private GameObject _orbit;
+
+    [SerializeField]
     private Camera _cameraMain;
-
-    private bool _animRotation;
-
-    private float _animRotationSpeed = 0.15f;
-
-    private float _animRotationHeight = 1f;
 
     [SerializeField]
     public int PlayerCount;
@@ -26,14 +26,12 @@ public class BoardControl : MonoBehaviour
     private GameObject _prefabBasePlate;
 
     [SerializeField]
-    private Material[] _playerColors = new Material[] { };
+    private Material[] _playerColors;
 
     //temp
     [SerializeField]
     private Material _selected;
     //
-
-    float waitedtime;
 
     [SerializeField]
     private GameObject _TildeDetailDisplay;
@@ -52,128 +50,270 @@ public class BoardControl : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI _costBuildingDisplay;
+
     [SerializeField]
     private TextMeshProUGUI _playerMoneyDisplay;
 
     [SerializeField]
-    private ArrayList[] _PlayerInfo;
-
-    [SerializeField]
-    private GameObject[,] _tileSpots;
-
-    [SerializeField]
-    private ArrayList[,] _tiles;
-
-    [SerializeField]
     private GameObject[] _shopPrefabs;
 
-    private string[] _shopNames, _brandNames;
+
+    private bool _animRotation;
+
+    private float _animRotationSpeed = 0.15f;
+
+    private float _animRotationHeight = 1f;
+
+    private bool _animOnBoardMovement;
+
+    private float _animOnBoardSmoothness = 500;
+
+    private float _animOnBoardFrame = 0;
+
+    private float _tileToCameraX;
+
+    private float _tileToCameraZ;
+
+    private float _onBoardCameraOffset = -5;
+
+    float waitedtime;
 
 
-    private int _columns, _rows;
 
     System.Random rn = new System.Random();
+    public static class DataManager {
 
-    private int _rounds;
+        static public string MessangerBoy;
 
-    private int _playerTurn;
+        static public Camera _cameraMain;
 
-    private int _currentPlayer;
 
-    private int[] _selectedTile = new int[2];
+        static public int PlayerCount;
 
-    private int _tileView;
+        static public GameObject _prefabBasePlate;
 
-    private bool _allowedToMove;
+        static public Material[] _playerColors;
 
-    private bool _batteling;
+        //temp
+        static public Material _selected;
+        //
 
-    private bool _contest;
+        static public GameObject _TildeDetailDisplay;
 
-    private int _battleNumber;
+        static public GameObject _BuyButtonDisplay;
+
+        static public TextMeshProUGUI _nameBuildingDisplay;
+
+        static public TextMeshProUGUI _ownerBuildingDisplay;
+
+        static public TextMeshProUGUI _levelBuildingDisplay;
+
+        static public TextMeshProUGUI _costBuildingDisplay;
+
+        static public TextMeshProUGUI _playerMoneyDisplay;
+
+        static public GameObject[] _shopPrefabs;
+
+
+        static public GameObject _orbit;
+
+
+        static public ArrayList[] _PlayerInfo;
+
+        static public GameObject[,] _tilespots;
+
+        static public ArrayList[,] _tiles;
+
+        static public string[] _shopNames, _brandNames;
+
+        static public int _columns, _rows;
+
+        static public int _rounds;
+
+        static public int _playerturn;
+
+        static public int _currentPlayer;
+
+        static public int[] _selectedTile = new int[2];
+
+        static public int _tileView;
+
+        static public bool _allowedToMove;
+
+        static public bool _batteling;
+
+        static public bool _contesting;
+
+        static public int _battleNumber;
+
+        static public int _contestNumber;
+
+        static public int _roundNumber;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        _brandNames = new string[] { "Garry's", "Irish", "WcDonalds", "Jeff's", "Roel's", "André's", "Evy's", "Sander's", "Jasper's", "Grigory's", "Mintendo", "OCircle", "Moist", "TrainConsole", "Baldur Studios"};
-
-        _shopNames = new string[] { "Stand", "Parking Lot", "Gas Station", "Shop", "Restaurant", "Super Market", "Electronics Store", "Mall", "Mega Mall", "Headquarters", "Headquarters", "Headquarters", "Headquarters"};
-
-        _allowedToMove = true;
-
-        _tiles = new ArrayList[0, 0];
-
-        _tileSpots = new GameObject[0, 0];
-
-        _PlayerInfo = new ArrayList[PlayerCount];
-
-        switch (PlayerCount)
+        if (DataManager.PlayerCount == 0)
         {
-            case 2:
-                _columns = 4; _rows = 4;
-                _tiles = new ArrayList[_columns, _rows];
-                _tileSpots = new GameObject[_columns, _rows];
-                break;
 
-            default:
-                _columns = 5; _rows = 5;
-                _tiles = new ArrayList[_columns, _rows];
-                _tileSpots = new GameObject[_columns, _rows];
-                break;
+            DataManager._cameraMain = _cameraMain;
+            DataManager.PlayerCount = PlayerCount;
+            DataManager._prefabBasePlate = _prefabBasePlate;
+            DataManager._playerColors = _playerColors;
+            DataManager._selected = _selected;
+            DataManager._TildeDetailDisplay = _TildeDetailDisplay;
+            DataManager._BuyButtonDisplay = _BuyButtonDisplay;
+            DataManager._nameBuildingDisplay = _nameBuildingDisplay;
+            DataManager._ownerBuildingDisplay = _ownerBuildingDisplay;
+            DataManager._levelBuildingDisplay = _levelBuildingDisplay;
+            DataManager._costBuildingDisplay = _costBuildingDisplay;
+            DataManager._playerMoneyDisplay = _playerMoneyDisplay;
+            DataManager._shopPrefabs = _shopPrefabs;
+            DataManager._orbit = _orbit;
+
+
+            DontDestroyOnLoad(this);
+
+            DataManager._brandNames = new string[] { "Garry's", "Irish", "WcDonalds", "Jeff's", "Roel's", "Andre's", "Evy's", "Sander's", "Jasper's", "Grigory's", "Mintendo", "OCircle", "Moist", "TrainConsole", "Baldur Studios", "Sun 8", "Goal", "Trottoir", "Adequate Purchase", "Taco Hut", "Pizza Bell", "Repairing Good", "6 Woman", "Out Of The Closet", "Forever 12", "M&H", "Belgian Tomorrow", "Forest", "Florida", "Webflex", "Ball Cluster", "1/77", "StarMeadow", "M.A.H.", "8008", "Nalop", "Calm Susan", "1 Minute", "Drop In", ""  };
+
+            DataManager._shopNames = new string[] { "Stand", "Parking Lot", "Gas Station", "Shop", "Restaurant", "Super Market", "Electronics Store", "Mall", "Mega Mall", "Headquarters", "Headquarters", "Headquarters", "Headquarters" };
+
+            DataManager._allowedToMove = true;
+
+            DataManager._tiles = new ArrayList[0, 0];
+
+            DataManager._tilespots = new GameObject[0, 0];
+
+            DataManager._PlayerInfo = new ArrayList[DataManager.PlayerCount];
+
+            switch (DataManager.PlayerCount)
+            {
+                case 2:
+                    DataManager._columns = 4; DataManager._rows = 4;
+                    DataManager._tiles = new ArrayList[DataManager._columns, DataManager._rows];
+                    DataManager._tilespots = new GameObject[DataManager._columns, DataManager._rows];
+                    break;
+
+                default:
+                    DataManager._columns = 5; DataManager._rows = 5;
+                    DataManager._tiles = new ArrayList[DataManager._columns, DataManager._rows];
+                    DataManager._tilespots = new GameObject[DataManager._columns, DataManager._rows];
+                    break;
+            }
+
+
+            MapGeneration();
+            PlayerInitialization();
+            GroundPlatePlacing();
+            CameraStartPlacement();
+
+            DataManager._TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
+
+            PlayerTurn();
         }
+        else
+        {
+            GameObject[] allBoards = GameObject.FindGameObjectsWithTag("Board");
+            foreach (var board in allBoards)
+            {
+                if (board.transform.childCount ==0)
+                {
+                    board.SetActive(false);
+                }
+                else
+                {
+                    board.SetActive(true);
+                }
+            }
 
+            DataManager._cameraMain = Camera.main;
+            DataManager._TildeDetailDisplay = GameObject.Find("TileDetailScreen");
+            DataManager._BuyButtonDisplay = GameObject.Find("BuyButton");
 
-        MapGeneration();
-        PlayerInitialization();
-        GroundPlatePlacing();
-        CameraStartPlacement();
+            DataManager._nameBuildingDisplay = GameObject.Find("Name").GetComponent<TextMeshProUGUI>();
+            DataManager._ownerBuildingDisplay = GameObject.Find("Owner").GetComponent<TextMeshProUGUI>();
+            DataManager._levelBuildingDisplay = GameObject.Find("LVL").GetComponent<TextMeshProUGUI>();
+            DataManager._costBuildingDisplay = GameObject.Find("Cost").GetComponent<TextMeshProUGUI>();
+            DataManager._playerMoneyDisplay = GameObject.Find("Money").GetComponent<TextMeshProUGUI>();
 
-        _TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
-        
+            DataManager._TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
 
-        PlayerTurn();
+            Debug.Log(DataManager._playerturn);
+
+            StreamReader reader = new StreamReader("Assets/Resources/MessengerBoy.txt");
+
+            DataManager.MessangerBoy = reader.ReadLine();
+
+            reader.Close();
+
+            Debug.Log(DataManager.MessangerBoy);
+
+            string[] messangerBoySplit = DataManager.MessangerBoy.Split(':');
+
+            if (messangerBoySplit[0] == "1V1")
+            {
+                if (messangerBoySplit[1] == "true")
+                {
+                    BattleConceeded(true);
+                }
+                else
+                {
+                    BattleConceeded(false);
+                }
+                DataManager._batteling = false;
+                DataManager._contesting = false;
+            }
+            else
+            {
+                ContestConceeded(messangerBoySplit[1].Split(','));
+                DataManager._currentPlayer = 0;
+
+                DataManager._contesting = false;
+                PlayerTurn();
+            }
+            
+        }
     }
 
     private void CameraStartPlacement()
     {
-        float fieldWidth = _columns;
-        float fieldHeight = _rows;
-        int centralTileX = (int)Math.Ceiling(fieldWidth / 2) - 1;
-        int centralTileZ = (int)Math.Ceiling(fieldHeight / 2) - 1;
-        Debug.Log(centralTileX);
-        Debug.Log(centralTileZ);
-        Vector3 centralTilePosition = _tileSpots[centralTileZ, centralTileX].transform.position;
+        _tileToCameraX = (float)DataManager._selectedTile[0] / 2 - 1;
+        _tileToCameraZ = (float)DataManager._selectedTile[1] / 2;
+        Vector3 centralTilePosition = Vector3.Lerp(DataManager._tilespots[0,0].transform.position, DataManager._tilespots[DataManager._columns -1, DataManager._rows -1].transform.position, 0.5f);
         _cameraMain.transform.parent.position = centralTilePosition;
-        _cameraMain.transform.localPosition = new Vector3(0, 4, -5);
+        _cameraMain.transform.parent.localEulerAngles = Vector3.zero;
+        _cameraMain.transform.localPosition = new Vector3(_tileToCameraX, 4, _tileToCameraZ + _onBoardCameraOffset);
         _cameraMain.transform.localEulerAngles = new Vector3(45, 0, 0);
+        _animRotation = false;
     }
 
     private void MapGeneration()
     {
         
 
-        for (int i = 0; i < _columns; i++)
+        for (int i = 0; i < DataManager._columns; i++)
         {
-            for (int j = 0; j < _rows; j++)
+            for (int j = 0; j < DataManager._rows; j++)
             {
                 Debug.Log("-------------------------------------------------------------------------------");
                 Debug.Log("Start");
                 Debug.Log(i.ToString() + " _ " + j.ToString());
-                switch (PlayerCount)
+                switch (DataManager.PlayerCount)
                 {
                     case 2:
 
                         switch (i + (j * 10))
                         {
                             case 0:
-                                ArrayList AllTileInfo = new ArrayList() { _playerColors[0], 10, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
-                                _tiles[i, j] = AllTileInfo;
+                                ArrayList AllTileInfo = new ArrayList() { DataManager._playerColors[0], 10, 0, DataManager._brandNames[rn.Next(0, DataManager._brandNames.Length)] + " " + DataManager._shopNames[9] };
+                                DataManager._tiles[i, j] = AllTileInfo;
 
                                 break;
 
                             case 33:
-                                AllTileInfo = new ArrayList() { _playerColors[3], 13, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
-                                _tiles[i, j] = AllTileInfo;
+                                AllTileInfo = new ArrayList() { DataManager._playerColors[1], 13, 0, DataManager._brandNames[rn.Next(0, DataManager._brandNames.Length)] + " " + DataManager._shopNames[9] };
+                                DataManager._tiles[i, j] = AllTileInfo;
                                 break;
 
                             case 1:
@@ -184,14 +324,14 @@ public class BoardControl : MonoBehaviour
                             case 32:
 
                                 AllTileInfo = new ArrayList();
-                                AllTileInfo.Add(_playerColors[4]);
+                                AllTileInfo.Add(DataManager._playerColors[4]);
                                 int TileLevel = rn.Next(1, 5);
                                 AllTileInfo.Add(TileLevel);
                                 int TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
-                                string TileName = _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[TileLevel - 1];
+                                string TileName = DataManager._brandNames[rn.Next(0, DataManager._brandNames.Length)] + " " + DataManager._shopNames[TileLevel - 1];
                                 AllTileInfo.Add(TileName);
-                                _tiles[i, j] = AllTileInfo;
+                                DataManager._tiles[i, j] = AllTileInfo;
 
                                 break;
 
@@ -199,28 +339,28 @@ public class BoardControl : MonoBehaviour
                             case 30:
 
                                 AllTileInfo = new ArrayList();
-                                AllTileInfo.Add(_playerColors[4]);
+                                AllTileInfo.Add(DataManager._playerColors[4]);
                                 TileLevel = rn.Next(7, 10);
                                 AllTileInfo.Add(TileLevel);
                                 TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
-                                TileName = _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[TileLevel - 1];
+                                TileName = DataManager._brandNames[rn.Next(0, DataManager._brandNames.Length)] + " " + DataManager._shopNames[TileLevel - 1];
                                 AllTileInfo.Add(TileName);
-                                _tiles[i, j] = AllTileInfo;
+                                DataManager._tiles[i, j] = AllTileInfo;
 
                                 break;
 
                             default:
 
                                 AllTileInfo = new ArrayList();
-                                AllTileInfo.Add(_playerColors[4]);
+                                AllTileInfo.Add(DataManager._playerColors[4]);
                                 TileLevel = rn.Next(5, 9);
                                 AllTileInfo.Add(TileLevel);
                                 TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
-                                TileName = _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[TileLevel - 1];
+                                TileName = DataManager._brandNames[rn.Next(0, DataManager._brandNames.Length)] + " " + DataManager._shopNames[TileLevel - 1];
                                 AllTileInfo.Add(TileName);
-                                _tiles[i, j] = AllTileInfo;
+                                DataManager._tiles[i, j] = AllTileInfo;
 
                                 break;
                         }
@@ -232,21 +372,21 @@ public class BoardControl : MonoBehaviour
                         switch (i + (j * 10))
                         {
                             case 0:
-                                ArrayList AllTileInfo = new ArrayList() { _playerColors[0], 10, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
-                                _tiles[i, j] = AllTileInfo;
+                                ArrayList AllTileInfo = new ArrayList() { DataManager._playerColors[0], 10, 0, DataManager._brandNames[rn.Next(0, DataManager._brandNames.Length)] + " " + DataManager._shopNames[9] };
+                                DataManager._tiles[i, j] = AllTileInfo;
 
                                 break;
 
                             case 22:
-                                AllTileInfo = new ArrayList() { _playerColors[2], 12, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
-                                _tiles[i, j] = AllTileInfo;
+                                AllTileInfo = new ArrayList() { DataManager._playerColors[1], 12, 0, DataManager._brandNames[rn.Next(0, DataManager._brandNames.Length)] + " " + DataManager._shopNames[9] };
+                                DataManager._tiles[i, j] = AllTileInfo;
                                 break;
 
 
 
                             case 44:
-                                AllTileInfo = new ArrayList() { _playerColors[3], 13, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
-                                _tiles[i, j] = AllTileInfo;
+                                AllTileInfo = new ArrayList() { DataManager._playerColors[2], 13, 0, DataManager._brandNames[rn.Next(0, DataManager._brandNames.Length)] + " " + DataManager._shopNames[9] };
+                                DataManager._tiles[i, j] = AllTileInfo;
                                 break;
 
                             case 1:
@@ -261,14 +401,14 @@ public class BoardControl : MonoBehaviour
                             case 43:
 
                                 AllTileInfo = new ArrayList();
-                                AllTileInfo.Add(_playerColors[4]);
+                                AllTileInfo.Add(DataManager._playerColors[4]);
                                 int TileLevel = rn.Next(1, 5);
                                 AllTileInfo.Add(TileLevel);
                                 int TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
-                                string TileName = _brandNames[rn.Next(0,_brandNames.Length)] + " " + _shopNames[TileLevel-1];
+                                string TileName = DataManager._brandNames[rn.Next(0,DataManager._brandNames.Length)] + " " + DataManager._shopNames[TileLevel-1];
                                 AllTileInfo.Add(TileName);
-                                _tiles[i, j] = AllTileInfo;
+                                DataManager._tiles[i, j] = AllTileInfo;
 
                                 break;
 
@@ -276,28 +416,28 @@ public class BoardControl : MonoBehaviour
                             case 40:
 
                                 AllTileInfo = new ArrayList();
-                                AllTileInfo.Add(_playerColors[4]);
+                                AllTileInfo.Add(DataManager._playerColors[4]);
                                 TileLevel = rn.Next(7, 10);
                                 AllTileInfo.Add(TileLevel);
                                 TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
-                                TileName = _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[TileLevel - 1];
+                                TileName = DataManager._brandNames[rn.Next(0, DataManager._brandNames.Length)] + " " + DataManager._shopNames[TileLevel - 1];
                                 AllTileInfo.Add(TileName);
-                                _tiles[i, j] = AllTileInfo;
+                                DataManager._tiles[i, j] = AllTileInfo;
 
                                 break;
 
                             default:
 
                                 AllTileInfo = new ArrayList();
-                                AllTileInfo.Add(_playerColors[4]);
+                                AllTileInfo.Add(DataManager._playerColors[4]);
                                 TileLevel = rn.Next(5, 9);
                                 AllTileInfo.Add(TileLevel);
                                 TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
-                                TileName = _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[TileLevel - 1];
+                                TileName = DataManager._brandNames[rn.Next(0, DataManager._brandNames.Length)] + " " + DataManager._shopNames[TileLevel - 1];
                                 AllTileInfo.Add(TileName);
-                                _tiles[i, j] = AllTileInfo;
+                                DataManager._tiles[i, j] = AllTileInfo;
 
                                 break;
                         }
@@ -309,24 +449,24 @@ public class BoardControl : MonoBehaviour
                         switch (i + (j * 10))
                         {
                             case 0:
-                                ArrayList AllTileInfo = new ArrayList() { _playerColors[0], 10, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[9] };
-                                _tiles[i, j] = AllTileInfo;
+                                ArrayList AllTileInfo = new ArrayList() { DataManager._playerColors[0], 10, 0, DataManager._brandNames[rn.Next(0, DataManager._brandNames.Length)] + " " + DataManager._shopNames[9] };
+                                DataManager._tiles[i, j] = AllTileInfo;
 
                                 break;
 
                             case 4:
-                                AllTileInfo = new ArrayList() { _playerColors[2], 12, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[11] };
-                                _tiles[i, j] = AllTileInfo;
+                                AllTileInfo = new ArrayList() { DataManager._playerColors[1], 12, 0, DataManager._brandNames[rn.Next(0, DataManager._brandNames.Length)] + " " + DataManager._shopNames[11] };
+                                DataManager._tiles[i, j] = AllTileInfo;
                                 break;
 
                             case 40:
-                                AllTileInfo = new ArrayList() { _playerColors[1], 11, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[10] };
-                                _tiles[i, j] = AllTileInfo;
+                                AllTileInfo = new ArrayList() { DataManager._playerColors[2], 11, 0, DataManager._brandNames[rn.Next(0, DataManager._brandNames.Length)] + " " + DataManager._shopNames[10] };
+                                DataManager._tiles[i, j] = AllTileInfo;
                                 break;
 
                             case 44:
-                                AllTileInfo = new ArrayList() { _playerColors[3], 13, 0, _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[12] };
-                                _tiles[i, j] = AllTileInfo;
+                                AllTileInfo = new ArrayList() { DataManager._playerColors[3], 13, 0, DataManager._brandNames[rn.Next(0, DataManager._brandNames.Length)] + " " + DataManager._shopNames[12] };
+                                DataManager._tiles[i, j] = AllTileInfo;
                                 break;
 
                             case 1:
@@ -343,42 +483,42 @@ public class BoardControl : MonoBehaviour
                             case 43:
 
                                 AllTileInfo = new ArrayList();
-                                AllTileInfo.Add(_playerColors[4]);
+                                AllTileInfo.Add(DataManager._playerColors[4]);
                                 int TileLevel = rn.Next(1, 5);
                                 AllTileInfo.Add(TileLevel);
                                 int TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
-                                string TileName = _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[TileLevel - 1];
+                                string TileName = DataManager._brandNames[rn.Next(0, DataManager._brandNames.Length)] + " " + DataManager._shopNames[TileLevel - 1];
                                 AllTileInfo.Add(TileName);
-                                _tiles[i, j] = AllTileInfo;
+                                DataManager._tiles[i, j] = AllTileInfo;
 
                                 break;
 
                             case 22:
 
                                 AllTileInfo = new ArrayList();
-                                AllTileInfo.Add(_playerColors[4]);
+                                AllTileInfo.Add(DataManager._playerColors[4]);
                                 TileLevel = rn.Next(7, 10);
                                 AllTileInfo.Add(TileLevel);
                                 TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
-                                TileName = _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[TileLevel - 1];
+                                TileName = DataManager._brandNames[rn.Next(0, DataManager._brandNames.Length)] + " " + DataManager._shopNames[TileLevel - 1];
                                 AllTileInfo.Add(TileName);
-                                _tiles[i, j] = AllTileInfo;
+                                DataManager._tiles[i, j] = AllTileInfo;
 
                                 break;
 
                             default:
 
                                 AllTileInfo = new ArrayList();
-                                AllTileInfo.Add(_playerColors[4]);
+                                AllTileInfo.Add(DataManager._playerColors[4]);
                                 TileLevel = rn.Next(5, 9);
                                 AllTileInfo.Add(TileLevel);
                                 TileCost = rn.Next(((TileLevel * 100) - 20), (((TileLevel * 100) + 20) + 1));
                                 AllTileInfo.Add(TileCost);
-                                TileName = _brandNames[rn.Next(0, _brandNames.Length)] + " " + _shopNames[TileLevel - 1];
+                                TileName = DataManager._brandNames[rn.Next(0, DataManager._brandNames.Length)] + " " + DataManager._shopNames[TileLevel - 1];
                                 AllTileInfo.Add(TileName);
-                                _tiles[i, j] = AllTileInfo;
+                                DataManager._tiles[i, j] = AllTileInfo;
 
                                 break;
                         }
@@ -405,43 +545,44 @@ public class BoardControl : MonoBehaviour
     {
         // for now I just do the color order as who starts ask me to change this or change this yourself once we have a working started 4 player minigame -M
 
-        for (int i = 0; i < PlayerCount; i++)
+        for (int i = 0; i < DataManager.PlayerCount; i++)
         {
             ArrayList NewPlayerIntialization = new ArrayList();
             NewPlayerIntialization.Add(i);
             NewPlayerIntialization.Add(500);
-            _PlayerInfo[i] = NewPlayerIntialization;
-            _playerMoneyDisplay.text = ((int)_PlayerInfo[_currentPlayer][1]).ToString();
+            DataManager._PlayerInfo[i] = NewPlayerIntialization;
+            _playerMoneyDisplay.text = ((int)DataManager._PlayerInfo[DataManager._currentPlayer][1]).ToString();
         }
     }
 
     private void GroundPlatePlacing()
     {
-        for (int i = 0; i < _columns; i++)
+        for (int i = 0; i < DataManager._columns; i++)
         {
-            for (int j = 0; j < _rows; j++)
+            for (int j = 0; j < DataManager._rows; j++)
             {
 
-                GameObject NewGroundPlate = GameObject.Instantiate(_prefabBasePlate, transform, true);
+                GameObject NewGroundPlate = GameObject.Instantiate(DataManager._prefabBasePlate, transform, true);
                 NewGroundPlate.transform.position += new Vector3(i * 1.5f, 0, j * 1.5f);
-                GameObject NewBuilding = GameObject.Instantiate(_shopPrefabs[(int)_tiles[i, j][1] -1], transform, true);
+                NewGroundPlate.transform.localScale = NewGroundPlate.transform.localScale / 4;
+                GameObject NewBuilding = GameObject.Instantiate(_shopPrefabs[(int)DataManager._tiles[i, j][1] -1], transform, true);
                 NewBuilding.transform.localScale = NewBuilding.transform.localScale / 4;
                 NewBuilding.transform.parent = NewGroundPlate.transform;
-                NewBuilding.transform.position = NewGroundPlate.transform.position + new Vector3(0,0.1f,0);
+                NewBuilding.transform.position = NewGroundPlate.transform.position + new Vector3(0,0.32f,0);
                 
 
                 //Tell me te explain this if you don't get this part -M
-                Material NewGroundPlateMaterial = (Material)((ArrayList)_tiles[i, j])[0];
+                Material NewGroundPlateMaterial = (Material)((ArrayList)DataManager._tiles[i, j])[0];
 
 
                 //This is to add the location of the HQs to the playerInfo -M
-                if ((Material)((ArrayList)_tiles[i, j])[0] != _playerColors[4])
+                if ((Material)((ArrayList)DataManager._tiles[i, j])[0] != DataManager._playerColors[4])
                 {
-                    for (int k = 0; k < PlayerCount; k++)
+                    for (int k = 0; k < DataManager.PlayerCount; k++)
                     {
-                        if (_playerColors[k] == (Material)((ArrayList)_tiles[i, j])[0])
+                        if (DataManager._playerColors[k] == (Material)((ArrayList)DataManager._tiles[i, j])[0])
                         {
-                            _PlayerInfo[k].Add(i+(j*10));
+                            DataManager._PlayerInfo[k].Add(i.ToString()+','+j.ToString());
                         }
                     }
                 }
@@ -457,12 +598,11 @@ public class BoardControl : MonoBehaviour
                         
                         buildingMaterials[k] = NewGroundPlateMaterial;
                         
-                        Debug.Log("skreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeech");
                     }
                 }
                 NewBuilding.GetComponent<MeshRenderer>().materials = buildingMaterials;
 
-                _tileSpots[i,j] = NewGroundPlate;
+                DataManager._tilespots[i,j] = NewGroundPlate;
 
             }
         }
@@ -473,26 +613,35 @@ public class BoardControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!_batteling && !_contest)
+        if (!DataManager._batteling && !DataManager._contesting)
         {
             waitedtime += Time.deltaTime;
 
-            if (_allowedToMove && (Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}") != 0 || Input.GetAxis($"LeftStickVertical{_playerTurn+1}") != 0) && (waitedtime >= 0.25f))
+            if (DataManager._allowedToMove && (Input.GetAxis($"LeftStickHorizontal{DataManager._playerturn+1}") != 0 || Input.GetAxis($"LeftStickVertical{DataManager._playerturn+1}") != 0) && (waitedtime >= 0.25f))
             {
                 Debug.Log("Do you work?");
                 waitedtime = 0;
                 int HorizontalInput = 0;
-                if (Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}") > 0 && _selectedTile[0] < _columns - 1&& Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}") > Mathf.Pow(Input.GetAxis($"LeftStickVertical{_playerTurn+1}"), 1)) HorizontalInput = 1;
-                if (Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}") < 0 && _selectedTile[0] > 0 && Input.GetAxis($"LeftStickVertical{_playerTurn+1}") > Mathf.Pow(Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}"), 1)) HorizontalInput = -1;
+                if (Input.GetAxis($"LeftStickHorizontal{DataManager._playerturn+1}") > 0 && DataManager._selectedTile[0] < DataManager._columns - 1&& Input.GetAxis($"LeftStickHorizontal{DataManager._playerturn+1}") > Mathf.Pow(Input.GetAxis($"LeftStickVertical{DataManager._playerturn+1}"), 1)) HorizontalInput = 1;
+                if (Input.GetAxis($"LeftStickHorizontal{DataManager._playerturn+1}") < 0 && DataManager._selectedTile[0] > 0 && Input.GetAxis($"LeftStickVertical{DataManager._playerturn+1}") > Mathf.Pow(Input.GetAxis($"LeftStickHorizontal{DataManager._playerturn+1}"), 1)) HorizontalInput = -1;
+
 
                 int VerticalInput = 0;
-                if (Input.GetAxis("LeftStickVertical" + (_playerTurn + 1)) < 0 && _selectedTile[1] > 0 && Input.GetAxis("LeftStickHorizontal" + (_playerTurn + 1)) > Mathf.Pow(Input.GetAxis($"LeftStickVertical{_playerTurn+1}"), 1)) VerticalInput = -1;
-                if (Input.GetAxis("LeftStickVertical" + (_playerTurn + 1)) > 0 && _selectedTile[1] < _rows - 1 && Input.GetAxis("LeftStickVertical" + (_playerTurn + 1)) > Mathf.Pow(Input.GetAxis($"LeftStickHorizontal{_playerTurn+1}"), 1)) VerticalInput = 1;
+                if (Input.GetAxis("LeftStickVertical" + (DataManager._playerturn + 1)) < 0 && DataManager._selectedTile[1] > 0 && Input.GetAxis("LeftStickHorizontal" + (DataManager._playerturn + 1)) > Mathf.Pow(Input.GetAxis($"LeftStickVertical{DataManager._playerturn + 1}"), 1)) VerticalInput = -1;
+                if (Input.GetAxis("LeftStickVertical" + (DataManager._playerturn + 1)) > 0 && DataManager._selectedTile[1] < DataManager._rows - 1 && Input.GetAxis("LeftStickVertical" + (DataManager._playerturn + 1)) > Mathf.Pow(Input.GetAxis($"LeftStickHorizontal{DataManager._playerturn + 1}"), 1)) VerticalInput = 1;
 
                 SelectedTileChanged(HorizontalInput, VerticalInput);
-            }
 
-            if (Input.GetButton($"AButton{_playerTurn+1}") && waitedtime >= 0.2f)
+                float _animStep = ((DataManager._columns - 1f) / 2f);
+                _tileToCameraX = (float)DataManager._selectedTile[0] / _animStep - 1f;
+                _tileToCameraZ = (float)DataManager._selectedTile[1] / _animStep;
+                _animOnBoardFrame = 0;
+                _animOnBoardMovement = true;
+              
+            }
+            //Debug.Log((float)DataManager._selectedTile[0] / 1.5f - 1);
+
+            if (Input.GetButton($"AButton{DataManager._playerturn+1}") && waitedtime >= 0.2f)
             {
                 TheShowDetailAndBuyMethod(1);
                 CameraIfTileSelected();
@@ -500,51 +649,156 @@ public class BoardControl : MonoBehaviour
                 waitedtime = 0f;
             }
 
-            if (Input.GetButton($"BButton{_playerTurn+1}") && waitedtime >= 0.2f)
+            if (Input.GetButton($"BButton{DataManager._playerturn+1}") && waitedtime >= 0.2f)
             {
                 TheShowDetailAndBuyMethod(-1);
                 waitedtime = 0f;
             }
 
-            if (Input.GetButton($"YButton{_playerTurn+1}") && waitedtime >= 0.2f && _tileView == 0)
+            if (Input.GetButton($"YButton{DataManager._playerturn+1}") && waitedtime >= 0.2f && DataManager._tileView == 0)
             {
                 EndTurnMethod();
             }
 
             if (_animRotation)
             {
-                _cameraMain.transform.parent.eulerAngles += Vector3.up * _animRotationSpeed;
-                _cameraMain.transform.localPosition = new Vector3(_cameraMain.transform.localPosition.x,
-                    _animRotationHeight + Mathf.Sin(Time.time * 1.5f) * 0.1f, _cameraMain.transform.localPosition.z);
+                DataManager._cameraMain.transform.parent.eulerAngles += Vector3.up * _animRotationSpeed;
+                DataManager._cameraMain.transform.localPosition = new Vector3(DataManager._cameraMain.transform.localPosition.x,
+                    _animRotationHeight + Mathf.Sin(Time.time * 1.5f) * 0.1f, DataManager._cameraMain.transform.localPosition.z);
             }
         }
-        if (_batteling)
-        {
-            Battle();
-        }
 
-        if (_contest)
+        if (_animOnBoardMovement)
         {
-
+            if (_animOnBoardFrame <= 1)
+            {
+                Vector3 cameraPosition = Vector3.Lerp(DataManager._cameraMain.transform.localPosition, new Vector3(_tileToCameraX, 4, _tileToCameraZ + _onBoardCameraOffset), _animOnBoardFrame);
+                DataManager._cameraMain.transform.localPosition = cameraPosition;
+                _animOnBoardFrame += 1f / _animOnBoardSmoothness;
+            }
         }
     }
 
+
     private void EndTurnMethod()
     {
-        if (_playerTurn != PlayerCount)
+        if (DataManager._playerturn+1 != DataManager.PlayerCount)
         {
-            _playerTurn++;
+            DataManager._playerturn++;
+            DataManager._tilespots[DataManager._selectedTile[0], DataManager._selectedTile[1]].GetComponent<MeshRenderer>().material = (Material)((ArrayList)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]])[0];
             PlayerTurn();
         }
+        else
+        {
+            DataManager._roundNumber++;
+            if (DataManager._roundNumber < 5)
+            {
+                DataManager._contesting = true;
+                // You need to add the method ContestConceeded(int[]) to add the money and who goes when to each player. the int[] is to see which spot they ended in the contest spot 0 in the array is always player 1 the number you add on that spot is how well player 1 did and so on for the other players -M
+
+                //change DataManager._contestNumber to whezre your code is and make DataManager._contesting = true to test your minigame;
+                switch (rn.Next(1, 4))
+                {
+                    case 1:
+                        // you can put your 2-4 player minigame in here -M
+                        SceneManager.LoadScene("Game_FindInStore");
+                        break;
+
+                    case 2:
+                        // you can put your 2-4 player minigame in here -M
+                        SceneManager.LoadScene("MashRace");
+                        break;
+
+                    case 3:
+                        // you can put your 2-4 player minigame in here -M
+                        SceneManager.LoadScene("ProductFall");
+                        break;
+
+                    case 4:
+                        // you can put your 2-4 player minigame in here -M
+                        SceneManager.LoadScene("");
+                        break;
+                }
+            }
+            else
+            {
+                //Game END -M
+
+                StreamWriter write = new StreamWriter("Assets/Ressources/MessengerBoy.txt");
+
+                write.Write(CalculateWhoEndedWhere());
+
+                write.Close();
+
+                SceneManager.LoadScene("");
+
+            }
+
+        }
+
+    }
+
+    private string CalculateWhoEndedWhere()
+    {
+        string EndOfGameSpots = DataManager.PlayerCount+":";
+        int[] CurrentPlayersNetWorths = new int[DataManager.PlayerCount];
+        for (int i = 0; i < DataManager.PlayerCount; i++)
+        {
+            
+            for (int j = 0; j < DataManager._columns; j++)
+            {
+                for (int k = 0; k < DataManager._rows; k++)
+                {
+                    if ((Material)DataManager._tiles[j, k][0] == DataManager._playerColors[i])
+                    {
+                        CurrentPlayersNetWorths[i] += (int)DataManager._tiles[j, k][2];
+                    }
+                }
+            }
+            CurrentPlayersNetWorths[i] += (int)DataManager._PlayerInfo[i][1];
+        }
+        for (int i = 0; i < DataManager.PlayerCount; i++)
+        {
+            int WherePlayerEnded = 1;
+            for (int j = 0; j < DataManager.PlayerCount; j++)
+            {
+                if (CurrentPlayersNetWorths[i] < CurrentPlayersNetWorths[j]) WherePlayerEnded++;
+                if (CurrentPlayersNetWorths[i] == CurrentPlayersNetWorths[j] && i!=j)
+                {
+                    if (CurrentPlayersNetWorths[i]- (int)DataManager._PlayerInfo[i][1] < CurrentPlayersNetWorths[j] - (int)DataManager._PlayerInfo[j][1])
+                    {
+                        WherePlayerEnded ++;
+                    }
+                    else
+                    {
+                        if (CurrentPlayersNetWorths[i] - (int)DataManager._PlayerInfo[i][1] == CurrentPlayersNetWorths[j] - (int)DataManager._PlayerInfo[j][1])
+                        {
+                            CurrentPlayersNetWorths[j]++;
+                            WherePlayerEnded++;
+                        }
+                    }
+                }
+                
+               
+            }
+
+            EndOfGameSpots += WherePlayerEnded;
+            if (i+1 < DataManager.PlayerCount)
+            {
+                EndOfGameSpots += ",";
+            }
+        }
+        return EndOfGameSpots;
     }
 
     private void CameraIfTileSelected()
     {
-        int row = _selectedTile[0];
-        int column = _selectedTile[1];
-        _cameraMain.transform.parent.position = _tileSpots[row, column].transform.position;
-        _cameraMain.transform.localPosition = new Vector3(0, _animRotationHeight, -1);
-        _cameraMain.transform.localEulerAngles = new Vector3(30, 0, 0);
+        _animOnBoardMovement = false;
+        int row = DataManager._selectedTile[0];
+        int column = DataManager._selectedTile[1];
+        DataManager._cameraMain.transform.parent.position = DataManager._tilespots[row, column].transform.position;
+        DataManager._cameraMain.transform.localPosition = new Vector3(0, _animRotationHeight, -1);
+        DataManager._cameraMain.transform.localEulerAngles = new Vector3(30, 0, 0);
         _animRotation = true;
     }
 
@@ -552,22 +806,21 @@ public class BoardControl : MonoBehaviour
     private void PlayerTurn()
     {
 
-        for (int i = 0; i < PlayerCount; i++)
-        {
-            if ((int)_PlayerInfo[i][0] == _playerTurn)
-            {
-                if (_PlayerInfo[i][0].ToString().Length == 1)
-                {
-                    _selectedTile[0] = int.Parse(_PlayerInfo[i][0].ToString());
-                    _selectedTile[1] = 0;
-                }
-                else
-                {
-                    _selectedTile[1] = int.Parse(_PlayerInfo[i][0].ToString().Substring(0, 1));
-                    _selectedTile[0] = int.Parse(_PlayerInfo[i][0].ToString().Substring(1, 1));
-                }
+        DataManager._tilespots[DataManager._selectedTile[0], DataManager._selectedTile[1]].GetComponent<MeshRenderer>().material = (Material)((ArrayList)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]])[0];
 
-                _currentPlayer = i;
+        for (int i = 0; i < DataManager.PlayerCount; i++)
+        {
+            if ((int)DataManager._PlayerInfo[i][0] == DataManager._playerturn)
+            {
+                Debug.Log(DataManager._PlayerInfo[i][2].ToString());
+                string[] LocationNumbers = DataManager._PlayerInfo[i][2].ToString().Split(',');
+                for (int j = 0; j < LocationNumbers.Length; j++)
+                {
+                    DataManager._selectedTile[j] = int.Parse(LocationNumbers[j]);
+                }
+                
+
+                DataManager._currentPlayer = i;
             }
         }
 
@@ -580,89 +833,94 @@ public class BoardControl : MonoBehaviour
         Debug.Log("");
         Debug.Log("Materials");
         Debug.Log("--------------------------------------------------------------");
-        _tileSpots[_selectedTile[0], _selectedTile[1]].GetComponent<MeshRenderer>().material = (Material)((ArrayList)_tiles[_selectedTile[0], _selectedTile[1]])[0];
-        Debug.Log((Material)((ArrayList)_tiles[_selectedTile[0], _selectedTile[1]])[0]);
-        _selectedTile[0] += col;
-        _selectedTile[1] += row;
-        Debug.Log(_selectedTile[0].ToString() + " _ "+ _selectedTile[1].ToString());
-        _tileSpots[_selectedTile[0], _selectedTile[1]].GetComponent<MeshRenderer>().material = _selected;
+        Debug.Log(DataManager._selectedTile[0]);
+        Debug.Log(DataManager._selectedTile[1]);
+        DataManager._tilespots[DataManager._selectedTile[0], DataManager._selectedTile[1]].GetComponent<MeshRenderer>().material = (Material)((ArrayList)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]])[0];
+        Debug.Log((Material)((ArrayList)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]])[0]);
+        DataManager._selectedTile[0] += col;
+        DataManager._selectedTile[1] += row;
+        Debug.Log(DataManager._selectedTile[0].ToString() + " _ "+ DataManager._selectedTile[1].ToString());
+        DataManager._tilespots[DataManager._selectedTile[0], DataManager._selectedTile[1]].GetComponent<MeshRenderer>().material = _selected;
         Debug.Log("--------------------------------------------------------------");
     }
 
     private void TheShowDetailAndBuyMethod(int changeBy)
     {
-        if (changeBy == 1 && _tileView !=2 )
+        if (changeBy == 1 && DataManager._tileView !=2 )
         {
-            _tileView++;
+            DataManager._tileView++;
         }
-        if (changeBy == -1 && _tileView != 0)
+        if (changeBy == -1 && DataManager._tileView != 0)
         {
-            _tileView--;
+            DataManager._tileView--;
         }
 
-        Debug.Log(_tileView);
+        Debug.Log(DataManager._tileView);
 
-        switch (_tileView)
+        switch (DataManager._tileView)
         {
             case 0:
-                _allowedToMove = true;
-                _TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
+                DataManager._allowedToMove = true;
+                DataManager._TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
+                _animRotation = false;
+
+                CameraStartPlacement();
 
                 break;
             case 1:
-                _allowedToMove = false;
-                _TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 1;
+                DataManager._allowedToMove = false;
+                DataManager._TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 1;
 
-                _ownerBuildingDisplay.text = "Owner: "+ (("Grey" == ((Material)_tiles[_selectedTile[0], _selectedTile[1]][0]).name.ToString())? "No One" : ((Material)_tiles[_selectedTile[0], _selectedTile[1]][0]).name.ToString());
-                //Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1]][0]).name.ToString());
-                _levelBuildingDisplay.text = "LVL: " + _tiles[_selectedTile[0], _selectedTile[1]][1].ToString();
+                DataManager._ownerBuildingDisplay.text = "Owner: "+ (("Grey" == ((Material)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][0]).name.ToString())? "No One" : ((Material)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][0]).name.ToString());
+                //Debug.Log(((Material)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][0]).name.ToString());
+                DataManager._levelBuildingDisplay.text = "LVL: " + DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][1].ToString();
 
-                _costBuildingDisplay.text = "Cost: " + _tiles[_selectedTile[0], _selectedTile[1]][2].ToString();
+                DataManager._costBuildingDisplay.text = "Cost: " + DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][2].ToString();
 
-                _nameBuildingDisplay.text = _tiles[_selectedTile[0], _selectedTile[1]][3].ToString();
+                DataManager._nameBuildingDisplay.text = DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][3].ToString();
                 bool SomthingNextToIt = false;
 
-                if (_selectedTile[0] != 0)
+                if (DataManager._selectedTile[0] != 0)
                 {
-                    if ((Material)_tiles[_selectedTile[0]-1, _selectedTile[1]][0] == (Material)_playerColors[_currentPlayer]) SomthingNextToIt = true;
-                    //Debug.Log(((Material)_tiles[_selectedTile[0] - 1, _selectedTile[1]][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
+                    if ((Material)DataManager._tiles[DataManager._selectedTile[0]-1, DataManager._selectedTile[1]][0] == (Material)DataManager._playerColors[DataManager._currentPlayer]) SomthingNextToIt = true;
+                    //Debug.Log(((Material)DataManager._tiles[DataManager._selectedTile[0] - 1, DataManager._selectedTile[1]][0]).ToString() + " _ " + ((Material)DataManager._playerColors[DataManager._currentPlayer]).ToString());
                 }
 
-                if (_selectedTile[0] != _columns-1)
+                if (DataManager._selectedTile[0] != DataManager._columns-1)
                 {
-                    if ((Material)_tiles[_selectedTile[0] + 1, _selectedTile[1]][0] == (Material)_playerColors[_currentPlayer]) SomthingNextToIt = true;
-                    //Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] + 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
+                    if ((Material)DataManager._tiles[DataManager._selectedTile[0] + 1, DataManager._selectedTile[1]][0] == (Material)DataManager._playerColors[DataManager._currentPlayer]) SomthingNextToIt = true;
+                    //Debug.Log(((Material)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1] + 1][0]).ToString() + " _ " + ((Material)DataManager._playerColors[DataManager._currentPlayer]).ToString());
                 }
 
-                if (_selectedTile[1] != 0)
+                if (DataManager._selectedTile[1] != 0)
                 {
-                    if ((Material)_tiles[_selectedTile[0], _selectedTile[1] - 1][0] == (Material)_playerColors[_currentPlayer]) SomthingNextToIt = true;
-                    //Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] - 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
+                    if ((Material)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1] - 1][0] == (Material)DataManager._playerColors[DataManager._currentPlayer]) SomthingNextToIt = true;
+                    //Debug.Log(((Material)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1] - 1][0]).ToString() + " _ " + ((Material)DataManager._playerColors[DataManager._currentPlayer]).ToString());
                 }
 
-                if (_selectedTile[1] != _rows-1)
+                if (DataManager._selectedTile[1] != DataManager._rows-1)
                 {
-                    if ((Material)_tiles[_selectedTile[0], _selectedTile[1] + 1][0] == (Material)_playerColors[_currentPlayer]) SomthingNextToIt = true;
-                    //Debug.Log(((Material)_tiles[_selectedTile[0], _selectedTile[1] + 1][0]).ToString() + " _ " + ((Material)_playerColors[_currentPlayer]).ToString());
+                    if ((Material)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1] + 1][0] == (Material)DataManager._playerColors[DataManager._currentPlayer]) SomthingNextToIt = true;
+                    //Debug.Log(((Material)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1] + 1][0]).ToString() + " _ " + ((Material)DataManager._playerColors[DataManager._currentPlayer]).ToString());
                 }
 
-                if ((_tiles[_selectedTile[0], _selectedTile[1]][0] != _playerColors[_currentPlayer]) && ((int)_tiles[_selectedTile[0], _selectedTile[1]][2] != 0) && (SomthingNextToIt))
+                if ((DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][0] != DataManager._playerColors[DataManager._currentPlayer]) && ((int)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][2] != 0) && (SomthingNextToIt))
                 {
-                    _BuyButtonDisplay.SetActive(true);
+                    DataManager._BuyButtonDisplay.SetActive(true);
                 }
                 else
                 {
-                    _BuyButtonDisplay.SetActive(false);
+                    DataManager._BuyButtonDisplay.SetActive(false);
                 }
 
                 break;
             case 2:
-                if (_BuyButtonDisplay.active)
+                if (DataManager._BuyButtonDisplay.active)
                 {
                     BuyTile();
                     
                 }
-                else { _tileView = 1; }
+                else { DataManager._tileView = 1; }
 
                 break;
         }
@@ -670,15 +928,37 @@ public class BoardControl : MonoBehaviour
 
     private void BuyTile()
     {
-        if ((int)_PlayerInfo[_currentPlayer][1] >= (int)_tiles[_selectedTile[0], _selectedTile[1]][2]) 
+        if ((int)DataManager._PlayerInfo[DataManager._currentPlayer][1] >= (int)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][2]) 
         {
-            _PlayerInfo[_currentPlayer][1] = (int)_PlayerInfo[_currentPlayer][1] - (int)_tiles[_selectedTile[0], _selectedTile[1]][2];
-            _playerMoneyDisplay.text = ((int)_PlayerInfo[_currentPlayer][1]).ToString();
-            if (_tiles[_selectedTile[0], _selectedTile[1]][0] != _playerColors[4])
+            DataManager._PlayerInfo[DataManager._currentPlayer][1] = (int)DataManager._PlayerInfo[DataManager._currentPlayer][1] - (int)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][2];
+            DataManager._playerMoneyDisplay.text = ((int)DataManager._PlayerInfo[DataManager._currentPlayer][1]).ToString();
+            if (DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][0] != DataManager._playerColors[4])
             {
-                _battleNumber = rn.Next(1, 5);
-                _batteling = true;
-                Battle();
+                DataManager._battleNumber = rn.Next(1, 3);
+                DataManager._batteling = true;
+
+                switch (DataManager._battleNumber)
+                {
+                    case 1:
+                        // you can put your minigames 1v1's in here -M
+                        SceneManager.LoadScene("Pong");
+                        break;
+
+                    case 2:
+                        // you can put your minigames 1v1's in here -M
+                        SceneManager.LoadScene("TimeStop");
+                        break;
+
+                    case 3:
+                        // you can put your minigames 1v1's in here -M
+                        SceneManager.LoadScene("");
+                        break;
+
+                    case 4:
+                        // you can put your minigames 1v1's in here -M
+                        SceneManager.LoadScene("");
+                        break;
+                }
             }
             else
             {
@@ -687,38 +967,37 @@ public class BoardControl : MonoBehaviour
         }
     }
 
-    private void Battle()
-    {
-        // if you want to send who won the fight you do BattleConceeded(bool) the bool will be true if the attacker wins falls if the attacker looses -M
-
-        switch (_battleNumber)
-        {
-            case 1:
-                // you can put your minigames 1v1's in here -M
-                break;
-
-            case 2:
-                // you can put your minigames 1v1's in here -M
-                break;
-
-            case 3:
-                // you can put your minigames 1v1's in here -M
-                break;
-
-            case 4:
-                // you can put your minigames 1v1's in here -M
-                break;
-        }
-    }
-
     private void BattleConceeded(bool succeed)
     {
         if (succeed)
         {
-            _tiles[_selectedTile[0], _selectedTile[1]][0] = _playerColors[_currentPlayer];
-            _tileView = 0;
+            DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][0] = DataManager._playerColors[DataManager._currentPlayer];
+            DataManager._tileView = 0;
         }
         
+    }
+
+    private void ContestConceeded(string[] playerFinishingSpots)
+    {
+        int AddedNecesarie = 0;
+        for (int i = 0; i < DataManager.PlayerCount; i++)
+        {
+            DataManager._PlayerInfo[i][0] = int.Parse(playerFinishingSpots[i]) + AddedNecesarie;
+            for (int j = 0; j < DataManager.PlayerCount; j++)
+            {
+                if (DataManager._PlayerInfo[j][0] == DataManager._PlayerInfo[i][0])
+                {
+                    DataManager._PlayerInfo[i][0] = (int)DataManager._PlayerInfo[i][0]+1;
+                    AddedNecesarie++;
+                }
+                
+            }
+            
+            DataManager._PlayerInfo[i][1] = ((int)DataManager._PlayerInfo[i][1]) + (30*(11- int.Parse(playerFinishingSpots[i])));
+        }
+        DataManager._contesting = false;
+        DataManager._playerturn = 0;
+        PlayerTurn();
     }
 
 }
