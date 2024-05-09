@@ -697,7 +697,7 @@ public class BoardControl : MonoBehaviour
                 // You need to add the method ContestConceeded(int[]) to add the money and who goes when to each player. the int[] is to see which spot they ended in the contest spot 0 in the array is always player 1 the number you add on that spot is how well player 1 did and so on for the other players -M
 
                 //change DataManager._contestNumber to whezre your code is and make DataManager._contesting = true to test your minigame;
-                switch (rn.Next(1, 5))
+                switch (rn.Next(1, 4))
                 {
                     case 1:
                         // you can put your 2-4 player minigame in here -M
@@ -722,12 +722,73 @@ public class BoardControl : MonoBehaviour
             }
             else
             {
+                //Game END -M
 
+                StreamWriter write = new StreamWriter("Assets/Ressources/MessengerBoy.txt");
+
+                write.Write(CalculateWhoEndedWhere());
+
+                write.Close();
+
+                SceneManager.LoadScene("");
 
             }
-            
+
         }
-        
+
+    }
+
+    private string CalculateWhoEndedWhere()
+    {
+        string EndOfGameSpots = DataManager.PlayerCount+":";
+        int[] CurrentPlayersNetWorths = new int[DataManager.PlayerCount];
+        for (int i = 0; i < DataManager.PlayerCount; i++)
+        {
+            
+            for (int j = 0; j < DataManager._columns; j++)
+            {
+                for (int k = 0; k < DataManager._rows; k++)
+                {
+                    if ((Material)DataManager._tiles[j, k][0] == DataManager._playerColors[i])
+                    {
+                        CurrentPlayersNetWorths[i] += (int)DataManager._tiles[j, k][2];
+                    }
+                }
+            }
+            CurrentPlayersNetWorths[i] += (int)DataManager._PlayerInfo[i][1];
+        }
+        for (int i = 0; i < DataManager.PlayerCount; i++)
+        {
+            int WherePlayerEnded = 1;
+            for (int j = 0; j < DataManager.PlayerCount; j++)
+            {
+                if (CurrentPlayersNetWorths[i] < CurrentPlayersNetWorths[j]) WherePlayerEnded++;
+                if (CurrentPlayersNetWorths[i] == CurrentPlayersNetWorths[j] && i!=j)
+                {
+                    if (CurrentPlayersNetWorths[i]- (int)DataManager._PlayerInfo[i][1] < CurrentPlayersNetWorths[j] - (int)DataManager._PlayerInfo[j][1])
+                    {
+                        WherePlayerEnded ++;
+                    }
+                    else
+                    {
+                        if (CurrentPlayersNetWorths[i] - (int)DataManager._PlayerInfo[i][1] == CurrentPlayersNetWorths[j] - (int)DataManager._PlayerInfo[j][1])
+                        {
+                            CurrentPlayersNetWorths[j]++;
+                            WherePlayerEnded++;
+                        }
+                    }
+                }
+                
+               
+            }
+
+            EndOfGameSpots += WherePlayerEnded;
+            if (i+1 < DataManager.PlayerCount)
+            {
+                EndOfGameSpots += ",";
+            }
+        }
+        return EndOfGameSpots;
     }
 
     private void CameraIfTileSelected()
@@ -873,7 +934,7 @@ public class BoardControl : MonoBehaviour
             DataManager._playerMoneyDisplay.text = ((int)DataManager._PlayerInfo[DataManager._currentPlayer][1]).ToString();
             if (DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][0] != DataManager._playerColors[4])
             {
-                DataManager._battleNumber = rn.Next(1, 5);
+                DataManager._battleNumber = rn.Next(1, 3);
                 DataManager._batteling = true;
 
                 switch (DataManager._battleNumber)
@@ -913,16 +974,25 @@ public class BoardControl : MonoBehaviour
             DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][0] = DataManager._playerColors[DataManager._currentPlayer];
             DataManager._tileView = 0;
         }
-
-        Debug.Log("I got here hoeray");
         
     }
 
     private void ContestConceeded(string[] playerFinishingSpots)
     {
+        int AddedNecesarie = 0;
         for (int i = 0; i < DataManager.PlayerCount; i++)
         {
-            DataManager._PlayerInfo[i][0] = int.Parse(playerFinishingSpots[i]);
+            DataManager._PlayerInfo[i][0] = int.Parse(playerFinishingSpots[i]) + AddedNecesarie;
+            for (int j = 0; j < DataManager.PlayerCount; j++)
+            {
+                if (DataManager._PlayerInfo[j][0] == DataManager._PlayerInfo[i][0])
+                {
+                    DataManager._PlayerInfo[i][0] = (int)DataManager._PlayerInfo[i][0]+1;
+                    AddedNecesarie++;
+                }
+                
+            }
+            
             DataManager._PlayerInfo[i][1] = ((int)DataManager._PlayerInfo[i][1]) + (30*(11- int.Parse(playerFinishingSpots[i])));
         }
         DataManager._contesting = false;
