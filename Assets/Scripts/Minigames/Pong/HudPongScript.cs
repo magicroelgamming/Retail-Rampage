@@ -29,26 +29,12 @@ public class HudPongScript : MonoBehaviour
     void Update()
     {
         ScoreText();
-        MessengerBoy();
         if (startDelayBeforeMainBoard)
         {
             delayTime += Time.deltaTime;
             if (delayTime > delayTimer)
             {
-                StreamWriter writer = new StreamWriter("Assets/Resources/MessangerBoy.txt");
-
-                if (Player1Win)
-                {
-                    writer.Write("1V1:true");
-                }
-                else
-                {
-                    writer.Write("1V1:false");
-                }
-
-                writer.Close();
-
-                SceneManager.LoadScene("TheBoard");
+                MessengerBoy();
             }
         }
     }

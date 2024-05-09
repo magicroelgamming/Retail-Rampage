@@ -241,7 +241,7 @@ public class BoardControl : MonoBehaviour
 
             Debug.Log(DataManager._playerturn);
 
-            StreamReader reader = new StreamReader("Assets/Resources/MessangerBoy.txt");
+            StreamReader reader = new StreamReader("Assets/Resources/MessengerBoy.txt");
 
             DataManager.MessangerBoy = reader.ReadLine();
 
