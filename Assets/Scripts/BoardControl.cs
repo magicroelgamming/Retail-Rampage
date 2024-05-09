@@ -702,21 +702,25 @@ public class BoardControl : MonoBehaviour
                     case 1:
                         // you can put your 2-4 player minigame in here -M
                         SceneManager.LoadScene("Game_FindInStore");
+                        this.gameObject.SetActive(false);
                         break;
 
                     case 2:
                         // you can put your 2-4 player minigame in here -M
                         SceneManager.LoadScene("MashRace");
+                        this.gameObject.SetActive(false);
                         break;
 
                     case 3:
                         // you can put your 2-4 player minigame in here -M
                         SceneManager.LoadScene("ProductFall");
+                        this.gameObject.SetActive(false);
                         break;
 
                     case 4:
                         // you can put your 2-4 player minigame in here -M
                         SceneManager.LoadScene("");
+                        this.gameObject.SetActive(false);
                         break;
                 }
             }
@@ -731,6 +735,7 @@ public class BoardControl : MonoBehaviour
                 write.Close();
 
                 SceneManager.LoadScene("");
+                this.gameObject.SetActive(false);
 
             }
 
@@ -942,21 +947,25 @@ public class BoardControl : MonoBehaviour
                     case 1:
                         // you can put your minigames 1v1's in here -M
                         SceneManager.LoadScene("Pong");
+                        this.gameObject.SetActive(false);
                         break;
 
                     case 2:
                         // you can put your minigames 1v1's in here -M
                         SceneManager.LoadScene("TimeStop");
+                        this.gameObject.SetActive(false);
                         break;
 
                     case 3:
                         // you can put your minigames 1v1's in here -M
                         SceneManager.LoadScene("");
+                        this.gameObject.SetActive(false);
                         break;
 
                     case 4:
                         // you can put your minigames 1v1's in here -M
                         SceneManager.LoadScene("");
+                        this.gameObject.SetActive(false);
                         break;
                 }
             }
@@ -979,9 +988,12 @@ public class BoardControl : MonoBehaviour
 
     private void ContestConceeded(string[] playerFinishingSpots)
     {
+        
+
         int AddedNecesarie = 0;
         for (int i = 0; i < DataManager.PlayerCount; i++)
         {
+            Debug.Log(playerFinishingSpots[i]);
             DataManager._PlayerInfo[i][0] = int.Parse(playerFinishingSpots[i]) + AddedNecesarie;
             for (int j = 0; j < DataManager.PlayerCount; j++)
             {
