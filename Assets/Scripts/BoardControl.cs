@@ -701,22 +701,22 @@ public class BoardControl : MonoBehaviour
                 {
                     case 1:
                         // you can put your 2-4 player minigame in here -M
-                        SceneManager.LoadScene("Pong");
+                        SceneManager.LoadScene("Game_FindInStore");
                         break;
 
                     case 2:
                         // you can put your 2-4 player minigame in here -M
-                        SceneManager.LoadScene("Pong");
+                        SceneManager.LoadScene("MashRace");
                         break;
 
                     case 3:
                         // you can put your 2-4 player minigame in here -M
-                        SceneManager.LoadScene("Pong");
+                        SceneManager.LoadScene("ProductFall");
                         break;
 
                     case 4:
                         // you can put your 2-4 player minigame in here -M
-                        SceneManager.LoadScene("Pong");
+                        SceneManager.LoadScene("");
                         break;
                 }
             }
@@ -885,17 +885,17 @@ public class BoardControl : MonoBehaviour
 
                     case 2:
                         // you can put your minigames 1v1's in here -M
-                        SceneManager.LoadScene("Pong");
+                        SceneManager.LoadScene("TimeStop");
                         break;
 
                     case 3:
                         // you can put your minigames 1v1's in here -M
-                        SceneManager.LoadScene("Pong");
+                        SceneManager.LoadScene("");
                         break;
 
                     case 4:
                         // you can put your minigames 1v1's in here -M
-                        SceneManager.LoadScene("Pong");
+                        SceneManager.LoadScene("");
                         break;
                 }
             }
