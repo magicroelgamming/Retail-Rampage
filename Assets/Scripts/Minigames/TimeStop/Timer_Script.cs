@@ -1,4 +1,6 @@
+using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
@@ -34,6 +36,23 @@ public class Timer : MonoBehaviour
     void Update()
     {
         TimerManagment();
+        MessengerBoy();
+    }
+    void MessengerBoy()
+    {
+        StreamWriter writer = new StreamWriter("Assets/Ressources/MessengerBoy.txt");
+
+        if (winText1)
+        {
+            writer.Write("1v1:true");
+        }
+        else
+        {
+            writer.Write("1v1:false");
+        }
+        writer.Close();
+
+        SceneManager.LoadScene("TheBoard");
     }
     private void TimerManagment()
     {

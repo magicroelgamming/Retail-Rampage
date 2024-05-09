@@ -1,3 +1,4 @@
+using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -28,7 +29,7 @@ public class HudPongScript : MonoBehaviour
     void Update()
     {
         ScoreText();
-
+        MessengerBoy();
         if (startDelayBeforeMainBoard)
         {
             delayTime += Time.deltaTime;
@@ -37,6 +38,22 @@ public class HudPongScript : MonoBehaviour
                 SceneManager.LoadScene("TheBoard");
             }
         }
+    }
+    void MessengerBoy()
+    {
+        StreamWriter writer = new StreamWriter("Assets/Ressources/MessengerBoy.txt");
+
+        if (Player1Win)
+        {
+            writer.Write("1v1:true");
+        }
+        else
+        {
+            writer.Write("1v1:false");
+        }
+        writer.Close();
+
+        SceneManager.LoadScene("TheBoard");
     }
     void ScoreText()
     {
@@ -76,4 +93,5 @@ public class HudPongScript : MonoBehaviour
     {
         startDelayBeforeMainBoard = true;
     }
+   
 }

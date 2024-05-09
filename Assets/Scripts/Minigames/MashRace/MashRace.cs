@@ -21,7 +21,7 @@ public class MashRace : MonoBehaviour
     [SerializeField] private HudMashRaceScript hudRaceScript;
     void Update()
     {
-        if(hudRaceScript.win1.enabled || hudRaceScript.win2.enabled || hudRaceScript.win3.enabled|| hudRaceScript.win4.enabled)
+        if (hudRaceScript.win1.enabled || hudRaceScript.win2.enabled || hudRaceScript.win3.enabled || hudRaceScript.win4.enabled)
         {
             return;
         }
@@ -32,11 +32,9 @@ public class MashRace : MonoBehaviour
         if (!moveIsActive && Input.GetButtonDown("AButton1"))
         {
             GameObject player1 = GameObject.FindGameObjectWithTag("Player/1");
-            {
-                targetPosition = player1.transform.position + Vector3.up * distanceToMove;
-                moveIsActive = true;
-                Invoke("CanMove1", timerMove);
-            }
+            targetPosition = player1.transform.position + Vector3.up * distanceToMove;
+            moveIsActive = true;
+            Invoke("CanMove1", timerMove);
         }
         else if (moveIsActive)
         {
@@ -160,7 +158,12 @@ public class MashRace : MonoBehaviour
                 hudRaceScript.loose4.text = "Player 4 Looses";
                 hudRaceScript.loose4.enabled = true;
             }
-        }
-    }
 
+        }
+
+    }
+    private void MoveCharacterDown()
+    {
+
+    }
 }

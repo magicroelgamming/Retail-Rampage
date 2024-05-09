@@ -46,10 +46,7 @@ public class BallMovementScript : MonoBehaviour
                 InScreen();
                 Scoring();
             }
-
         }
-
-        
     }
     private void OnTriggerEnter(Collider other)
     {
