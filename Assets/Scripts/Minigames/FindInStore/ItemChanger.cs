@@ -105,7 +105,7 @@ public class ItemChanger : MonoBehaviour
         writer.Write("234:" + players[0]._playerID + "," + players[1]._playerID + "," + players[2]._playerID + "," + players[3]._playerID);
         Debug.Log(writer.ToString());
         writer.Close();
-
+        
         SceneManager.LoadScene("TheBoard");
     }
 

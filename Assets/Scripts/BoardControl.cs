@@ -214,10 +214,16 @@ public class BoardControl : MonoBehaviour
         }
         else
         {
+
+            foreach (GameObject tile in DataManager._tilespots)
+            {
+                tile.SetActive(true);
+            }
+
             GameObject[] allBoards = GameObject.FindGameObjectsWithTag("Board");
             foreach (var board in allBoards)
             {
-                if (board.transform.childCount ==0)
+                if (board.transform.childCount == 0)
                 {
                     board.SetActive(false);
                 }
@@ -666,17 +672,19 @@ public class BoardControl : MonoBehaviour
                 DataManager._cameraMain.transform.localPosition = new Vector3(DataManager._cameraMain.transform.localPosition.x,
                     _animRotationHeight + Mathf.Sin(Time.time * 1.5f) * 0.1f, DataManager._cameraMain.transform.localPosition.z);
             }
-        }
 
-        if (_animOnBoardMovement)
-        {
-            if (_animOnBoardFrame <= 1)
+            if (_animOnBoardMovement)
             {
-                Vector3 cameraPosition = Vector3.Lerp(DataManager._cameraMain.transform.localPosition, new Vector3(_tileToCameraX, 4, _tileToCameraZ + _onBoardCameraOffset), _animOnBoardFrame);
-                DataManager._cameraMain.transform.localPosition = cameraPosition;
-                _animOnBoardFrame += 1f / _animOnBoardSmoothness;
+                if (_animOnBoardFrame <= 1)
+                {
+                    Vector3 cameraPosition = Vector3.Lerp(DataManager._cameraMain.transform.localPosition, new Vector3(_tileToCameraX, 4, _tileToCameraZ + _onBoardCameraOffset), _animOnBoardFrame);
+                    DataManager._cameraMain.transform.localPosition = cameraPosition;
+                    _animOnBoardFrame += 1f / _animOnBoardSmoothness;
+                }
             }
         }
+
+        
     }
 
 
@@ -702,27 +710,27 @@ public class BoardControl : MonoBehaviour
                     case 1:
                         // you can put your 2-4 player minigame in here -M
                         SceneManager.LoadScene("Game_FindInStore");
-                        this.gameObject.SetActive(false);
+                        InvisibleBoard();
                         break;
 
                     case 2:
                         // you can put your 2-4 player minigame in here -M
                         SceneManager.LoadScene("MashRace");
-                        this.gameObject.SetActive(false);
                         break;
 
                     case 3:
                         // you can put your 2-4 player minigame in here -M
                         SceneManager.LoadScene("ProductFall");
-                        this.gameObject.SetActive(false);
                         break;
 
                     case 4:
                         // you can put your 2-4 player minigame in here -M
                         SceneManager.LoadScene("");
-                        this.gameObject.SetActive(false);
                         break;
                 }
+
+                DataManager._playerMoneyDisplay.text = DataManager._PlayerInfo[1].ToString();
+
             }
             else
             {
@@ -735,12 +743,19 @@ public class BoardControl : MonoBehaviour
                 write.Close();
 
                 SceneManager.LoadScene("");
-                this.gameObject.SetActive(false);
 
             }
 
         }
 
+    }
+
+    private void InvisibleBoard()
+    {
+        foreach (GameObject tile in DataManager._tilespots)
+        {
+            tile.SetActive(false);
+        }
     }
 
     private string CalculateWhoEndedWhere()
@@ -947,25 +962,21 @@ public class BoardControl : MonoBehaviour
                     case 1:
                         // you can put your minigames 1v1's in here -M
                         SceneManager.LoadScene("Pong");
-                        this.gameObject.SetActive(false);
                         break;
 
                     case 2:
                         // you can put your minigames 1v1's in here -M
                         SceneManager.LoadScene("TimeStop");
-                        this.gameObject.SetActive(false);
                         break;
 
                     case 3:
                         // you can put your minigames 1v1's in here -M
                         SceneManager.LoadScene("");
-                        this.gameObject.SetActive(false);
                         break;
 
                     case 4:
                         // you can put your minigames 1v1's in here -M
                         SceneManager.LoadScene("");
-                        this.gameObject.SetActive(false);
                         break;
                 }
             }
