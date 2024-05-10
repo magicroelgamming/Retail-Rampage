@@ -1020,12 +1020,12 @@ public class BoardControl : MonoBehaviour
         for (int i = 0; i < DataManager.PlayerCount; i++)
         {
             Debug.Log(playerFinishingSpots[i]);
-            DataManager._PlayerInfo[i][0] = int.Parse(playerFinishingSpots[i]) + AddedNecesarie;
+            DataManager._PlayerInfo[i][0] = int.Parse(playerFinishingSpots[i]) - 1 + AddedNecesarie;
             for (int j = 0; j < DataManager.PlayerCount; j++)
             {
                 if (DataManager._PlayerInfo[j][0] == DataManager._PlayerInfo[i][0])
                 {
-                    DataManager._PlayerInfo[i][0] = (int)DataManager._PlayerInfo[i][0]+1;
+                    DataManager._PlayerInfo[i][0] = (int)DataManager._PlayerInfo[i][0];
                     AddedNecesarie++;
                 }
                 
