@@ -18,8 +18,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Minigames/ProductFall.unity
     guid: 49283c4adff607549983e0916b0fb046
   - enabled: 1
-    path: Assets/Scenes/MashRace.unity
+    path: Assets/Scenes/Minigames/MashRace.unity
     guid: 07ce2cc0f215eab4499988a79f3b47f3
+  - enabled: 1
+    path: Assets/Scenes/Minigames/TimeStop.unity
+    guid: 21aecfa2830240e47b892e12f62fea8d
   - enabled: 1
     path: Assets/Scenes/HomeScreen.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab

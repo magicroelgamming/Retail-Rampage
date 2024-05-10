@@ -245,6 +245,8 @@ public class BoardControl : MonoBehaviour
 
             DataManager._TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
 
+            DataManager._playerturn = 0;
+
             CameraStartPlacement();
 
             //Debug.Log(DataManager._playerturn);
@@ -275,10 +277,9 @@ public class BoardControl : MonoBehaviour
             else
             {
                 ContestConceeded(messangerBoySplit[1].Split(','));
-                DataManager._currentPlayer = 0;
 
                 DataManager._contesting = false;
-                PlayerTurn();
+
             }
             
         }
@@ -624,7 +625,7 @@ public class BoardControl : MonoBehaviour
         if (!DataManager._batteling && !DataManager._contesting)
         {
             waitedtime += Time.deltaTime;
-
+            Debug.Log(DataManager._currentPlayer + 1);
             if (DataManager._allowedToMove && (Input.GetAxis($"LeftStickHorizontal{DataManager._currentPlayer + 1}") != 0 || Input.GetAxis($"LeftStickVertical{DataManager._currentPlayer + 1}") != 0) && (waitedtime >= 0.25f))
             {
                 //Debug.Log("Do you work?");
@@ -701,6 +702,7 @@ public class BoardControl : MonoBehaviour
         }
         else
         {
+            DataManager._playerturn = 0;
             DataManager._roundNumber++;
             if (DataManager._roundNumber < 5)
             {
@@ -831,27 +833,33 @@ public class BoardControl : MonoBehaviour
 
     private void PlayerTurn()
     {
-
+        Debug.Log(DataManager._playerturn);
+        Debug.Log(DataManager._currentPlayer);
+        Debug.Log("start playerturn");
         DataManager._tilespots[DataManager._selectedTile[0], DataManager._selectedTile[1]].GetComponent<MeshRenderer>().material = (Material)((ArrayList)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]])[0];
-
+        //Debug.Log("---------------------");
         for (int i = 0; i < DataManager.PlayerCount; i++)
         {
+            Debug.Log("---------------------");
+            Debug.Log(DataManager._PlayerInfo[i][0].ToString());
             if ((int)DataManager._PlayerInfo[i][0] == DataManager._playerturn)
             {
-                Debug.Log(DataManager._PlayerInfo[i][2].ToString());
+                
                 string[] LocationNumbers = DataManager._PlayerInfo[i][2].ToString().Split(',');
                 for (int j = 0; j < LocationNumbers.Length; j++)
                 {
                     DataManager._selectedTile[j] = int.Parse(LocationNumbers[j]);
                 }
-                
 
+                Debug.Log(i);
                 DataManager._currentPlayer = i;
             }
+            Debug.Log("---------------------");
         }
-
+        //Debug.Log("---------------------");
         DataManager._playerMoneyDisplay.text = ((int)DataManager._PlayerInfo[DataManager._currentPlayer][1]).ToString();
         Debug.Log(DataManager._currentPlayer);
+        Debug.Log("end playerturn");
         SelectedTileChanged(0,0);
     }
 
@@ -1014,16 +1022,24 @@ public class BoardControl : MonoBehaviour
 
     private void ContestConceeded(string[] playerFinishingSpots)
     {
-        
+        for (int i = 0; i < DataManager.PlayerCount; i++)
+        {
+            DataManager._PlayerInfo[i][0] = 10;
+        }
 
         int AddedNecesarie = 0;
         for (int i = 0; i < DataManager.PlayerCount; i++)
         {
-            Debug.Log(playerFinishingSpots[i]);
-            DataManager._PlayerInfo[i][0] = int.Parse(playerFinishingSpots[i]) - 1 + AddedNecesarie;
+            //Debug.Log("-------ContestConceeded-----");
+            
+            DataManager._PlayerInfo[i][0] = int.Parse(playerFinishingSpots[i])-1 + AddedNecesarie;
+            //Debug.Log(playerFinishingSpots[i]);
+            //Debug.Log(AddedNecesarie);
+            //Debug.Log(DataManager._PlayerInfo[i][0]);
             for (int j = 0; j < DataManager.PlayerCount; j++)
             {
-                if (DataManager._PlayerInfo[j][0] == DataManager._PlayerInfo[i][0])
+ 
+                if ((int)DataManager._PlayerInfo[j][0] == (int)DataManager._PlayerInfo[i][0] && i !=j)
                 {
                     DataManager._PlayerInfo[i][0] = (int)DataManager._PlayerInfo[i][0];
                     AddedNecesarie++;
