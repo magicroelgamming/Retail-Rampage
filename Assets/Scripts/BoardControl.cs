@@ -719,16 +719,19 @@ public class BoardControl : MonoBehaviour
                     case 2:
                         // you can put your 2-4 player minigame in here -M
                         SceneManager.LoadScene("MashRace");
+                        InvisibleBoard();
                         break;
 
                     case 3:
                         // you can put your 2-4 player minigame in here -M
                         SceneManager.LoadScene("ProductFall");
+                        InvisibleBoard();
                         break;
 
                     case 4:
                         // you can put your 2-4 player minigame in here -M
                         SceneManager.LoadScene("");
+                        InvisibleBoard();
                         break;
                 }
 
@@ -966,21 +969,25 @@ public class BoardControl : MonoBehaviour
                     case 1:
                         // you can put your minigames 1v1's in here -M
                         SceneManager.LoadScene("Pong");
+                        InvisibleBoard();
                         break;
 
                     case 2:
                         // you can put your minigames 1v1's in here -M
                         SceneManager.LoadScene("TimeStop");
+                        InvisibleBoard();
                         break;
 
                     case 3:
                         // you can put your minigames 1v1's in here -M
                         SceneManager.LoadScene("");
+                        InvisibleBoard();
                         break;
 
                     case 4:
                         // you can put your minigames 1v1's in here -M
                         SceneManager.LoadScene("");
+                        InvisibleBoard();
                         break;
                 }
             }
