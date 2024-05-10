@@ -50,22 +50,22 @@ public class CharacterMovementBehaviourScript : MonoBehaviour
                         case 1:
                             hudScript.loose1.text = "Player 1 Loses";
                             hudScript.loose1.enabled = true;
-                            TextEnabled();
+                            hudScript.camera1Text.enabled = false;
                             break;
                         case 2:
                             hudScript.loose2.text = "Player 2 Loses";
                             hudScript.loose2.enabled = true;
-                            TextEnabled();
+                            hudScript.camera2Text.enabled = false;
                             break;
                         case 3:
                             hudScript.loose3.text = "Player 3 Loses";
                             hudScript.loose3.enabled = true;
-                            TextEnabled();
+                            hudScript.camera3Text.enabled = false;
                             break;
                         case 4:
                             hudScript.loose4.text = "Player 4 Loses";
                             hudScript.loose4.enabled = true;
-                            TextEnabled();
+                            hudScript.camera4Text.enabled = false;
                             break;
                     }
                     if (hudScript.loose1.enabled && hudScript.loose2.enabled && hudScript.loose3.enabled)

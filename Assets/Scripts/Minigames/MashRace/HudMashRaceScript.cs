@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-
 public class HudMashRaceScript : MonoBehaviour
 {
     [SerializeField] public Text win1;
@@ -12,7 +11,6 @@ public class HudMashRaceScript : MonoBehaviour
     [SerializeField] public Text loose2;
     [SerializeField] public Text loose3;
     [SerializeField] public Text loose4;
-
     void Start()
     {
         win1.enabled = false;

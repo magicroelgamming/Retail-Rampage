@@ -1,4 +1,6 @@
+using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class HudProductFallGameScript : MonoBehaviour
 {
@@ -24,7 +26,9 @@ public class HudProductFallGameScript : MonoBehaviour
     private float productCollected3 = 0f;
     private float productCollected4 = 0f;
 
-    private int winLooseAmount = 3;
+    public bool startDelayBeforeMainBoard = false;
+
+    private int winLooseAmount = 6;
     public bool _winIsActive = false;
     void Start()
     {
@@ -41,13 +45,28 @@ public class HudProductFallGameScript : MonoBehaviour
         loose3.enabled = false;
         loose4.enabled = false;
     }
-
     void Update()
     {
         ProductsText();
         HudWinLoose();
+        if(startDelayBeforeMainBoard)
+        {
+            MessengerBoy();
+        }
     }
+    void MessengerBoy()
+    {
+        StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
 
+        writer.Write("234:2,1,3,4");
+
+        writer.Close();
+        SceneManager.LoadScene("TheBoard");
+    }
+    public void GameOver()
+    {
+        startDelayBeforeMainBoard = true;
+    }
     void ProductsText()
     {
         camera1Text.text = productCollected1.ToString();
@@ -64,36 +83,37 @@ public class HudProductFallGameScript : MonoBehaviour
     }
     void HudWinLoose()
     {
-        if (productCollected1 == winLooseAmount)
+        if (productCollected1 >= winLooseAmount)
         {
             win1.text = "Player 1 Wins!";
             win1.enabled = true;
             CameraTextDisabled();
             _winIsActive = true;
+            Invoke("GameOver", 4f);
         }
-        else if (productCollected2 == winLooseAmount)
+        else if (productCollected2 >= winLooseAmount)
         {
             win2.text = "Player 2 Wins!";
             win2.enabled = true;
             CameraTextDisabled();
             _winIsActive = true;
+            Invoke("GameOver", 4f);
         }
-        else if (productCollected3 == winLooseAmount)
+        else if (productCollected3 >= winLooseAmount)
         {
             win3.text = "Player 3 Wins!";
             win3.enabled = true;
-            camera1Text.enabled = false;
-            camera2Text.enabled = false;
-            camera3Text.enabled = false;
-            camera4Text.enabled = false;
+            CameraTextDisabled();
             _winIsActive = true;
+            Invoke("GameOver", 4f);
         }
-        else if (productCollected4 == winLooseAmount)
+        else if (productCollected4 >= winLooseAmount)
         {
             win4.text = "Player 4 Wins!";
             win4.enabled = true;
             CameraTextDisabled();
             _winIsActive = true;
+            Invoke("GameOver", 4f);
         }
         if (_winIsActive)
         {

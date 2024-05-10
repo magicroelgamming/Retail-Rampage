@@ -22,6 +22,8 @@ public class Timer : MonoBehaviour
     private bool timerRunningCamera2;
     private bool timerStarted;
 
+    public bool startDelayBeforeMainBoard = false;
+
     void Start()
     {
         timerTextCamera1.enabled = false;
@@ -29,18 +31,21 @@ public class Timer : MonoBehaviour
         winText1.enabled = false;
         winText2.enabled = false;
         tieText.enabled = false;
-        looseText1.enabled = false; 
+        looseText1.enabled = false;
         looseText2.enabled = false;
     }
 
     void Update()
     {
         TimerManagment();
-        MessengerBoy();
+        if (startDelayBeforeMainBoard)
+        {
+            MessengerBoy();
+        }
     }
     void MessengerBoy()
     {
-        StreamWriter writer = new StreamWriter("Assets/Ressources/MessengerBoy.txt");
+        StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
 
         if (winText1)
         {
@@ -141,11 +146,13 @@ public class Timer : MonoBehaviour
         {
             winText1.text = "Camera 1 Wins!";
             winText1.enabled = true;
+            Invoke("GameOver", 4f);
         }
         else if (camera2Time < camera1Time)
         {
             winText2.text = "Camera 2 Wins!";
             winText2.enabled = true;
+            Invoke("GameOver", 4f);
         }
         else if (camera2Time == camera1Time)
         {
@@ -162,5 +169,9 @@ public class Timer : MonoBehaviour
             looseText2.text = "Camera 1 Lost!";
             looseText2.enabled = true;
         }
+    }
+    void GameOver()
+    {
+        startDelayBeforeMainBoard = true;
     }
 }

@@ -1,5 +1,4 @@
 using System.IO;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -15,8 +14,6 @@ public class HudPongScript : MonoBehaviour
     public int player2Score = 0;
 
     public bool startDelayBeforeMainBoard = false;
-    private float delayTimer = 4f;
-    private float delayTime = 0;
     void Start()
     {
         Player1Loose.enabled = false;
@@ -31,16 +28,12 @@ public class HudPongScript : MonoBehaviour
         ScoreText();
         if (startDelayBeforeMainBoard)
         {
-            delayTime += Time.deltaTime;
-            if (delayTime > delayTimer)
-            {
-                MessengerBoy();
-            }
+            MessengerBoy();
         }
     }
     void MessengerBoy()
     {
-        StreamWriter writer = new StreamWriter("Assets/Ressources/MessengerBoy.txt");
+        StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
 
         if (Player1Win)
         {
@@ -64,9 +57,7 @@ public class HudPongScript : MonoBehaviour
             Player1Win.text = "Player 1 WINS!";
             Player2Loose.enabled = true;
             Player2Loose.text = "Player 2 LOOSES!";
-            GameOver();
-
-
+            Invoke("GameOver",4f);
         }
         else if (player2Score == 3)
         {
@@ -74,7 +65,7 @@ public class HudPongScript : MonoBehaviour
             Player2Win.text = "Player 2 WINS!";
             Player1Loose.enabled = true;
             Player1Loose.text = "Player 1 LOOSES!";
-            GameOver();
+            Invoke("GameOver", 4f);
         }
     }
     public void Scored(int amount, float ballPositionZ)
@@ -92,5 +83,4 @@ public class HudPongScript : MonoBehaviour
     {
         startDelayBeforeMainBoard = true;
     }
-   
 }

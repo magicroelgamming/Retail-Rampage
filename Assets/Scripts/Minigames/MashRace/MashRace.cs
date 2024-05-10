@@ -1,4 +1,6 @@
+using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MashRace : MonoBehaviour
 {
@@ -18,14 +20,33 @@ public class MashRace : MonoBehaviour
     private Vector3 targetPosition3;
     private bool _winIsActive = false;
 
+    public bool startDelayBeforeMainBoard = false;
+
     [SerializeField] private HudMashRaceScript hudRaceScript;
     void Update()
     {
+        if (startDelayBeforeMainBoard)
+        {
+            MessengerBoy();
+        }
         if (hudRaceScript.win1.enabled || hudRaceScript.win2.enabled || hudRaceScript.win3.enabled || hudRaceScript.win4.enabled)
         {
             return;
         }
         Movement();
+    }
+    void MessengerBoy()
+    {
+        StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
+
+        writer.Write("234:2,1,3,4");
+
+        writer.Close();
+        SceneManager.LoadScene("TheBoard");
+    }
+    public void GameOver()
+    {
+        startDelayBeforeMainBoard = true;
     }
     private void Movement()
     {
@@ -117,24 +138,32 @@ public class MashRace : MonoBehaviour
             hudRaceScript.win1.text = "Player 1 Wins!";
             hudRaceScript.win1.enabled = true;
             _winIsActive = true;
+
+            Invoke("GameOver", 4f);
         }
         else if (hit.CompareTag("FinishLine/2"))
         {
             hudRaceScript.win2.text = "Player 2 Wins!";
             hudRaceScript.win2.enabled = true;
             _winIsActive = true;
+
+            Invoke("GameOver", 4f);
         }
         else if (hit.CompareTag("FinishLine/3"))
         {
             hudRaceScript.win3.text = "Player 3 Wins!";
             hudRaceScript.win3.enabled = true;
             _winIsActive = true;
+
+            Invoke("GameOver", 4f);
         }
         else if (hit.CompareTag("FinishLine/4"))
         {
             hudRaceScript.win4.text = "Player 4 Wins!";
             hudRaceScript.win4.enabled = true;
             _winIsActive = true;
+
+            Invoke("GameOver", 4f);
         }
         if (_winIsActive)
         {
@@ -158,12 +187,6 @@ public class MashRace : MonoBehaviour
                 hudRaceScript.loose4.text = "Player 4 Looses";
                 hudRaceScript.loose4.enabled = true;
             }
-
         }
-
-    }
-    private void MoveCharacterDown()
-    {
-
     }
 }

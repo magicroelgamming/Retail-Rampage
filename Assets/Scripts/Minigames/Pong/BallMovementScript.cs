@@ -5,10 +5,11 @@ public class BallMovementScript : MonoBehaviour
 {
     private float speed = 25f;
     private float speedIncreaseInterval = 1f;
-    private float speedIncreaseAmount = 3f;
+    private float speedIncreaseAmount = 5f;
     private float speedIncreaseTimer = 0f;
     private float currentSpeed;
     private Vector3 moveDirection;
+    private bool _winIsActive = false;
     [SerializeField] private HudPongScript hudPong;
     private int[] randomSign = {1, -1};
     private int sign;
@@ -25,12 +26,15 @@ public class BallMovementScript : MonoBehaviour
     }
     void Update()
     {
+        if (hudPong.player1Score >= 3 || hudPong.player2Score >= 3)
+        {
+            return;
+        }
         if (!hudPong.startDelayBeforeMainBoard)
         {
             resetTimer += Time.deltaTime;
             if (resetTimer >= resetDelay)
             {
-
                 resetTimer = 0f;
                 onResetDelay = false;
             }
@@ -84,7 +88,6 @@ public class BallMovementScript : MonoBehaviour
     }
     void ResetBall()
     {
-        currentSpeed = speed;
         transform.position = Vector3.zero;
         moveDirection = new Vector3(Random.Range(0.7f, 1f) * sign, 0f, Random.Range(-0.3f, 0.3f)).normalized;
         onResetDelay = true;
