@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     private float _timer;
-    private float _maxTimerTime = 20f;
+    private float _maxTimerTime = 60f;
     public TextMeshProUGUI TimerText, OutcomeText;
     public Canvas PlayingCanvas, EndCanvas;
     public GameObject[] ArrayPlayers;
@@ -44,15 +44,15 @@ public class GameManager : MonoBehaviour
     }
     private void MessengerBoy()
     {
-        StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
-        string writerMessage = "234:";
-        for(int i = 0; i < ArrayPlayers.Length; i++)
-        {
-            writerMessage += ArrayPlayers[i].GetComponent<CrossRoadPlayerInput>().PlayerId + ",";
-        }
-        writer.Write(writerMessage);
+        //StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
+        //string writerMessage = "234:";
+        //for(int i = 0; i < ArrayPlayers.Length; i++)
+        //{
+        //    writerMessage += ArrayPlayers[i].GetComponent<CrossRoadPlayerInput>().PlayerId + ",";
+        //}
+        //writer.Write(writerMessage);
 
-        writer.Close();
+        //writer.Close();
 
         SceneManager.LoadScene("TheBoard");
     }
