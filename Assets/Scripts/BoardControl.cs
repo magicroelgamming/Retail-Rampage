@@ -247,7 +247,7 @@ public class BoardControl : MonoBehaviour
 
             CameraStartPlacement();
 
-            Debug.Log(DataManager._playerturn);
+            //Debug.Log(DataManager._playerturn);
 
             StreamReader reader = new StreamReader("Assets/Resources/MessengerBoy.txt");
 
@@ -255,7 +255,7 @@ public class BoardControl : MonoBehaviour
 
             reader.Close();
 
-            Debug.Log(DataManager.MessangerBoy);
+            //Debug.Log(DataManager.MessangerBoy);
 
             string[] messangerBoySplit = DataManager.MessangerBoy.Split(':');
 
@@ -304,9 +304,9 @@ public class BoardControl : MonoBehaviour
         {
             for (int j = 0; j < DataManager._rows; j++)
             {
-                Debug.Log("-------------------------------------------------------------------------------");
-                Debug.Log("Start");
-                Debug.Log(i.ToString() + " _ " + j.ToString());
+                //Debug.Log("-------------------------------------------------------------------------------");
+                //Debug.Log("Start");
+                //Debug.Log(i.ToString() + " _ " + j.ToString());
                 switch (DataManager.PlayerCount)
                 {
                     case 2:
@@ -534,8 +534,8 @@ public class BoardControl : MonoBehaviour
                         break;
                 }
 
-                Debug.Log("Stop");
-                Debug.Log("-------------------------------------------------------------------------------");
+                //Debug.Log("Stop");
+                //Debug.Log("-------------------------------------------------------------------------------");
 
                 // Tile generation explained: sees what type of tile it is (HQ/low level/medium level/high level) after that creates an Arraylist with first the color of it (HQ gets a color normal ones get grey) then the level of the tile (1-9 so 0-8 in code and then you have the ones that go above which are the unique HQs) then The cost of that tile so you end with a Arraylist(Color,LVL,Cost) That araylist get's stored in a 2D ArrayList Array that get's that saves the row and colum the tile is on -M
 
@@ -625,18 +625,18 @@ public class BoardControl : MonoBehaviour
         {
             waitedtime += Time.deltaTime;
 
-            if (DataManager._allowedToMove && (Input.GetAxis($"LeftStickHorizontal{DataManager._playerturn+1}") != 0 || Input.GetAxis($"LeftStickVertical{DataManager._playerturn+1}") != 0) && (waitedtime >= 0.25f))
+            if (DataManager._allowedToMove && (Input.GetAxis($"LeftStickHorizontal{DataManager._currentPlayer + 1}") != 0 || Input.GetAxis($"LeftStickVertical{DataManager._currentPlayer + 1}") != 0) && (waitedtime >= 0.25f))
             {
-                Debug.Log("Do you work?");
+                //Debug.Log("Do you work?");
                 waitedtime = 0;
                 int HorizontalInput = 0;
-                if (Input.GetAxis($"LeftStickHorizontal{DataManager._playerturn+1}") > 0 && DataManager._selectedTile[0] < DataManager._columns - 1&& Input.GetAxis($"LeftStickHorizontal{DataManager._playerturn+1}") > Mathf.Pow(Input.GetAxis($"LeftStickVertical{DataManager._playerturn+1}"), 1)) HorizontalInput = 1;
-                if (Input.GetAxis($"LeftStickHorizontal{DataManager._playerturn+1}") < 0 && DataManager._selectedTile[0] > 0 && Input.GetAxis($"LeftStickVertical{DataManager._playerturn+1}") > Mathf.Pow(Input.GetAxis($"LeftStickHorizontal{DataManager._playerturn+1}"), 1)) HorizontalInput = -1;
+                if (Input.GetAxis($"LeftStickHorizontal{DataManager._currentPlayer + 1}") > 0 && DataManager._selectedTile[0] < DataManager._columns - 1&& Input.GetAxis($"LeftStickHorizontal{DataManager._currentPlayer + 1}") > Mathf.Pow(Input.GetAxis($"LeftStickVertical{DataManager._currentPlayer + 1}"), 1)) HorizontalInput = 1;
+                if (Input.GetAxis($"LeftStickHorizontal{DataManager._currentPlayer + 1}") < 0 && DataManager._selectedTile[0] > 0 && Input.GetAxis($"LeftStickVertical{DataManager._currentPlayer + 1}") > Mathf.Pow(Input.GetAxis($"LeftStickHorizontal{DataManager._currentPlayer + 1}"), 1)) HorizontalInput = -1;
 
 
                 int VerticalInput = 0;
-                if (Input.GetAxis("LeftStickVertical" + (DataManager._playerturn + 1)) < 0 && DataManager._selectedTile[1] > 0 && Input.GetAxis("LeftStickHorizontal" + (DataManager._playerturn + 1)) > Mathf.Pow(Input.GetAxis($"LeftStickVertical{DataManager._playerturn + 1}"), 1)) VerticalInput = -1;
-                if (Input.GetAxis("LeftStickVertical" + (DataManager._playerturn + 1)) > 0 && DataManager._selectedTile[1] < DataManager._rows - 1 && Input.GetAxis("LeftStickVertical" + (DataManager._playerturn + 1)) > Mathf.Pow(Input.GetAxis($"LeftStickHorizontal{DataManager._playerturn + 1}"), 1)) VerticalInput = 1;
+                if (Input.GetAxis("LeftStickVertical" + (DataManager._currentPlayer + 1)) < 0 && DataManager._selectedTile[1] > 0 && Input.GetAxis("LeftStickHorizontal" + (DataManager._currentPlayer + 1)) > Mathf.Pow(Input.GetAxis($"LeftStickVertical{DataManager._currentPlayer + 1}"), 1)) VerticalInput = -1;
+                if (Input.GetAxis("LeftStickVertical" + (DataManager._currentPlayer + 1)) > 0 && DataManager._selectedTile[1] < DataManager._rows - 1 && Input.GetAxis("LeftStickVertical" + (DataManager._currentPlayer + 1)) > Mathf.Pow(Input.GetAxis($"LeftStickHorizontal{DataManager._currentPlayer + 1}"), 1)) VerticalInput = 1;
 
                 SelectedTileChanged(HorizontalInput, VerticalInput);
 
@@ -649,7 +649,7 @@ public class BoardControl : MonoBehaviour
             }
             //Debug.Log((float)DataManager._selectedTile[0] / 1.5f - 1);
 
-            if (Input.GetButton($"AButton{DataManager._playerturn+1}") && waitedtime >= 0.2f)
+            if (Input.GetButton($"AButton{DataManager._currentPlayer + 1}") && waitedtime >= 0.2f)
             {
                 TheShowDetailAndBuyMethod(1);
                 CameraIfTileSelected();
@@ -657,14 +657,14 @@ public class BoardControl : MonoBehaviour
                 waitedtime = 0f;
             }
 
-            if (Input.GetButton($"BButton{DataManager._playerturn+1}") && waitedtime >= 0.2f)
+            if (Input.GetButton($"BButton{DataManager._currentPlayer + 1}") && waitedtime >= 0.2f)
             {
                 TheShowDetailAndBuyMethod(-1);
                 TheShowDetailAndBuyMethod(0);
                 waitedtime = 0f;
             }
 
-            if (Input.GetButton($"YButton{DataManager._playerturn+1}") && waitedtime >= 0.2f && DataManager._tileView == 0)
+            if (Input.GetButton($"YButton{DataManager._currentPlayer + 1}") && waitedtime >= 0.2f && DataManager._tileView == 0)
             {
                 EndTurnMethod();
             }
@@ -851,24 +851,24 @@ public class BoardControl : MonoBehaviour
         }
 
         DataManager._playerMoneyDisplay.text = ((int)DataManager._PlayerInfo[DataManager._currentPlayer][1]).ToString();
-
+        Debug.Log(DataManager._currentPlayer);
         SelectedTileChanged(0,0);
     }
 
     private void SelectedTileChanged(int col, int row)
     {
-        Debug.Log("");
-        Debug.Log("Materials");
-        Debug.Log("--------------------------------------------------------------");
-        Debug.Log(DataManager._selectedTile[0]);
-        Debug.Log(DataManager._selectedTile[1]);
+        //Debug.Log("");
+        //Debug.Log("Materials");
+        //Debug.Log("--------------------------------------------------------------");
+        //Debug.Log(DataManager._selectedTile[0]);
+        //Debug.Log(DataManager._selectedTile[1]);
         DataManager._tilespots[DataManager._selectedTile[0], DataManager._selectedTile[1]].GetComponent<MeshRenderer>().material = (Material)((ArrayList)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]])[0];
-        Debug.Log((Material)((ArrayList)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]])[0]);
+        //Debug.Log((Material)((ArrayList)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]])[0]);
         DataManager._selectedTile[0] += col;
         DataManager._selectedTile[1] += row;
-        Debug.Log(DataManager._selectedTile[0].ToString() + " _ "+ DataManager._selectedTile[1].ToString());
+        //Debug.Log(DataManager._selectedTile[0].ToString() + " _ "+ DataManager._selectedTile[1].ToString());
         DataManager._tilespots[DataManager._selectedTile[0], DataManager._selectedTile[1]].GetComponent<MeshRenderer>().material = _selected;
-        Debug.Log("--------------------------------------------------------------");
+        //Debug.Log("--------------------------------------------------------------");
     }
 
     private void TheShowDetailAndBuyMethod(int changeBy)
@@ -882,7 +882,7 @@ public class BoardControl : MonoBehaviour
             DataManager._tileView--;
         }
 
-        Debug.Log(DataManager._tileView);
+        //Debug.Log(DataManager._tileView);
 
         switch (DataManager._tileView)
         {
