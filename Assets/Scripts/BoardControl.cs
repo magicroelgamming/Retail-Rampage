@@ -245,6 +245,8 @@ public class BoardControl : MonoBehaviour
 
             DataManager._TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
 
+            CameraStartPlacement();
+
             Debug.Log(DataManager._playerturn);
 
             StreamReader reader = new StreamReader("Assets/Resources/MessengerBoy.txt");
@@ -287,10 +289,10 @@ public class BoardControl : MonoBehaviour
         _tileToCameraX = (float)DataManager._selectedTile[0] / 2 - 1;
         _tileToCameraZ = (float)DataManager._selectedTile[1] / 2;
         Vector3 centralTilePosition = Vector3.Lerp(DataManager._tilespots[0,0].transform.position, DataManager._tilespots[DataManager._columns -1, DataManager._rows -1].transform.position, 0.5f);
-        _cameraMain.transform.parent.position = centralTilePosition;
-        _cameraMain.transform.parent.localEulerAngles = Vector3.zero;
-        _cameraMain.transform.localPosition = new Vector3(_tileToCameraX, 4, _tileToCameraZ + _onBoardCameraOffset);
-        _cameraMain.transform.localEulerAngles = new Vector3(45, 0, 0);
+        DataManager._cameraMain.transform.parent.position = centralTilePosition;
+        DataManager._cameraMain.transform.parent.localEulerAngles = Vector3.zero;
+        DataManager._cameraMain.transform.localPosition = new Vector3(_tileToCameraX, 4, _tileToCameraZ + _onBoardCameraOffset);
+        DataManager._cameraMain.transform.localEulerAngles = new Vector3(45, 0, 0);
         _animRotation = false;
     }
 
@@ -658,6 +660,7 @@ public class BoardControl : MonoBehaviour
             if (Input.GetButton($"BButton{DataManager._playerturn+1}") && waitedtime >= 0.2f)
             {
                 TheShowDetailAndBuyMethod(-1);
+                TheShowDetailAndBuyMethod(0);
                 waitedtime = 0f;
             }
 
@@ -985,6 +988,10 @@ public class BoardControl : MonoBehaviour
                 BattleConceeded(true);
             }
         }
+        else
+        {
+            DataManager._tileView = 1;
+        }
     }
 
     private void BattleConceeded(bool succeed)
@@ -1016,7 +1023,7 @@ public class BoardControl : MonoBehaviour
                 
             }
             
-            DataManager._PlayerInfo[i][1] = ((int)DataManager._PlayerInfo[i][1]) + (30*(11- int.Parse(playerFinishingSpots[i])));
+            DataManager._PlayerInfo[i][1] = ((int)DataManager._PlayerInfo[i][1]) + (60*(11- int.Parse(playerFinishingSpots[i])));
         }
         DataManager._contesting = false;
         DataManager._playerturn = 0;
