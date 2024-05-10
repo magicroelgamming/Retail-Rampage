@@ -847,6 +847,7 @@ public class BoardControl : MonoBehaviour
             }
         }
 
+        DataManager._playerMoneyDisplay.text = ((int)DataManager._PlayerInfo[DataManager._currentPlayer][1]).ToString();
 
         SelectedTileChanged(0,0);
     }

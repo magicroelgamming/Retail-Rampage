@@ -1583,7 +1583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f2d5f559304f6e4e84146d92da19ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _orbit: {fileID: 0}
+  _orbit: {fileID: 806882562}
   _cameraMain: {fileID: 55595178}
   PlayerCount: 2
   _prefabBasePlate: {fileID: 919132149155446097, guid: 0f9f6a282861f464e9c5b82ec24c124a, type: 3}
