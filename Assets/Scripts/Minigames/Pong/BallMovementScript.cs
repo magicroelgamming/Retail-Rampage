@@ -8,16 +8,18 @@ public class BallMovementScript : MonoBehaviour
     private float speedIncreaseAmount = 5f;
     private float speedIncreaseTimer = 0f;
     private float currentSpeed;
+
     private Vector3 moveDirection;
-    private bool _winIsActive = false;
+
     [SerializeField] private HudPongScript hudPong;
+
     private int[] randomSign = {1, -1};
     private int sign;
+
     private bool onResetDelay = true;
+
     private float resetTimer;
     private float resetDelay = 1.5f;
-
-
     void Start()
     {
         currentSpeed = speed;
