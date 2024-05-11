@@ -988,7 +988,7 @@ public class BoardControl : MonoBehaviour
 
                     case 3:
                         // you can put your minigames 1v1's in here -M
-                        SceneManager.LoadScene("");
+                        SceneManager.LoadScene("PullTheRope");
                         InvisibleBoard();
                         break;
 
