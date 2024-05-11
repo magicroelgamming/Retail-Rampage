@@ -992,7 +992,13 @@ public class BoardControl : MonoBehaviour
                         InvisibleBoard();
                         break;
 
-                    
+                    case 4:
+                        // you can put your minigames 1v1's in here -M
+                        SceneManager.LoadScene("ButtonMashingMinigame");
+                        InvisibleBoard();
+                        break;
+
+
                 }
             }
             else
