@@ -247,6 +247,8 @@ public class BoardControl : MonoBehaviour
 
             DataManager._playerturn = 0;
 
+            _animRotation = false;
+
             CameraStartPlacement();
 
             //Debug.Log(DataManager._playerturn);
@@ -625,7 +627,7 @@ public class BoardControl : MonoBehaviour
         if (!DataManager._batteling && !DataManager._contesting)
         {
             waitedtime += Time.deltaTime;
-            Debug.Log(DataManager._currentPlayer + 1);
+            //Debug.Log(DataManager._currentPlayer + 1);
             if (DataManager._allowedToMove && (Input.GetAxis($"LeftStickHorizontal{DataManager._currentPlayer + 1}") != 0 || Input.GetAxis($"LeftStickVertical{DataManager._currentPlayer + 1}") != 0) && (waitedtime >= 0.25f))
             {
                 //Debug.Log("Do you work?");
@@ -969,6 +971,7 @@ public class BoardControl : MonoBehaviour
             DataManager._playerMoneyDisplay.text = ((int)DataManager._PlayerInfo[DataManager._currentPlayer][1]).ToString();
             if (DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][0] != DataManager._playerColors[4])
             {
+                _animRotation = false;
                 DataManager._battleNumber = rn.Next(1, 4);
                 DataManager._batteling = true;
 
@@ -1017,9 +1020,11 @@ public class BoardControl : MonoBehaviour
         if (succeed)
         {
             DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][0] = DataManager._playerColors[DataManager._currentPlayer];
-            DataManager._tileView = 0;
         }
-        
+        DataManager._tileView = 0;
+        TheShowDetailAndBuyMethod(0);
+
+
     }
 
     private void ContestConceeded(string[] playerFinishingSpots)

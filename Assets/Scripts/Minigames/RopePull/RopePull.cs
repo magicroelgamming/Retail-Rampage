@@ -51,11 +51,11 @@ public class RopePull : MonoBehaviour
         if (this.transform.position.z >= 1)
         {
             //player 1 wins
-            MessengerBoy("1v1:true");
+            MessengerBoy("1V1:true");
         }
         if (this.transform.position.z <= -1)
         {
-            MessengerBoy("1v1:false");
+            MessengerBoy("1V1:false");
         }
 
 
