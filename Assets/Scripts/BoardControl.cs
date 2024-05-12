@@ -710,7 +710,7 @@ public class BoardControl : MonoBehaviour
                 // You need to add the method ContestConceeded(int[]) to add the money and who goes when to each player. the int[] is to see which spot they ended in the contest spot 0 in the array is always player 1 the number you add on that spot is how well player 1 did and so on for the other players -M
 
                 //change DataManager._contestNumber to whezre your code is and make DataManager._contesting = true to test your minigame;
-                switch (rn.Next(1, 4))
+                switch (rn.Next(1, 5))
                 {
                     case 1:
                         // you can put your 2-4 player minigame in here -M
@@ -731,8 +731,8 @@ public class BoardControl : MonoBehaviour
                         break;
 
                     case 4:
-                        // you can put your 2-4 player minigame in here -M
-                        SceneManager.LoadScene("");
+                        // you can put your minigames 1v1's in here -M
+                        SceneManager.LoadScene("CrossTheRoad");
                         InvisibleBoard();
                         break;
                 }
@@ -969,7 +969,7 @@ public class BoardControl : MonoBehaviour
             DataManager._playerMoneyDisplay.text = ((int)DataManager._PlayerInfo[DataManager._currentPlayer][1]).ToString();
             if (DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][0] != DataManager._playerColors[4])
             {
-                DataManager._battleNumber = rn.Next(1, 3);
+                DataManager._battleNumber = rn.Next(1, 4);
                 DataManager._batteling = true;
 
                 switch (DataManager._battleNumber)
@@ -988,15 +988,17 @@ public class BoardControl : MonoBehaviour
 
                     case 3:
                         // you can put your minigames 1v1's in here -M
-                        SceneManager.LoadScene("");
+                        SceneManager.LoadScene("PullTheRope");
                         InvisibleBoard();
                         break;
 
                     case 4:
                         // you can put your minigames 1v1's in here -M
-                        SceneManager.LoadScene("");
+                        SceneManager.LoadScene("ButtonMashingMinigame");
                         InvisibleBoard();
                         break;
+
+
                 }
             }
             else
