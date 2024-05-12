@@ -55,6 +55,9 @@ public class BoardControl : MonoBehaviour
     private TextMeshProUGUI _playerMoneyDisplay;
 
     [SerializeField]
+    private TextMeshProUGUI _playerNumberDisplay;
+
+    [SerializeField]
     private GameObject[] _shopPrefabs;
 
 
@@ -561,6 +564,7 @@ public class BoardControl : MonoBehaviour
             NewPlayerIntialization.Add(500);
             DataManager._PlayerInfo[i] = NewPlayerIntialization;
             _playerMoneyDisplay.text = ((int)DataManager._PlayerInfo[DataManager._currentPlayer][1]).ToString();
+            _playerNumberDisplay.text = "Current Player: " + (DataManager._currentPlayer + 1);
         }
     }
 
@@ -748,7 +752,7 @@ public class BoardControl : MonoBehaviour
 
                 write.Close();
 
-                SceneManager.LoadScene("");
+                SceneManager.LoadScene("EndScreen");
 
             }
 
@@ -851,6 +855,7 @@ public class BoardControl : MonoBehaviour
 
                 Debug.Log(i);
                 DataManager._currentPlayer = i;
+                _playerNumberDisplay.text = "Current Player: " + (DataManager._currentPlayer + 1);
             }
             Debug.Log("---------------------");
         }
