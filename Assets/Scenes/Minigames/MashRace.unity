@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -771,6 +771,10 @@ PrefabInstance:
       propertyPath: hudRaceScript
       value: 
       objectReference: {fileID: 1124944378}
+    - target: {fileID: 4700405832368111467, guid: f64828eeea38362428ae589b99dcf14d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5715d4ae19aeb77419f6168eef144d22, type: 2}
     - target: {fileID: 7223679777954254676, guid: f64828eeea38362428ae589b99dcf14d, type: 3}
       propertyPath: m_IsTrigger
       value: 1
@@ -1647,6 +1651,10 @@ PrefabInstance:
       propertyPath: hudRaceScript
       value: 
       objectReference: {fileID: 1124944378}
+    - target: {fileID: 4700405832368111467, guid: f64828eeea38362428ae589b99dcf14d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 355b755573e4d144fa2095b3eeb78de9, type: 2}
     - target: {fileID: 7223679777954254676, guid: f64828eeea38362428ae589b99dcf14d, type: 3}
       propertyPath: m_IsTrigger
       value: 1
@@ -2430,6 +2438,10 @@ PrefabInstance:
       propertyPath: hudRaceScript
       value: 
       objectReference: {fileID: 1124944378}
+    - target: {fileID: 4700405832368111467, guid: f64828eeea38362428ae589b99dcf14d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1d9065f57cbc6874193ca557d1e5e3ff, type: 2}
     - target: {fileID: 7223679777954254676, guid: f64828eeea38362428ae589b99dcf14d, type: 3}
       propertyPath: m_IsTrigger
       value: 1
@@ -4013,6 +4025,10 @@ PrefabInstance:
       propertyPath: hudRaceScript
       value: 
       objectReference: {fileID: 1124944378}
+    - target: {fileID: 4700405832368111467, guid: f64828eeea38362428ae589b99dcf14d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8295e10ad3955db42bc96a90f024d06a, type: 2}
     - target: {fileID: 7223679777954254676, guid: f64828eeea38362428ae589b99dcf14d, type: 3}
       propertyPath: m_IsTrigger
       value: 1
