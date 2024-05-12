@@ -37,11 +37,11 @@ public class HudPongScript : MonoBehaviour
 
         if (Player1Win)
         {
-            writer.Write("1v1:true");
+            writer.Write("1V1:true");
         }
         else
         {
-            writer.Write("1v1:false");
+            writer.Write("1V1:false");
         }
         writer.Close();
 

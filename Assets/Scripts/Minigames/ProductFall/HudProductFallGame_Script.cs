@@ -21,10 +21,7 @@ public class HudProductFallGameScript : MonoBehaviour
     [SerializeField] public Text loose3;
     [SerializeField] public Text loose4;
 
-    private float productCollected1 = 0f;
-    private float productCollected2 = 0f;
-    private float productCollected3 = 0f;
-    private float productCollected4 = 0f;
+    float[] productCollected = new float[4];
 
     public bool startDelayBeforeMainBoard = false;
 
@@ -32,10 +29,6 @@ public class HudProductFallGameScript : MonoBehaviour
     public bool _winIsActive = false;
     void Start()
     {
-        productCollected1 = 0;
-        productCollected2 = 0;
-        productCollected3 = 0;
-        productCollected4 = 0;
         win1.enabled = false;
         win2.enabled = false;
         win3.enabled = false;
@@ -56,9 +49,35 @@ public class HudProductFallGameScript : MonoBehaviour
     }
     void MessengerBoy()
     {
+
+        int[] PlayerEndingSpots = new int[] {1,1,1,1};
+        for (int i = 0; i < productCollected.Length; i++)
+        {
+            for (int j = 0; j < productCollected.Length; j++)
+            {
+
+                if (productCollected[i] < productCollected[j] && i!=j)
+                {
+                    PlayerEndingSpots[i] = PlayerEndingSpots[i] +1;
+                }
+            }
+            
+        }
+
         StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
 
-        writer.Write("234:2,1,3,4");
+        string PlayerRanking = "234:";
+
+        for (int i = 0; i < PlayerEndingSpots.Length; i++)
+        {
+            PlayerRanking += PlayerEndingSpots[i];
+            if (i != (PlayerEndingSpots.Length-1))
+            {
+                PlayerRanking += ",";
+            }
+        }
+
+        writer.Write(PlayerRanking);
 
         writer.Close();
         SceneManager.LoadScene("TheBoard");
@@ -69,21 +88,21 @@ public class HudProductFallGameScript : MonoBehaviour
     }
     void ProductsText()
     {
-        camera1Text.text = productCollected1.ToString();
+        camera1Text.text = productCollected[0].ToString();
         camera1Text.color = Color.blue;
 
-        camera2Text.text = productCollected2.ToString();
+        camera2Text.text = productCollected[1].ToString();
         camera2Text.color = Color.blue;
 
-        camera3Text.text = productCollected3.ToString();
+        camera3Text.text = productCollected[2].ToString();
         camera3Text.color = Color.blue;
 
-        camera4Text.text = productCollected4.ToString();
+        camera4Text.text = productCollected[3].ToString();
         camera4Text.color = Color.blue;
     }
     void HudWinLoose()
     {
-        if (productCollected1 >= winLooseAmount)
+        if (productCollected[0] >= winLooseAmount)
         {
             win1.text = "Player 1 Wins!";
             win1.enabled = true;
@@ -91,7 +110,7 @@ public class HudProductFallGameScript : MonoBehaviour
             _winIsActive = true;
             Invoke("GameOver", 4f);
         }
-        else if (productCollected2 >= winLooseAmount)
+        else if (productCollected[1] >= winLooseAmount)
         {
             win2.text = "Player 2 Wins!";
             win2.enabled = true;
@@ -99,7 +118,7 @@ public class HudProductFallGameScript : MonoBehaviour
             _winIsActive = true;
             Invoke("GameOver", 4f);
         }
-        else if (productCollected3 >= winLooseAmount)
+        else if (productCollected[2] >= winLooseAmount)
         {
             win3.text = "Player 3 Wins!";
             win3.enabled = true;
@@ -107,7 +126,7 @@ public class HudProductFallGameScript : MonoBehaviour
             _winIsActive = true;
             Invoke("GameOver", 4f);
         }
-        else if (productCollected4 >= winLooseAmount)
+        else if (productCollected[3] >= winLooseAmount)
         {
             win4.text = "Player 4 Wins!";
             win4.enabled = true;
@@ -117,25 +136,25 @@ public class HudProductFallGameScript : MonoBehaviour
         }
         if (_winIsActive)
         {
-            if (productCollected1 < winLooseAmount)
+            if (productCollected[0] < winLooseAmount)
             {
                 loose1.text = "Player 1 Looses";
                 CameraTextDisabled();
                 loose1.enabled = true;
             }
-            if (productCollected2 < winLooseAmount)
+            if (productCollected[1] < winLooseAmount)
             {
                 loose2.text = "Player 2 Looses";
                 CameraTextDisabled();
                 loose2.enabled = true;
             }
-            if (productCollected3 < winLooseAmount)
+            if (productCollected[2] < winLooseAmount)
             {
                 loose3.text = "Player 3 Looses";
                 CameraTextDisabled();
                 loose3.enabled = true;
             }
-            if (productCollected4 < winLooseAmount)
+            if (productCollected[3] < winLooseAmount)
             {
                 loose4.text = "Player 4 Looses";
                 CameraTextDisabled();
@@ -154,19 +173,19 @@ public class HudProductFallGameScript : MonoBehaviour
     {
         if (basketTag == "Basket/1")
         {
-            productCollected1 += amount;
+            productCollected[0] += amount;
         }
         if (basketTag == "Basket/2")
         {
-            productCollected2 += amount;
+            productCollected[1] += amount;
         }
         if (basketTag == "Basket/3")
         {
-            productCollected3 += amount;
+            productCollected[2] += amount;
         }
         if (basketTag == "Basket/4")
         {
-            productCollected4 += amount;
+            productCollected[3] += amount;
         }
     }
 }
