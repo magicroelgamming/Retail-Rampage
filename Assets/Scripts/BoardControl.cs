@@ -687,8 +687,6 @@ public class BoardControl : MonoBehaviour
                 }
             }
         }
-
-        
     }
 
 
