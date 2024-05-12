@@ -6,7 +6,7 @@ public class HomeScreenButtonScript : MonoBehaviour
     public Text PlayersText;
     private bool[] playerJoined = new bool[4];
     public bool startDelayBeforeMainBoard = false;
-
+    private int playerReadyCount = 0;
     void Start()
     {
         UpdatePlayersText();
@@ -32,29 +32,33 @@ public class HomeScreenButtonScript : MonoBehaviour
         if (Input.GetButtonDown("AButton1") && !playerJoined[0])
         {
             playerJoined[0] = true;
+            playerReadyCount++;
             UpdatePlayersText();
         }
 
         if (Input.GetButtonDown("AButton2") && !playerJoined[1])
         {
             playerJoined[1] = true;
+            playerReadyCount++;
             UpdatePlayersText();
         }
 
         if (Input.GetButtonDown("AButton3") && !playerJoined[2])
         {
             playerJoined[2] = true;
+            playerReadyCount++;
             UpdatePlayersText();
         }
 
         if (Input.GetButtonDown("AButton4") && !playerJoined[3])
         {
             playerJoined[3] = true;
+            playerReadyCount++;
             UpdatePlayersText();
         }
-        if (playerJoined[0] && playerJoined[1] && playerJoined[2] && playerJoined[3])
+        if (playerReadyCount >= 2 && Input.GetButtonDown("BButton1"))
         {
-            Invoke("PlayersAreReady", 4f);
+            PlayersAreReady();
         }
     }
     void UpdatePlayersText()

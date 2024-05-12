@@ -6,7 +6,6 @@ public class BombScript : MonoBehaviour
     void Update()
     {
         transform.Translate(Vector3.down * fallSpeed * Time.deltaTime);
-
     }
     private void OnTriggerEnter(Collider other)
     {

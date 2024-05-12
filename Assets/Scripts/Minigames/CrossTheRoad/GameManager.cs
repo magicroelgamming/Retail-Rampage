@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     private float _timer;
-    private float _maxTimerTime = 20f;
+    private float _maxTimerTime = 60f;
     public TextMeshProUGUI TimerText, OutcomeText;
     public Canvas PlayingCanvas, EndCanvas;
     public GameObject[] ArrayPlayers;
@@ -18,9 +18,10 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        ArrayPlayers = new GameObject[Input.GetJoystickNames().Length];
+        //ArrayPlayers = new GameObject[Input.GetJoystickNames().Length];
+        ArrayPlayers = new GameObject[4];
         ArrayPlayersScores = new int[ArrayPlayers.Length];
-        for (int i = 0; i < Input.GetJoystickNames().Length; i++)
+        for (int i = 0; i < ArrayPlayers.Length; i++)
         {
             GameObject player = Player;
             player.GetComponent<CrossRoadPlayerInput>().PlayerId = i + 1;
@@ -45,11 +46,10 @@ public class GameManager : MonoBehaviour
     private void MessengerBoy()
     {
         StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
-        string writerMessage = "234:";
-        for(int i = 0; i < ArrayPlayers.Length; i++)
-        {
-            writerMessage += ArrayPlayers[i].GetComponent<CrossRoadPlayerInput>().PlayerId + ",";
-        }
+        string writerMessage = "234:" + ArrayPlayers[0].GetComponent<CrossRoadPlayerInput>().PlayerId + 
+            "," + ArrayPlayers[1].GetComponent<CrossRoadPlayerInput>().PlayerId + 
+            "," + ArrayPlayers[2].GetComponent<CrossRoadPlayerInput>().PlayerId +
+            "," + ArrayPlayers[3].GetComponent<CrossRoadPlayerInput>().PlayerId;
         writer.Write(writerMessage);
 
         writer.Close();
