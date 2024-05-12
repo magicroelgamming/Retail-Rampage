@@ -100,7 +100,7 @@ public class ItemChanger : MonoBehaviour
         StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
 
         //gets winning players
-        Player[] players = (FindObjectsOfType<Player>()).OrderBy(i => i._score).Reverse().ToArray();
+        Player[] players = (FindObjectsOfType<Player>()).OrderBy(i => i._score).ToArray();
 
         writer.Write("234:" + players[0]._playerID + "," + players[1]._playerID + "," + players[2]._playerID + "," + players[3]._playerID);
         Debug.Log(writer.ToString());
