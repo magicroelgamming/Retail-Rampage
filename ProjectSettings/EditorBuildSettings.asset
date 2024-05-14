@@ -39,6 +39,9 @@ EditorBuildSettings:
     path: Assets/Scenes/HomeScreen.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
+    path: Assets/Scenes/EndScreen.unity
+    guid: 44569b182a797174281e249781340f18
+  - enabled: 1
     path: Assets/Scenes/Minigames/ButtonMashingMinigame.unity
     guid: 9a163c050908b104bbd0680871dff9bf
   m_configObjects: {}
