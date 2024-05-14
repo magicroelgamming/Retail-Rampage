@@ -49,25 +49,19 @@ public class HudProductFallGameScript : MonoBehaviour
     }
     void MessengerBoy()
     {
-
         int[] PlayerEndingSpots = new int[] {1,1,1,1};
         for (int i = 0; i < productCollected.Length; i++)
         {
             for (int j = 0; j < productCollected.Length; j++)
             {
-
                 if (productCollected[i] < productCollected[j] && i!=j)
                 {
                     PlayerEndingSpots[i] = PlayerEndingSpots[i] +1;
                 }
             }
-            
         }
-
         StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
-
         string PlayerRanking = "234:";
-
         for (int i = 0; i < PlayerEndingSpots.Length; i++)
         {
             PlayerRanking += PlayerEndingSpots[i];
