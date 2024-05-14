@@ -968,34 +968,17 @@ public class BoardControl : MonoBehaviour
     }
     private void ContestConceeded(string[] playerFinishingSpots)
     {
-        for (int i = 0; i < DataManager.PlayerCount; i++)
-        {
-            DataManager._PlayerInfo[i][0] = 10;
-        }
+
         int AddedNecesarie = 0;
         for (int i = 0; i < DataManager.PlayerCount; i++)
         {
             //Debug.Log("-------ContestConceeded-----");
 
-            DataManager._PlayerInfo[i][0] = int.Parse(playerFinishingSpots[i]) - 1 + AddedNecesarie;
-            //Debug.Log(playerFinishingSpots[i]);
-            //Debug.Log(AddedNecesarie);
-            //Debug.Log(DataManager._PlayerInfo[i][0]);
-            for (int j = 0; j < DataManager.PlayerCount; j++)
-            {
-
-                if ((int)DataManager._PlayerInfo[j][0] == (int)DataManager._PlayerInfo[i][0] && i != j)
-                {
-                    DataManager._PlayerInfo[i][0] = (int)DataManager._PlayerInfo[i][0];
-                    AddedNecesarie++;
-                }
-
-            }
-
             DataManager._PlayerInfo[i][1] = ((int)DataManager._PlayerInfo[i][1]) + (60 * (11 - int.Parse(playerFinishingSpots[i])));
         }
         DataManager._contesting = false;
         DataManager._playerturn = 0;
+        DataManager._currentPlayer = 0;
         PlayerTurn();
     }
 }
