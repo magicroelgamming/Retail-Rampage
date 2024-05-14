@@ -287,9 +287,10 @@ public class BoardControl : MonoBehaviour
     }
     private void CameraStartPlacement()
     {
-        _tileToCameraX = (float)DataManager._selectedTile[0] / 2 - 1;
-        _tileToCameraZ = (float)DataManager._selectedTile[1] / 2;
-        Vector3 centralTilePosition = Vector3.Lerp(DataManager._tilespots[0, 0].transform.position, DataManager._tilespots[DataManager._columns - 1, DataManager._rows - 1].transform.position, 0.5f);
+        float _animStep = ((DataManager._columns - 1f) / 2f);
+        _tileToCameraX = (float)DataManager._selectedTile[0] / _animStep - 1f;
+        _tileToCameraZ = (float)DataManager._selectedTile[1] / _animStep;
+        Vector3 centralTilePosition = Vector3.Lerp(DataManager._tilespots[0,0].transform.position, DataManager._tilespots[DataManager._columns -1, DataManager._rows -1].transform.position, 0.5f);
         DataManager._cameraMain.transform.parent.position = centralTilePosition;
         DataManager._cameraMain.transform.parent.localEulerAngles = Vector3.zero;
         DataManager._cameraMain.transform.localPosition = new Vector3(_tileToCameraX, 4, _tileToCameraZ + _onBoardCameraOffset);
@@ -652,14 +653,15 @@ public class BoardControl : MonoBehaviour
                     _animRotationHeight + Mathf.Sin(Time.time * 1.5f) * 0.1f, DataManager._cameraMain.transform.localPosition.z);
             }
 
-            if (_animOnBoardMovement)
+            
+        }
+        if (_animOnBoardMovement)
+        {
+            if (_animOnBoardFrame <= 1)
             {
-                if (_animOnBoardFrame <= 1)
-                {
-                    Vector3 cameraPosition = Vector3.Lerp(DataManager._cameraMain.transform.localPosition, new Vector3(_tileToCameraX, 4, _tileToCameraZ + _onBoardCameraOffset), _animOnBoardFrame);
-                    DataManager._cameraMain.transform.localPosition = cameraPosition;
-                    _animOnBoardFrame += 1f / _animOnBoardSmoothness;
-                }
+                Vector3 cameraPosition = Vector3.Lerp(DataManager._cameraMain.transform.localPosition, new Vector3(_tileToCameraX, 4, _tileToCameraZ + _onBoardCameraOffset), _animOnBoardFrame);
+                DataManager._cameraMain.transform.localPosition = cameraPosition;
+                _animOnBoardFrame += 1f / _animOnBoardSmoothness;
             }
         }
     }
@@ -671,6 +673,7 @@ public class BoardControl : MonoBehaviour
             DataManager._playerturn++;
             DataManager._tilespots[DataManager._selectedTile[0], DataManager._selectedTile[1]].GetComponent<MeshRenderer>().material = (Material)((ArrayList)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]])[0];
             PlayerTurn();
+            CameraStartPlacement();
         }
         else
         {

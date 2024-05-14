@@ -62,9 +62,17 @@ public class HomeScreenButtonScript : MonoBehaviour
     void Update()
     {
         ButtonPressToStart();
+        ExitGame();
         if (startDelayBeforeMainBoard)
         {
             MessengerBoy();
+        }
+    }
+    void ExitGame()
+    {
+        if (Input.GetButtonDown("YButton1"))
+        {
+           Application.Quit();
         }
     }
     void MessengerBoy()

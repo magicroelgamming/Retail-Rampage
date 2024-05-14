@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEngine.UIElements;
 
 public class CrossRoadPlayerInput : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public class CrossRoadPlayerInput : MonoBehaviour
     {
         if (IsPlaying)
             _charController.Move(new Vector3(Input.GetAxis("LeftStickHorizontal" + PlayerId) * Speed * Time.deltaTime, 0f, Input.GetAxis("LeftStickVertical" + PlayerId) * Speed * Time.deltaTime));
+        transform.position = new Vector3(transform.position.x, 0.25f, transform.position.z);
     }
     private void OnTriggerEnter(Collider other)
     {
