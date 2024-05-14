@@ -25,6 +25,9 @@ public class EndScreen : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+
+
         StreamReader reader = new StreamReader("Assets/Resources/MessengerBoy.txt");
 
         _winners = reader.ReadLine();
@@ -48,4 +51,6 @@ public class EndScreen : MonoBehaviour
             SceneManager.LoadScene("HomeScreen");
         }
     }
+
+    
 }
