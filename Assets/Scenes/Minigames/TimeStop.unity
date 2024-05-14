@@ -471,8 +471,8 @@ MonoBehaviour:
   Button2: {fileID: 1327213956}
   timerTextCamera1: {fileID: 19012401}
   timerTextCamera2: {fileID: 905120768}
-  winText1: {fileID: 606481704}
-  winText2: {fileID: 89218833}
+  resultText1: {fileID: 606481704}
+  resultText2: {fileID: 89218833}
   tieText: {fileID: 2138665875}
   FlashLight: {fileID: 445921088}
   delayBefotreMainBoard: 5
