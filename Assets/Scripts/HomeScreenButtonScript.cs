@@ -6,6 +6,8 @@ using static BoardControl;
 
 public class HomeScreenButtonScript : MonoBehaviour
 {
+    private int _rotationCamera;
+
     [SerializeField]
     GameObject _center;
     [SerializeField]
@@ -29,25 +31,6 @@ public class HomeScreenButtonScript : MonoBehaviour
     System.Random rn = new System.Random();
 
 
-    private bool _animRotation;
-
-    private float _animRotationSpeed = 0.15f;
-
-    private float _animRotationHeight = 1f;
-
-    private bool _animOnBoardMovement;
-
-    private float _animOnBoardSmoothness = 500;
-
-    private float _animOnBoardFrame = 0;
-
-    private float _tileToCameraX;
-
-    private float _tileToCameraZ;
-
-    private float _onBoardCameraOffset = -5;
-
-
     void Start()
     {
         _brandNames = new string[] { "Garry's", "Irish", "WcDonalds", "Jeff's", "Roel's", "Andre's", "Evy's", "Sander's", "Jasper's", "Grigory's", "Mintendo", "OCircle", "Moist", "TrainConsole", "Baldur Studios", "Sun 8", "Goal", "Trottoir", "Adequate Purchase", "Taco Hut", "Pizza Bell", "Repairing Good", "6 Woman", "Out Of The Closet", "Forever 12", "M&H", "Belgian Tomorrow", "Forest", "Florida", "Webflex", "Ball Cluster", "1/77", "StarMeadow", "M.A.H.", "8008", "Nalop", "Calm Susan", "1 Minute", "Drop In" };
@@ -67,6 +50,8 @@ public class HomeScreenButtonScript : MonoBehaviour
         {
             MessengerBoy();
         }
+        
+        _center.transform.eulerAngles += new Vector3(0,10,0)*Time.deltaTime;
     }
     void ExitGame()
     {
@@ -261,8 +246,9 @@ public class HomeScreenButtonScript : MonoBehaviour
     private void CameraStartPlacement()
     {
         Camera theCamera = Camera.main;
-        _center.transform.position = _tilespots[3,3].transform.position;
+        _center.transform.position = _tilespots[2,2].transform.position;
 
-        theCamera.transform.localPosition = new Vector3(-2, 3, -11);
+        theCamera.transform.localPosition = new Vector3(-1.5f, 5.5f, -8.5f);
+        theCamera.transform.localEulerAngles = new Vector3(33,0,0);
     }
 }
