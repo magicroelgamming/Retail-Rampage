@@ -673,6 +673,7 @@ public class BoardControl : MonoBehaviour
             DataManager._playerturn++;
             DataManager._tilespots[DataManager._selectedTile[0], DataManager._selectedTile[1]].GetComponent<MeshRenderer>().material = (Material)((ArrayList)DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]])[0];
             PlayerTurn();
+            CameraStartPlacement();
         }
         else
         {
