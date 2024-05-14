@@ -109,6 +109,8 @@ public class BoardControl : MonoBehaviour
 
         static public TextMeshProUGUI _playerMoneyDisplay;
 
+        static public TextMeshProUGUI _playerNumberDisplay;
+
         static public GameObject[] _shopPrefabs;
 
 
@@ -166,6 +168,7 @@ public class BoardControl : MonoBehaviour
             DataManager._levelBuildingDisplay = _levelBuildingDisplay;
             DataManager._costBuildingDisplay = _costBuildingDisplay;
             DataManager._playerMoneyDisplay = _playerMoneyDisplay;
+            DataManager._playerNumberDisplay = _playerNumberDisplay;
             DataManager._shopPrefabs = _shopPrefabs;
             DataManager._orbit = _orbit;
 
@@ -239,6 +242,7 @@ public class BoardControl : MonoBehaviour
             DataManager._levelBuildingDisplay = GameObject.Find("LVL").GetComponent<TextMeshProUGUI>();
             DataManager._costBuildingDisplay = GameObject.Find("Cost").GetComponent<TextMeshProUGUI>();
             DataManager._playerMoneyDisplay = GameObject.Find("Money").GetComponent<TextMeshProUGUI>();
+            DataManager._playerNumberDisplay = GameObject.Find("PlayerNumber").GetComponent<TextMeshProUGUI>();
 
             DataManager._TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
 
@@ -537,8 +541,8 @@ public class BoardControl : MonoBehaviour
             NewPlayerIntialization.Add(i);
             NewPlayerIntialization.Add(500);
             DataManager._PlayerInfo[i] = NewPlayerIntialization;
-            _playerMoneyDisplay.text = ((int)DataManager._PlayerInfo[DataManager._currentPlayer][1]).ToString();
-            _playerNumberDisplay.text = "Current Player: " + (DataManager._currentPlayer + 1);
+            DataManager._playerMoneyDisplay.text = ((int)DataManager._PlayerInfo[DataManager._currentPlayer][1]).ToString();
+            DataManager._playerNumberDisplay.text = "Current Player: " + (DataManager._currentPlayer + 1);
         }
     }
 
@@ -709,6 +713,7 @@ public class BoardControl : MonoBehaviour
             else
             {
                 //Game END -M
+
                 StreamWriter write = new StreamWriter("Assets/Resources/MessengerBoy.txt");
 
                 write.Write(CalculateWhoEndedWhere());
@@ -805,7 +810,7 @@ public class BoardControl : MonoBehaviour
                 }
                 Debug.Log(i);
                 DataManager._currentPlayer = i;
-                _playerNumberDisplay.text = "Current Player: " + (DataManager._currentPlayer + 1);
+                DataManager._playerNumberDisplay.text = "Current Player: " + (DataManager._currentPlayer + 1);
             }
             Debug.Log("---------------------");
         }
