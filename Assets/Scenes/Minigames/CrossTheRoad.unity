@@ -4019,6 +4019,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4505396784515198322, guid: 6886d6b248849ad4787bedba90dcaa68, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8111486201904067452, guid: 6886d6b248849ad4787bedba90dcaa68, type: 3}
       propertyPath: m_Name
       value: CartObstacle

@@ -50,6 +50,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 760ad651b69654f47850d0a2e24d17db, type: 3}
       propertyPath: m_Name
+      value: CartObstacle
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 760ad651b69654f47850d0a2e24d17db, type: 3}
+      propertyPath: m_TagString
       value: Cart
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -83,7 +87,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
