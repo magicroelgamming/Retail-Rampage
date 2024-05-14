@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
 public class CrossRoadPlayerInput : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class CrossRoadPlayerInput : MonoBehaviour
     private TextMeshProUGUI _playerScore;
 
     void Start()
-    {
+    {    
         _charController = GetComponent<CharacterController>();
         _playerScore = GameObject.Find("ScorePlayer" + PlayerId).GetComponent<TextMeshProUGUI>();
         ReturnToStart();
