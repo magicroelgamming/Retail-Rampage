@@ -1,4 +1,5 @@
 using System.IO;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,6 +14,8 @@ public class MashRace : MonoBehaviour
     private bool[] playersFinished = new bool[4];
     private bool[] moveIsActive = new bool[4];
     private bool _winIsActive = false;
+
+    private int playerPlacement = 0;
 
     public bool startDelayBeforeMainBoard = false;
 
@@ -33,7 +36,7 @@ public class MashRace : MonoBehaviour
     {
         StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
 
-        writer.Write("234:2,1,3,4");
+        writer.Write(playersFinished.Length);
 
         writer.Close();
         SceneManager.LoadScene("TheBoard");
@@ -111,24 +114,41 @@ public class MashRace : MonoBehaviour
             }
             else
             {
-                string loseText = $"Player {i + 1} Looses!";
+                string placementText = $"Player place {playerPlacement + i + 1}";
+                GameObject player = GameObject.FindGameObjectWithTag($"Player/{i + 1}");
                 switch (i)
                 {
                     case 0:
-                        hudRaceScript.loose1.text = loseText;
-                        hudRaceScript.loose1.enabled = true;
+                        if (player.transform.position.y < 188f)
+                        {
+                            hudRaceScript.loose1.text = placementText;
+                            hudRaceScript.loose1.enabled = true;
+                            playerPlacement++;
+                        }
                         break;
                     case 1:
-                        hudRaceScript.loose2.text = loseText;
-                        hudRaceScript.loose2.enabled = true;
+                        if (player.transform.position.y < 188f)
+                        {
+                            hudRaceScript.loose2.text = placementText;
+                            hudRaceScript.loose2.enabled = true;
+                            playerPlacement++;
+                        }
                         break;
                     case 2:
-                        hudRaceScript.loose3.text = loseText;
-                        hudRaceScript.loose3.enabled = true;
+                        if (player.transform.position.y < 188f)
+                        {
+                            hudRaceScript.loose3.text = placementText;
+                            hudRaceScript.loose3.enabled = true;
+                            playerPlacement++;
+                        }
                         break;
                     case 3:
-                        hudRaceScript.loose4.text = loseText;
-                        hudRaceScript.loose4.enabled = true;
+                        if (player.transform.position.y < 188f)
+                        {
+                            hudRaceScript.loose4.text = placementText;
+                            hudRaceScript.loose4.enabled = true;
+                            playerPlacement++;
+                        }
                         break;
                 }
             }
