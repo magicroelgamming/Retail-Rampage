@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 502002725473427976}
   - component: {fileID: 6850052053924200004}
   - component: {fileID: 8834628186917340606}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 8431098446211843772}
   - component: {fileID: 4721954913296502105}
   - component: {fileID: 4302698124319480585}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -223,7 +223,7 @@ CharacterController:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 8
