@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.IO;
 using TMPro;
@@ -11,9 +12,6 @@ public class BoardControl : MonoBehaviour
 
     [SerializeField]
     private Camera _cameraMain;
-
-    [SerializeField]
-    public int PlayerCount;
 
     [SerializeField]
     private GameObject _prefabBasePlate;
@@ -155,9 +153,15 @@ public class BoardControl : MonoBehaviour
     {
         if (DataManager.PlayerCount == 0)
         {
+            StreamReader reader = new StreamReader("Assets/Resources/MessengerBoy.txt");
+
+            DataManager.MessangerBoy = reader.ReadLine();
+
+            reader.Close();
+
+            DataManager.PlayerCount = int.Parse(DataManager.MessangerBoy);
 
             DataManager._cameraMain = _cameraMain;
-            DataManager.PlayerCount = PlayerCount;
             DataManager._prefabBasePlate = _prefabBasePlate;
             DataManager._playerColors = _playerColors;
             DataManager._selected = _selected;
@@ -682,6 +686,9 @@ public class BoardControl : MonoBehaviour
             if (DataManager._roundNumber < 5)
             {
                 DataManager._contesting = true;
+                StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
+                writer.WriteLine(DataManager.PlayerCount);
+                writer.Close();
                 // You need to add the method ContestConceeded(int[]) to add the money and who goes when to each player. the int[] is to see which spot they ended in the contest spot 0 in the array is always player 1 the number you add on that spot is how well player 1 did and so on for the other players -M
 
                 //change DataManager._contestNumber to whezre your code is and make DataManager._contesting = true to test your minigame;
@@ -720,7 +727,7 @@ public class BoardControl : MonoBehaviour
                 StreamWriter write = new StreamWriter("Assets/Resources/MessengerBoy.txt");
 
                 write.Write(CalculateWhoEndedWhere());
-
+                 
                 write.Close();
 
                 SceneManager.LoadScene("EndScreen");

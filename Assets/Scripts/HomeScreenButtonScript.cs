@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -62,6 +63,12 @@ public class HomeScreenButtonScript : MonoBehaviour
     }
     void MessengerBoy()
     {
+        StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
+
+        writer.Write(playerReadyCount);
+
+        writer.Close();
+
         SceneManager.LoadScene("TheBoard");
     }
     void PlayersAreReady()
