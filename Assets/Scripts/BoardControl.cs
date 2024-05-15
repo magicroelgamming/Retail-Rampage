@@ -929,7 +929,19 @@ public class BoardControl : MonoBehaviour
                 _animRotation = false;
                 DataManager._battleNumber = rn.Next(1, 4);
                 DataManager._batteling = true;
+                int otherPlayer = 0;
+                for (int i = 0; i < _playerColors.Length; i++)
+                {
+                    if (DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][0] == _playerColors[i])
+                    {
+                        otherPlayer = i +1;
+                    }
+                    
+                }
 
+                StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
+                writer.WriteLine((DataManager._currentPlayer + 1).ToString() + ":" + otherPlayer.ToString());
+                writer.Close();
                 switch (DataManager._battleNumber)
                 {
                     case 1:

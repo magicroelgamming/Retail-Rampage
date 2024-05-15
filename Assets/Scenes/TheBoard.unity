@@ -158,8 +158,8 @@ Camera:
   m_GameObject: {fileID: 55595176}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.3529412, g: 0.41960785, b: 0.5294118, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -2605,7 +2605,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _orbit: {fileID: 806882562}
   _cameraMain: {fileID: 55595178}
-  PlayerCount: 2
   _prefabBasePlate: {fileID: 919132149155446097, guid: 0f9f6a282861f464e9c5b82ec24c124a, type: 3}
   _playerColors:
   - {fileID: 2100000, guid: 8295e10ad3955db42bc96a90f024d06a, type: 2}

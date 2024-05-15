@@ -36,7 +36,7 @@ public class MashRace : MonoBehaviour
     {
         StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
 
-        writer.Write(playersFinished.Length);
+        writer.Write("234:1,2,3,4");
 
         writer.Close();
         SceneManager.LoadScene("TheBoard");
