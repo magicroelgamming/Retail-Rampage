@@ -985,6 +985,7 @@ public class BoardControl : MonoBehaviour
         {
             DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][0] = DataManager._playerColors[DataManager._currentPlayer];
         }
+        DataManager._playerMoneyDisplay.text = ((int)DataManager._PlayerInfo[DataManager._currentPlayer][1]).ToString();
         DataManager._tileView = 0;
         TheShowDetailAndBuyMethod(0);
     }
