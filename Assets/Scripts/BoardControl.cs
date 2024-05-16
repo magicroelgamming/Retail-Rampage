@@ -683,7 +683,7 @@ public class BoardControl : MonoBehaviour
         {
             DataManager._playerturn = 0;
             DataManager._roundNumber++;
-            if (DataManager._roundNumber < 10)
+            if (DataManager._roundNumber < 5)
             {
                 DataManager._contesting = true;
                 StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
