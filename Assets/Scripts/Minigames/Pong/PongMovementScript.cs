@@ -7,6 +7,8 @@ public class PongMovementScript : MonoBehaviour
     private int[] players;
     private void Start()
     {
+        players = new int[2];
+
         StreamReader Reader = new StreamReader("Assets/Resources/MessengerBoy.txt");
         string message = Reader.ReadToEnd();
         Reader.Close();
@@ -26,9 +28,9 @@ public class PongMovementScript : MonoBehaviour
         float screenWidthOffset = 16f;
         for (int i = 1; i <= 2; i++)
         {
-            if (CompareTag($"Player/{players[i]}"))
+            if (CompareTag($"Player/{i}"))
             {
-                float verticalInput = Input.GetAxis($"LeftStickVertical{players[i]}");
+                float verticalInput = Input.GetAxis($"LeftStickVertical{players[i-1]}");
                 combinedMovement += Vector3.forward * verticalInput * speed;
 
                 float camHeight = camera.orthographicSize;

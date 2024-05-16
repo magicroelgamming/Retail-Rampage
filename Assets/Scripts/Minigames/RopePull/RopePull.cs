@@ -21,6 +21,8 @@ public class RopePull : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        players = new int[2];
+
         StreamReader Reader = new StreamReader("Assets/Resources/MessengerBoy.txt");
         string message = Reader.ReadToEnd();
         Reader.Close();

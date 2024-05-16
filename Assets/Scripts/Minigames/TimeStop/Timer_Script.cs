@@ -53,6 +53,8 @@ public class Timer : MonoBehaviour
         timerBeforeTie = 5f;
         gameOver = false;
 
+        players = new int[2];
+
         StreamReader Reader = new StreamReader("Assets/Resources/MessengerBoy.txt");
         string message = Reader.ReadToEnd();
         Reader.Close();
@@ -80,7 +82,7 @@ public class Timer : MonoBehaviour
     {
         StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
 
-        if (resultText1)
+        if (!resultText1)
         {
             writer.Write("1V1:true");
         }

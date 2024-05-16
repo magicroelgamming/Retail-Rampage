@@ -13,8 +13,6 @@ public class HudPongScript : MonoBehaviour
     public int player1Score = 0;
     public int player2Score = 0;
 
-    private int[] players;
-
     public bool startDelayBeforeMainBoard = false;
     void Start()
     {
@@ -37,7 +35,7 @@ public class HudPongScript : MonoBehaviour
     {
         StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
 
-        if (Player1Win)
+        if (!Player1Win)
         {
             writer.Write("1V1:true");
         }
