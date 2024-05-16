@@ -35,6 +35,7 @@ public class Timer : MonoBehaviour
 
     private float timer;
 
+    private int[] players;
     void Start()
     {
         FlashLight.color = Color.red;
@@ -51,6 +52,15 @@ public class Timer : MonoBehaviour
         timerRed = false;
         timerBeforeTie = 5f;
         gameOver = false;
+
+        StreamReader Reader = new StreamReader("Assets/Resources/MessengerBoy.txt");
+        string message = Reader.ReadToEnd();
+        Reader.Close();
+        string[] playerBuString = message.Split(':');
+        for (int i = 0; i < playerBuString.Length; i++)
+        {
+            players[i] = int.Parse(playerBuString[i]);
+        }
     }
 
     void Update()
@@ -90,7 +100,7 @@ public class Timer : MonoBehaviour
             timerStarted = true;
         }
 
-        if (Input.GetButtonDown("AButton1") && GameObject.FindGameObjectWithTag("Camera/1"))
+        if (Input.GetButtonDown("AButton" + players[0]) && GameObject.FindGameObjectWithTag("Camera/1"))
         {
             if (!timerRed)
             {
@@ -104,7 +114,7 @@ public class Timer : MonoBehaviour
             Debug.Log("Player 1 Pressed");
         }
 
-        if (Input.GetButtonDown("AButton2") && GameObject.FindGameObjectWithTag("Camera/2"))
+        if (Input.GetButtonDown("AButton" + players[1]) && GameObject.FindGameObjectWithTag("Camera/2"))
         {
             if (!timerRed)
             {

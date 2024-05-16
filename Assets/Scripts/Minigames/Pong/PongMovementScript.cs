@@ -1,8 +1,21 @@
+using System.IO;
 using UnityEngine;
 public class PongMovementScript : MonoBehaviour
 {
     [SerializeField] private Camera camera;
     private float speed = 20f;
+    private int[] players;
+    private void Start()
+    {
+        StreamReader Reader = new StreamReader("Assets/Resources/MessengerBoy.txt");
+        string message = Reader.ReadToEnd();
+        Reader.Close();
+        string[] playerBuString = message.Split(':');
+        for (int i = 0; i < playerBuString.Length; i++)
+        {
+            players[i] = int.Parse(playerBuString[i]);
+        }
+    }
     void Update()
     {
         Movement();
@@ -13,9 +26,9 @@ public class PongMovementScript : MonoBehaviour
         float screenWidthOffset = 16f;
         for (int i = 1; i <= 2; i++)
         {
-            if (CompareTag($"Player/{i}"))
+            if (CompareTag($"Player/{players[i]}"))
             {
-                float verticalInput = Input.GetAxis($"LeftStickVertical{i}");
+                float verticalInput = Input.GetAxis($"LeftStickVertical{players[i]}");
                 combinedMovement += Vector3.forward * verticalInput * speed;
 
                 float camHeight = camera.orthographicSize;

@@ -13,6 +13,8 @@ public class HudPongScript : MonoBehaviour
     public int player1Score = 0;
     public int player2Score = 0;
 
+    private int[] players;
+
     public bool startDelayBeforeMainBoard = false;
     void Start()
     {
