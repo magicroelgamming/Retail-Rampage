@@ -1,25 +1,27 @@
+using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
+using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MashRace : MonoBehaviour
 {
+    [SerializeField] private GameObject FinishLineLoosePrefab;
     private float speed = 10f;
-
     private float distanceToMove = 7.5f;
     private float timerMove = 0.2f;
 
     private Vector3[] targetPositions = new Vector3[4];
     private bool[] playersFinished = new bool[4];
     private bool[] moveIsActive = new bool[4];
-    private bool _winIsActive = false;
 
-    private int playerPlacement = 0;
+    private int playerPlacement = 1;
 
     public bool startDelayBeforeMainBoard = false;
 
     [SerializeField] private HudMashRaceScript hudRaceScript;
+
     void Update()
     {
         if (startDelayBeforeMainBoard)
@@ -32,19 +34,28 @@ public class MashRace : MonoBehaviour
         }
         Movement();
     }
+
     void MessengerBoy()
     {
         StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
 
-        writer.Write("234:1,2,3,4");
+        Player[] players = (FindObjectsOfType<Player>()).OrderBy(i => i._score).Reverse().ToArray();
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            writer.WriteLine($"Player {i + 1} finished in position {i + 1}");
+        }
 
         writer.Close();
+
         SceneManager.LoadScene("TheBoard");
     }
+
     public void GameOver()
     {
         startDelayBeforeMainBoard = true;
     }
+
     private void Movement()
     {
         for (int i = 0; i < 4; i++)
@@ -52,7 +63,7 @@ public class MashRace : MonoBehaviour
             if (!moveIsActive[i] && Input.GetButtonDown($"AButton{i + 1}"))
             {
                 GameObject player = GameObject.FindGameObjectWithTag($"Player/{i + 1}");
-                targetPositions[i] = player.transform.position + Vector3.up * distanceToMove;
+                targetPositions[i] = player.transform.position + Vector3.forward * distanceToMove;
                 moveIsActive[i] = true;
                 Invoke($"CanMove{i}", timerMove);
             }
@@ -63,95 +74,108 @@ public class MashRace : MonoBehaviour
                 if (player.transform.position == targetPositions[i])
                 {
                     moveIsActive[i] = false;
-                    CanMove0();
-                    CanMove1();
-                    if (!playersFinished[i])
-                    {
-                        playersFinished[i] = true;
-                    }
                 }
             }
         }
     }
-    private void CanMove0()
-    {
-        moveIsActive[0] = false;
-    }
-    private void CanMove1()
-    {
-        moveIsActive[1] = false;
-    }
     private void OnTriggerEnter(Collider hit)
     {
-        if (_winIsActive) return;
-
         for (int i = 0; i < 4; i++)
         {
             if (hit.CompareTag($"FinishLine/{i + 1}"))
             {
                 string winText = $"Player {i + 1} Wins!";
-                switch (i)
+                ShowWinText(i, winText);
+                for (int j = 0; j < 4; j++)
                 {
-                    case 0:
-                        hudRaceScript.win1.text = winText;
-                        hudRaceScript.win1.enabled = true;
-                        break;
-                    case 1:
-                        hudRaceScript.win2.text = winText;
-                        hudRaceScript.win2.enabled = true;
-                        break;
-                    case 2:
-                        hudRaceScript.win3.text = winText;
-                        hudRaceScript.win3.enabled = true;
-                        break;
-                    case 3:
-                        hudRaceScript.win4.text = winText;
-                        hudRaceScript.win4.enabled = true;
-                        break;
-                }
-                _winIsActive = true;
-                Invoke("GameOver", 3f);
-            }
-            else
-            {
-                string placementText = $"Player place {playerPlacement + i + 1}";
-                GameObject player = GameObject.FindGameObjectWithTag($"Player/{i + 1}");
-                switch (i)
-                {
-                    case 0:
-                        if (player.transform.position.y < 188f)
+                    if (j + 1 != i + 1)
+                    {
+                        GameObject[] finishLines = GameObject.FindGameObjectsWithTag($"FinishLine/{j + 1}");
+                        foreach (GameObject finishLine in finishLines)
                         {
-                            hudRaceScript.loose1.text = placementText;
-                            hudRaceScript.loose1.enabled = true;
-                            playerPlacement++;
+                            Destroy(finishLine);
                         }
-                        break;
-                    case 1:
-                        if (player.transform.position.y < 188f)
-                        {
-                            hudRaceScript.loose2.text = placementText;
-                            hudRaceScript.loose2.enabled = true;
-                            playerPlacement++;
-                        }
-                        break;
-                    case 2:
-                        if (player.transform.position.y < 188f)
-                        {
-                            hudRaceScript.loose3.text = placementText;
-                            hudRaceScript.loose3.enabled = true;
-                            playerPlacement++;
-                        }
-                        break;
-                    case 3:
-                        if (player.transform.position.y < 188f)
-                        {
-                            hudRaceScript.loose4.text = placementText;
-                            hudRaceScript.loose4.enabled = true;
-                            playerPlacement++;
-                        }
-                        break;
+                    }
                 }
             }
         }
+        ShowPlacementText(hit);
+    }
+    private void ShowWinText(int playerIndex, string winText)
+    {
+        switch (playerIndex)
+        {
+            case 0:
+                hudRaceScript.win1.text = winText;
+                hudRaceScript.win1.enabled = true;
+                hudRaceScript.loose1.enabled = false;
+                break;
+            case 1:
+                hudRaceScript.win2.text = winText;
+                hudRaceScript.win2.enabled = true;
+                hudRaceScript.loose2.enabled = false;
+                break;
+            case 2:
+                hudRaceScript.win3.text = winText;
+                hudRaceScript.win3.enabled = true;
+                hudRaceScript.loose3.enabled = false;
+                break;
+            case 3:
+                hudRaceScript.win4.text = winText;
+                hudRaceScript.win4.enabled = true;
+                hudRaceScript.loose4.enabled = false;
+                break;
+        }
+        playerPlacement++;
+    }
+    private void ShowPlacementText(Collider hit)
+    {
+        List<GameObject> nonFinishers = new List<GameObject>();
+        for (int i = 0; i < 4; i++)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag($"Player/{i + 1}");
+
+            if (!playersFinished[i] && !hit.CompareTag($"FinishLine/{i + 1}"))
+            {
+                nonFinishers.Add(player);
+            }
+        }
+
+        nonFinishers.Sort((a, b) => Vector3.Distance(a.transform.position, hit.transform.position).CompareTo(Vector3.Distance(b.transform.position, hit.transform.position)));
+
+        for (int i = 0; i < nonFinishers.Count; i++)
+        {
+            string placementText = $"Player place {i + playerPlacement}";
+            SetPlacementText(nonFinishers[i], placementText);
+        }
+
+        if (hit.CompareTag("FinishLine/1") || hit.CompareTag("FinishLine/2") || hit.CompareTag("FinishLine/3") || hit.CompareTag("FinishLine/4"))
+        {
+            string winText = $"Player {hit.gameObject.tag.Substring(11)} Wins!";
+            ShowWinText(int.Parse(hit.gameObject.tag.Substring(11)) - 1, winText);
+        }
+    }
+    private void SetPlacementText(GameObject player, string placementText)
+    {
+        switch (player.tag)
+        {
+            case "Player/1":
+                hudRaceScript.loose1.text = placementText;
+                hudRaceScript.loose1.enabled = true;
+                break;
+            case "Player/2":
+                hudRaceScript.loose2.text = placementText;
+                hudRaceScript.loose2.enabled = true;
+                break;
+            case "Player/3":
+                hudRaceScript.loose3.text = placementText;
+                hudRaceScript.loose3.enabled = true;
+                break;
+            case "Player/4":
+                hudRaceScript.loose4.text = placementText;
+                hudRaceScript.loose4.enabled = true;
+                break;
+        }
+        Invoke("GameOver", 3f);
     }
 }

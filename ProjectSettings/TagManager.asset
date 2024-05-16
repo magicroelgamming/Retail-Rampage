@@ -7,6 +7,19 @@ TagManager:
   - Checkpoint
   - PlayerStart
   - Cart
+  - Board
+  - FinishLine/2
+  - FinishLine/4
+  - FinishLine/1
+  - FinishLine/3
+  - Player/3
+  - Player/4
+  - Player/2
+  - Player/1
+  - FinishLineLoose/1
+  - FinishLineLoose/2
+  - FinishLineLoose/4
+  - FinishLineLoose/3
   layers:
   - Default
   - TransparentFX
