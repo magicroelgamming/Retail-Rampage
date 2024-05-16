@@ -57,7 +57,7 @@ public class HudPongScript : MonoBehaviour
             Player1Win.text = "Player 1 WINS!";
             Player2Loose.enabled = true;
             Player2Loose.text = "Player 2 LOOSES!";
-            Invoke("GameOver",4f);
+            Invoke("GameOver", 4f);
         }
         else if (player2Score == 3)
         {

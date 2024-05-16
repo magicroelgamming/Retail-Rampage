@@ -9,7 +9,7 @@ public class MashRaceCameraFollow : MonoBehaviour
     private void ObjectFollow()
     {
         Vector3 newPosition = transform.position;
-        newPosition.y = targetObject.position.y + 12f;
+        newPosition.z = targetObject.position.z + 10f;
         transform.position = newPosition;
     }
 }
