@@ -30,7 +30,7 @@ public class PongMovementScript : MonoBehaviour
         {
             if (CompareTag($"Player/{i}"))
             {
-                float verticalInput = Input.GetAxis($"LeftStickVertical{players[i-1]}");
+                float verticalInput = Input.GetAxis($"LeftStickVertical{players[i]}");
                 combinedMovement += Vector3.forward * verticalInput * speed;
 
                 float camHeight = camera.orthographicSize;

@@ -40,11 +40,17 @@ public class MashRace : MonoBehaviour
 
         Player[] players = (FindObjectsOfType<Player>()).OrderBy(i => i._score).Reverse().ToArray();
 
+        string message = "234:";
+
         for (int i = 0; i < players.Length; i++)
         {
-            writer.WriteLine($"Player {i + 1} finished in position {i + 1}");
+            message += i+1;
+            if (i+1 != players.Length)
+            {
+                message += ",";
+            }
         }
-
+        writer.Write(message);
         writer.Close();
 
         SceneManager.LoadScene("TheBoard");
