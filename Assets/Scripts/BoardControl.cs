@@ -250,8 +250,6 @@ public class BoardControl : MonoBehaviour
 
             DataManager._TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
 
-            DataManager._playerturn = 0;
-
             _animRotation = false;
 
             CameraStartPlacement();
@@ -283,8 +281,8 @@ public class BoardControl : MonoBehaviour
             }
             else
             {
+                DataManager._playerturn = 0;
                 ContestConceeded(messangerBoySplit[1].Split(','));
-
                 DataManager._contesting = false;
             }
         }
@@ -987,6 +985,7 @@ public class BoardControl : MonoBehaviour
         }
         DataManager._playerMoneyDisplay.text = ((int)DataManager._PlayerInfo[DataManager._currentPlayer][1]).ToString();
         DataManager._tileView = 0;
+        CameraStartPlacement();
         TheShowDetailAndBuyMethod(0);
     }
     private void ContestConceeded(string[] playerFinishingSpots)
