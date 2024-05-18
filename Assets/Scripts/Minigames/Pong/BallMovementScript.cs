@@ -28,7 +28,7 @@ public class BallMovementScript : MonoBehaviour
     }
     void Update()
     {
-        if (hudPong.player1Score >= 3 || hudPong.player2Score >= 3)
+        if (hudPong.player1Score >= 1 || hudPong.player2Score >= 1)
         {
             return;
         }
