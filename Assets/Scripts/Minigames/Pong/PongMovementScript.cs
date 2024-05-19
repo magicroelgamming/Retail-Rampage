@@ -3,20 +3,10 @@ using UnityEngine;
 public class PongMovementScript : MonoBehaviour
 {
     [SerializeField] private Camera camera;
-    private float speed = 20f;
-    private int[] players;
+    private float speed = 40f;
     private void Start()
     {
-        players = new int[2];
-
-        StreamReader Reader = new StreamReader("Assets/Resources/MessengerBoy.txt");
-        string message = Reader.ReadToEnd();
-        Reader.Close();
-        string[] playerBuString = message.Split(':');
-        for (int i = 0; i < playerBuString.Length; i++)
-        {
-            players[i] = int.Parse(playerBuString[i]);
-        }
+      
     }
     void Update()
     {
@@ -30,7 +20,7 @@ public class PongMovementScript : MonoBehaviour
         {
             if (CompareTag($"Player/{i}"))
             {
-                float verticalInput = Input.GetAxis($"LeftStickVertical{players[i]}");
+                float verticalInput = Input.GetAxis($"LeftStickVertical{i}");
                 combinedMovement += Vector3.forward * verticalInput * speed;
 
                 float camHeight = camera.orthographicSize;

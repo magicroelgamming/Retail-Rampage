@@ -10,6 +10,12 @@ public class HudPongScript : MonoBehaviour
     [SerializeField] private Text Player2Win;
     [SerializeField] private Text Player1Loose;
     [SerializeField] private Text Player2Loose;
+    [SerializeField] private Text timeText;
+
+    private Color[] colors = {Color.red, Color.green, Color.blue, Color.yellow};
+
+    private float timeValue = 3;
+
     public int player1Score = 0;
     public int player2Score = 0;
 
@@ -26,6 +32,8 @@ public class HudPongScript : MonoBehaviour
     void Update()
     {
         ScoreText();
+        Timer();
+        ToDisplayTimer(timeValue);
         if (startDelayBeforeMainBoard)
         {
             MessengerBoy();
@@ -47,11 +55,51 @@ public class HudPongScript : MonoBehaviour
 
         SceneManager.LoadScene("TheBoard");
     }
+    private void Timer()
+    {
+        if (timeValue > 0)
+        {
+            timeValue -= Time.deltaTime;
+        }
+    }
+        public void ToDisplayTimer(float timeToDisplay)
+    {
+        if (timeToDisplay < 0)
+        {
+            timeToDisplay = 0;
+        }
+        int seconds = Mathf.CeilToInt(timeToDisplay);
+
+        timeText.color = GetColorForSecond(seconds);
+
+        timeText.text = string.Format("{0}", seconds);
+        if (timeToDisplay == 0)
+        {
+            timeText.enabled = false;
+        }
+    }
+    private Color GetColorForSecond(int second)
+    {
+        switch (second)
+        {
+            case 3:
+                return Color.red;
+            case 2:
+                return Color.green;
+            case 1:
+                return Color.blue;
+            case 0:
+                return Color.yellow;
+            default:
+                return Color.white;
+        }
+    }
+    
     void ScoreText()
     {
         Player1.text = player1Score.ToString();
         Player2.text = player2Score.ToString();
-        if (player1Score == 3)
+        if (player1Score == 5)
         {
             Player1Win.enabled = true;
             Player1Win.text = "Player 1 WINS!";
@@ -59,7 +107,7 @@ public class HudPongScript : MonoBehaviour
             Player2Loose.text = "Player 2 LOOSES!";
             Invoke("GameOver", 4f);
         }
-        else if (player2Score == 3)
+        else if (player2Score == 5)
         {
             Player2Win.enabled = true;
             Player2Win.text = "Player 2 WINS!";

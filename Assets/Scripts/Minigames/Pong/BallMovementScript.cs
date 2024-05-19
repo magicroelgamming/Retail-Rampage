@@ -19,7 +19,7 @@ public class BallMovementScript : MonoBehaviour
     private bool onResetDelay = true;
 
     private float resetTimer;
-    private float resetDelay = 1.5f;
+    private float resetDelay = 3f;
     void Start()
     {
         currentSpeed = speed;
@@ -90,6 +90,7 @@ public class BallMovementScript : MonoBehaviour
     }
     void ResetBall()
     {
+        currentSpeed = speed;
         transform.position = Vector3.zero;
         moveDirection = new Vector3(Random.Range(0.7f, 1f) * sign, 0f, Random.Range(-0.3f, 0.3f)).normalized;
         onResetDelay = true;
