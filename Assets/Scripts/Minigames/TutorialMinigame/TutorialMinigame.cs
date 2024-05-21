@@ -31,7 +31,7 @@ public class TutorialMinigame : MonoBehaviour
         
         reader.Close();
 
-        _minigameId = Convert.ToInt32(_message.Split(";")[0]);
+        _minigameId = Convert.ToInt32(_message.Split("!")[0]);
         //_player.source = Sources[_minigameId];
 
 
@@ -80,7 +80,7 @@ public class TutorialMinigame : MonoBehaviour
         if (Input.GetButtonDown("AButton1"))
         {
             StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
-            writer.Write(_message.Split(";")[1]);
+            writer.Write(_message.Split("!")[1]);
             writer.Close();
             SceneManager.LoadScene(Scenes[_minigameId]);
         }
