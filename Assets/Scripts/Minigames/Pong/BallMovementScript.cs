@@ -30,6 +30,7 @@ public class BallMovementScript : MonoBehaviour
     {
         if (hudPong.player1Score >= 1 || hudPong.player2Score >= 1)
         {
+            hudPong.GameOver();
             return;
         }
         if (!hudPong.startDelayBeforeMainBoard)

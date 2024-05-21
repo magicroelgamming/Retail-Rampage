@@ -43,7 +43,7 @@ public class HudPongScript : MonoBehaviour
     {
         StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
 
-        if (!Player1Win)
+        if (player1Score != 0)
         {
             writer.Write("1V1:true");
         }
@@ -99,7 +99,7 @@ public class HudPongScript : MonoBehaviour
     {
         Player1.text = player1Score.ToString();
         Player2.text = player2Score.ToString();
-        if (player1Score == 5)
+        if (player1Score == 1)
         {
             Player1Win.enabled = true;
             Player1Win.text = "Player 1 WINS!";
@@ -107,7 +107,7 @@ public class HudPongScript : MonoBehaviour
             Player2Loose.text = "Player 2 LOOSES!";
             Invoke("GameOver", 4f);
         }
-        else if (player2Score == 5)
+        else if (player2Score == 1)
         {
             Player2Win.enabled = true;
             Player2Win.text = "Player 2 WINS!";

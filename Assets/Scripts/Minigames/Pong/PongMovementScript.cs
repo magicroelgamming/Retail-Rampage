@@ -16,11 +16,11 @@ public class PongMovementScript : MonoBehaviour
     {
         Vector3 combinedMovement = Vector3.zero;
         float screenWidthOffset = 16f;
-        for (int i = 1; i <= 2; i++)
+        for (int i = 0; i < 2; i++)
         {
-            if (CompareTag($"Player/{i}"))
+            if (CompareTag($"Player/{i+1}"))
             {
-                float verticalInput = Input.GetAxis($"LeftStickVertical{i}");
+                float verticalInput = Input.GetAxis($"LeftStickVertical{i+1}");
                 combinedMovement += Vector3.forward * verticalInput * speed;
 
                 float camHeight = camera.orthographicSize;

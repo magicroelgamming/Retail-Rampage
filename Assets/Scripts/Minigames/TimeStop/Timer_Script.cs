@@ -82,7 +82,7 @@ public class Timer : MonoBehaviour
     {
         StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
 
-        if (!resultText1)
+        if (resultText1.text.Contains("Wins"))
         {
             writer.Write("1V1:true");
         }
