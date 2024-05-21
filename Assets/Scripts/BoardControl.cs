@@ -705,6 +705,7 @@ public class BoardControl : MonoBehaviour
                 write.Close();
 
                 SceneManager.LoadScene("EndScreen");
+                DestroyObject(this);
             }
         }
     }

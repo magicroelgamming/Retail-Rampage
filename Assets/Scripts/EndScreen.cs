@@ -26,8 +26,6 @@ public class EndScreen : MonoBehaviour
     void Start()
     {
 
-
-
         StreamReader reader = new StreamReader("Assets/Resources/MessengerBoy.txt");
 
         _winners = reader.ReadLine();
