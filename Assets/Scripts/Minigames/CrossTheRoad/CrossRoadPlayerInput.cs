@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 public class CrossRoadPlayerInput : MonoBehaviour
 {
-    private CharacterController _charController;
+    private Rigidbody _rb;
     public float Speed;
     public int PlayerId;
     [SerializeField]
@@ -19,17 +19,20 @@ public class CrossRoadPlayerInput : MonoBehaviour
     private TextMeshProUGUI _playerScore;
 
     void Start()
-    {    
-        _charController = GetComponent<CharacterController>();
-        _playerScore = GameObject.Find("ScorePlayer" + PlayerId).GetComponent<TextMeshProUGUI>();
+    {
+        //_rb.velocity = Vector3.zero;
         ReturnToStart();
+        _rb = GetComponent<Rigidbody>();
+
+        _playerScore = GameObject.Find("ScorePlayer" + PlayerId).GetComponent<TextMeshProUGUI>();
+        
     }
 
     void Update()
     {
+        Vector3 movement = new Vector3(Input.GetAxis("LeftStickHorizontal" + PlayerId), 0f, Input.GetAxis("LeftStickVertical" + PlayerId)).normalized;
         if (IsPlaying)
-            _charController.Move(new Vector3(Input.GetAxis("LeftStickHorizontal" + PlayerId) * Speed * Time.deltaTime, 0f, Input.GetAxis("LeftStickVertical" + PlayerId) * Speed * Time.deltaTime));
-        transform.position = new Vector3(transform.position.x, 0.25f, transform.position.z);
+            _rb.velocity += movement * Speed * Time.deltaTime;
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -57,10 +60,9 @@ public class CrossRoadPlayerInput : MonoBehaviour
         {
             if (gameObject.GetComponent<PlayerStartPoint>().ID == PlayerId)
             {
+                
                 transform.GetChild(0).gameObject.SetActive(false);
-                _charController.enabled = false;
-                transform.position = new Vector3(gameObject.transform.position.x, 0.25f, gameObject.transform.position.z);
-                _charController.enabled = true;
+                transform.position = new Vector3(gameObject.transform.position.x, 0.10f, gameObject.transform.position.z);
                 _hasItem = false;
             }
         }
