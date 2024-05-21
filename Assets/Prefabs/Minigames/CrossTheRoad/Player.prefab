@@ -254,4 +254,4 @@ MonoBehaviour:
   Speed: 4
   PlayerId: 4
   Score: 0
-  IsPlaying: 1
+  IsPlaying: 0

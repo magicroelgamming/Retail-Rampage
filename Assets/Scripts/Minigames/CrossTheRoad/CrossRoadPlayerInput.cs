@@ -14,7 +14,7 @@ public class CrossRoadPlayerInput : MonoBehaviour
     [SerializeField]
     public int Score;
     private bool _hasItem;
-    public bool IsPlaying;
+    public bool IsPlaying = false;
 
     private TextMeshProUGUI _playerScore;
 
