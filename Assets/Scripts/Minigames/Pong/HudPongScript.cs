@@ -62,7 +62,7 @@ public class HudPongScript : MonoBehaviour
             timeValue -= Time.deltaTime;
         }
     }
-        public void ToDisplayTimer(float timeToDisplay)
+    public void ToDisplayTimer(float timeToDisplay)
     {
         if (timeToDisplay < 0)
         {
