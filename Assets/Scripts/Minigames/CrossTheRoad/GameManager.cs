@@ -5,6 +5,7 @@ using UnityEngine;
 using TMPro;
 using System.IO;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
     public int[] ArrayPlayersScores;
     public GameObject Player;
     public Material MatRed, MatGreen, MatYellow, MatBlue;
+    private float _timeValue = 3;
 
     void Start()
     {
@@ -47,17 +49,68 @@ public class GameManager : MonoBehaviour
         _timer = _maxTimerTime;
     }
 
+
+    public void ToDisplayTimer(float timeToDisplay)
+    {
+        if (timeToDisplay < 0)
+        {
+            timeToDisplay = 0;
+        }
+        int seconds = Mathf.CeilToInt(timeToDisplay);
+
+        TimeText.color = GetColorForSecond(seconds);
+
+        TimeText.text = string.Format("{0}", seconds);
+        if (timeToDisplay == 0)
+        {
+            TimeText.enabled = false;
+            foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
+            {
+                player.GetComponent<CrossRoadPlayerInput>().IsPlaying = true;
+            }
+        }
+    }
+    private void Timer()
+    {
+        if (_timeValue > 0)
+        {
+            _timeValue -= Time.deltaTime;
+        }
+    }
+    private Color GetColorForSecond(int second)
+    {
+        switch (second)
+        {
+            case 3:
+                return Color.red;
+            case 2:
+                return Color.green;
+            case 1:
+                return Color.blue;
+            case 0:
+                return Color.yellow;
+            default:
+                return Color.white;
+        }
+    }
     void Update()
     {
-        _timer -= Time.deltaTime;
-        if (_timer < 0)
-            EndGame();
-        TimerText.text = ((int)_timer).ToString();
-
-        if (EndCanvas.gameObject.activeSelf)
+        
+        Timer();
+        ToDisplayTimer(_timeValue);
+        if (TimeText.enabled == false)
         {
-            Invoke("MessengerBoy", 4f);
+            _timer -= Time.deltaTime;
+            if (_timer < 0)
+                EndGame();
+            TimerText.text = "Timer: " + _timer;
+
+            if (EndCanvas.gameObject.activeSelf)
+            {
+                Invoke("MessengerBoy", 4f);
+            }
         }
+        
     }
     private void MessengerBoy()
     {

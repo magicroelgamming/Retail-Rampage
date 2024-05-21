@@ -684,38 +684,14 @@ public class BoardControl : MonoBehaviour
             if (DataManager._roundNumber <5)
             {
                 DataManager._contesting = true;
-                StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
-                writer.WriteLine(DataManager.PlayerCount);
-                writer.Close();
+
                 // You need to add the method ContestConceeded(int[]) to add the money and who goes when to each player. the int[] is to see which spot they ended in the contest spot 0 in the array is always player 1 the number you add on that spot is how well player 1 did and so on for the other players -M
 
                 //change DataManager._contestNumber to whezre your code is and make DataManager._contesting = true to test your minigame;
-                switch (rn.Next(1, 4))
-                {
-                    case 1:
-                        // you can put your 2-4 player minigame in here -M
-                        SceneManager.LoadScene("Game_FindInStore");
-                        InvisibleBoard();
-                        break;
-
-                    case 4:
-                        // you can put your 2-4 player minigame in here -M
-                        SceneManager.LoadScene("MashRace");
-                        InvisibleBoard();
-                        break;
-
-                    case 2:
-                        // you can put your 2-4 player minigame in here -M
-                        SceneManager.LoadScene("ProductFall");
-                        InvisibleBoard();
-                        break;
-
-                    case 3:
-                        // you can put your minigames 1v1's in here -M
-                        SceneManager.LoadScene("CrossTheRoad");
-                        InvisibleBoard();
-                        break;
-                }
+                int minigame = rn.Next(1, 4);
+                WriteForMiniGames(DataManager.PlayerCount.ToString(), minigame);
+                SceneManager.LoadScene("TutorialMinigame");
+                InvisibleBoard();
                 DataManager._playerMoneyDisplay.text = DataManager._PlayerInfo[1].ToString();
             }
             else
@@ -732,6 +708,14 @@ public class BoardControl : MonoBehaviour
             }
         }
     }
+
+    private void WriteForMiniGames(string neededForMiniGame, int minigameNumber)
+    {
+        StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
+        writer.WriteLine(minigameNumber + ";" +neededForMiniGame);
+        writer.Close();
+    }
+
     private void InvisibleBoard()
     {
         foreach (GameObject tile in DataManager._tilespots)
@@ -841,6 +825,7 @@ public class BoardControl : MonoBehaviour
         DataManager._selectedTile[1] += row;
         //Debug.Log(DataManager._selectedTile[0].ToString() + " _ "+ DataManager._selectedTile[1].ToString());
         DataManager._tilespots[DataManager._selectedTile[0], DataManager._selectedTile[1]].GetComponent<MeshRenderer>().material = _selected;
+        CameraStartPlacement();
         //Debug.Log("--------------------------------------------------------------");
     }
     private void TheShowDetailAndBuyMethod(int changeBy)
@@ -925,7 +910,7 @@ public class BoardControl : MonoBehaviour
             if (DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][0] != DataManager._playerColors[4])
             {
                 _animRotation = false;
-                DataManager._battleNumber = rn.Next(1, 4);
+                DataManager._battleNumber = rn.Next(1, 5);
                 DataManager._batteling = true;
                 int otherPlayer = 0;
                 for (int i = 0; i < _playerColors.Length; i++)
@@ -936,36 +921,11 @@ public class BoardControl : MonoBehaviour
                     }
                     
                 }
+                WriteForMiniGames((DataManager._currentPlayer + 1).ToString() + ":" + otherPlayer.ToString(), DataManager._battleNumber);
+                SceneManager.LoadScene("TutorialMinigame");
+                InvisibleBoard();
 
-                StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
-                writer.WriteLine((DataManager._currentPlayer + 1).ToString() + ":" + otherPlayer.ToString());
-                writer.Close();
-                switch (DataManager._battleNumber)
-                {
-                    case 1:
-                        // you can put your minigames 1v1's in here -M
-                        SceneManager.LoadScene("Pong");
-                        InvisibleBoard();
-                        break;
-
-                    case 2:
-                        // you can put your minigames 1v1's in here -M
-                        SceneManager.LoadScene("TimeStop");
-                        InvisibleBoard();
-                        break;
-
-                    case 3:
-                        // you can put your minigames 1v1's in here -M
-                        SceneManager.LoadScene("PullTheRope");
-                        InvisibleBoard();
-                        break;
-
-                    case 4:
-                        // you can put your minigames 1v1's in here -M
-                        SceneManager.LoadScene("ButtonMashingMinigame");
-                        InvisibleBoard();
-                        break;
-                }
+                
             }
             else
             {
@@ -985,6 +945,7 @@ public class BoardControl : MonoBehaviour
         }
         DataManager._playerMoneyDisplay.text = ((int)DataManager._PlayerInfo[DataManager._currentPlayer][1]).ToString();
         DataManager._tileView = 0;
+        _animRotation = true;
         CameraStartPlacement();
         TheShowDetailAndBuyMethod(0);
     }
