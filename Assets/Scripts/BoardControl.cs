@@ -925,7 +925,7 @@ public class BoardControl : MonoBehaviour
             if (DataManager._tiles[DataManager._selectedTile[0], DataManager._selectedTile[1]][0] != DataManager._playerColors[4])
             {
                 _animRotation = false;
-                DataManager._battleNumber = rn.Next(1, 4);
+                DataManager._battleNumber = rn.Next(1, 5);
                 DataManager._batteling = true;
                 int otherPlayer = 0;
                 for (int i = 0; i < _playerColors.Length; i++)
