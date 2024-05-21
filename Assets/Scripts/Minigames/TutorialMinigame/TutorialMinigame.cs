@@ -31,7 +31,7 @@ public class TutorialMinigame : MonoBehaviour
         reader.Close();
 
         _minigameId = Convert.ToInt32(_message.Split(";")[0]);
-        _player.source = Sources[_minigameId];
+        //_player.source = Sources[_minigameId];
 
 
         switch (_minigameId)
