@@ -1717,7 +1717,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 60
+  m_text: 40
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bc0c6a97dcec65a44afe105b937f02be, type: 2}
   m_sharedMaterial: {fileID: -4132149576969048534, guid: bc0c6a97dcec65a44afe105b937f02be, type: 2}
@@ -2400,7 +2400,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TimerText: {fileID: 802082958}
   OutcomeText: {fileID: 9117710856941645375}
-  TimeText: {fileID: 867807628}
   PlayingCanvas: {fileID: 1400968492}
   EndCanvas: {fileID: 1007382700}
   ArrayPlayers: []
@@ -2410,6 +2409,7 @@ MonoBehaviour:
   MatGreen: {fileID: 2100000, guid: 1d9065f57cbc6874193ca557d1e5e3ff, type: 2}
   MatYellow: {fileID: 2100000, guid: 355b755573e4d144fa2095b3eeb78de9, type: 2}
   MatBlue: {fileID: 2100000, guid: 5715d4ae19aeb77419f6168eef144d22, type: 2}
+  TimeText: {fileID: 867807628}
 --- !u!4 &1235183524
 Transform:
   m_ObjectHideFlags: 0

@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public GameObject Player;
     public Material MatRed, MatGreen, MatYellow, MatBlue;
     private float _timeValue = 3;
+    public TextMeshProUGUI TimeText;
 
     void Start()
     {
@@ -103,7 +104,7 @@ public class GameManager : MonoBehaviour
             _timer -= Time.deltaTime;
             if (_timer < 0)
                 EndGame();
-            TimerText.text = "Timer: " + _timer;
+            TimerText.text = ((int) _timer).ToString();
 
             if (EndCanvas.gameObject.activeSelf)
             {
