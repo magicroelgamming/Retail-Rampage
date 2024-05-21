@@ -10,8 +10,8 @@ using UnityEngine.UIElements;
 public class GameManager : MonoBehaviour
 {
     private float _timer;
-    private float _maxTimerTime = 60f;
-    public TextMeshProUGUI TimerText, OutcomeText, TimeText;
+    private float _maxTimerTime = 40f;
+    public TextMeshProUGUI TimerText, OutcomeText;
     public Canvas PlayingCanvas, EndCanvas;
     public GameObject[] ArrayPlayers;
     public int[] ArrayPlayersScores;
