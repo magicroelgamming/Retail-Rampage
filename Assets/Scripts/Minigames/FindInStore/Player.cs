@@ -28,8 +28,11 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 movement = new Vector3(-Input.GetAxis("LeftStickVertical" +  _playerID), 0, Input.GetAxis("LeftStickHorizontal" + _playerID));
-        _characterController.Move(movement * Time.deltaTime * _speed);
+        if (_itemChanger.__currentItem != null)
+        {
+            Vector3 movement = new Vector3(-Input.GetAxis("LeftStickVertical" + _playerID), 0, Input.GetAxis("LeftStickHorizontal" + _playerID));
+            _characterController.Move(movement * Time.deltaTime * _speed);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
