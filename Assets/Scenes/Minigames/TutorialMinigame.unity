@@ -628,6 +628,7 @@ GameObject:
   - component: {fileID: 6531744612064941174}
   - component: {fileID: 1155570587222416238}
   - component: {fileID: 197560318589973001}
+  - component: {fileID: 6531744612064941175}
   m_Layer: 5
   m_Name: TutorialCanvas
   m_TagString: Untagged
@@ -779,6 +780,30 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &6531744612064941175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3651573992876092371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 334d620e367e22a46b70b0b57c15948b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sources: 
+  Scenes:
+  - Pong
+  - TimeStop
+  - PullTheRope
+  - ButtonMashingMinigame
+  - Game_FindInStore
+  - MashRace
+  - ProductFall
+  - CrossTheRoad
+  TitleText: {fileID: 7963285701284253776}
+  ExplanationText: {fileID: 2306352593807592082}
 --- !u!114 &7097929792937898820
 MonoBehaviour:
   m_ObjectHideFlags: 0
