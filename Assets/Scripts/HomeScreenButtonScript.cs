@@ -1,5 +1,6 @@
 using System.Collections;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -19,7 +20,7 @@ public class HomeScreenButtonScript : MonoBehaviour
     ArrayList[,] _tiles = new ArrayList[5,5];
     GameObject[,] _tilespots = new GameObject[5,5];
 
-    public Text PlayersText;
+    public TextMeshProUGUI PlayersText;
     private bool[] playerJoined = new bool[4];
     public bool startDelayBeforeMainBoard = false;
     private int playerReadyCount = 0;
@@ -255,7 +256,7 @@ public class HomeScreenButtonScript : MonoBehaviour
         Camera theCamera = Camera.main;
         _center.transform.position = _tilespots[2,2].transform.position;
 
-        theCamera.transform.localPosition = new Vector3(-1.5f, 5.5f, -8.5f);
+        theCamera.transform.localPosition = new Vector3(0f, 3f, -6f);
         theCamera.transform.localEulerAngles = new Vector3(33,0,0);
     }
 }

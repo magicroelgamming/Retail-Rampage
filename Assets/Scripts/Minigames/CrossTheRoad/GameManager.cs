@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     private float _timer;
-    private float _maxTimerTime = 60f;
+    private float _maxTimerTime = 40f;
     public TextMeshProUGUI TimerText, OutcomeText;
     public Canvas PlayingCanvas, EndCanvas;
     public GameObject[] ArrayPlayers;
@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
         _timer -= Time.deltaTime;
         if (_timer < 0)
             EndGame();
-        TimerText.text = "Timer: " + _timer;
+        TimerText.text = ((int)_timer).ToString();
 
         if (EndCanvas.gameObject.activeSelf)
         {
