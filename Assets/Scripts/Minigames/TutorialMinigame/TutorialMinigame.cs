@@ -15,6 +15,7 @@ public class TutorialMinigame : MonoBehaviour
     public Scene[] Scenes;
     public TextMeshProUGUI TitleText, ExplanationText;
     private int _minigameId;
+    private string _message;
 
     void Start()
     {
@@ -24,11 +25,12 @@ public class TutorialMinigame : MonoBehaviour
 
     private void ReadMessangerBoy()
     {
-        StreamReader Reader = new StreamReader("Assets/Resources/MessengerBoy.txt");
-        string message = Reader.ReadToEnd();
-        Reader.Close();
+        StreamReader reader = new StreamReader("Assets/Resources/MessengerBoy.txt");
+        _message = reader.ReadToEnd();
+        
+        reader.Close();
 
-        _minigameId = Convert.ToInt32(message.Split(";")[0]);
+        _minigameId = Convert.ToInt32(_message.Split(";")[0]);
         _player.source = Sources[_minigameId];
 
 
@@ -75,6 +77,9 @@ public class TutorialMinigame : MonoBehaviour
     {
         if (Input.GetButtonDown("AButton1"))
         {
+            StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
+            writer.Write(_message.Split(";"[1]));
+            writer.Close();
             SceneManager.LoadScene(Scenes[_minigameId].name);
         }
     }
