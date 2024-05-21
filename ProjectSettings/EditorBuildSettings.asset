@@ -44,4 +44,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Minigames/ButtonMashingMinigame.unity
     guid: 9a163c050908b104bbd0680871dff9bf
+  - enabled: 1
+    path: Assets/Scenes/Minigames/TutorialMinigame.unity
+    guid: 971e42f0a12cb184c8f2d7c07bf5d979
   m_configObjects: {}
