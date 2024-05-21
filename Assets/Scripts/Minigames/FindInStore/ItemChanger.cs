@@ -14,6 +14,9 @@ public class ItemChanger : MonoBehaviour
     private TextMeshProUGUI _currentItemDisplay;
 
     [SerializeField]
+    private TextMeshProUGUI _counterDisplay;
+
+    [SerializeField]
     private float _gameCountdown = 60;
 
     [SerializeField]
@@ -26,6 +29,8 @@ public class ItemChanger : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        __currentItem = null;
+        
         _countdown = _baseCountdown;
 
         _currentItemDisplay.text = "Ready?";
@@ -42,8 +47,15 @@ public class ItemChanger : MonoBehaviour
             MessengerBoy();
         }
 
+        if (__currentItem == null)
+        {
+            _counterDisplay.text = ((int)(_countdown)).ToString();
+        }
+        else
+        {
+            _counterDisplay.gameObject.SetActive(false);
+        }
 
-        
 
         if (_countdown <= 0)
         {
@@ -108,6 +120,4 @@ public class ItemChanger : MonoBehaviour
         
         SceneManager.LoadScene("TheBoard");
     }
-
-
 }
