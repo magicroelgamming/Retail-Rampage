@@ -290,8 +290,9 @@ public class BoardControl : MonoBehaviour
                 {
                     BattleConceeded(false);
                 }
+                CameraStartPlacement();
+
                 DataManager._batteling = false;
-                DataManager._contesting = false;
             }
             else
             {
@@ -681,17 +682,17 @@ public class BoardControl : MonoBehaviour
                     _animRotationHeight + Mathf.Sin(Time.time * 1.5f) * 0.1f, DataManager._cameraMain.transform.localPosition.z);
             }
 
-            
-        }
-        if (_animOnBoardMovement)
-        {
-            if (_animOnBoardFrame <= 1)
+            if (_animOnBoardMovement)
             {
-                Vector3 cameraPosition = Vector3.Lerp(DataManager._cameraMain.transform.localPosition, new Vector3(_tileToCameraX, 4, _tileToCameraZ + _onBoardCameraOffset), _animOnBoardFrame);
-                DataManager._cameraMain.transform.localPosition = cameraPosition;
-                _animOnBoardFrame += 1f / _animOnBoardSmoothness;
+                if (_animOnBoardFrame <= 1)
+                {
+                    Vector3 cameraPosition = Vector3.Lerp(DataManager._cameraMain.transform.localPosition, new Vector3(_tileToCameraX, 4, _tileToCameraZ + _onBoardCameraOffset), _animOnBoardFrame);
+                    DataManager._cameraMain.transform.localPosition = cameraPosition;
+                    _animOnBoardFrame += 1f / _animOnBoardSmoothness;
+                }
             }
         }
+        
     }
 
     private void EndTurnMethod()
@@ -941,6 +942,7 @@ public class BoardControl : MonoBehaviour
                 _animRotation = false;
                 DataManager._battleNumber = rn.Next(1, 5);
                 DataManager._batteling = true;
+                DataManager._tileView = 0;
                 int otherPlayer = 0;
                 for (int i = 0; i < _playerColors.Length; i++)
                 {
@@ -974,9 +976,14 @@ public class BoardControl : MonoBehaviour
         }
         DataManager._playerMoneyDisplay.text = ((int)DataManager._PlayerInfo[DataManager._currentPlayer][1]).ToString();
         DataManager._tileView = 0;
-        _animRotation = true;
+        _animRotation = false;
         CameraStartPlacement();
         TheShowDetailAndBuyMethod(0);
+        if (DataManager._batteling)
+        {
+            PlayerTurn();
+        }
+        
     }
     private void ContestConceeded(string[] playerFinishingSpots)
     {
