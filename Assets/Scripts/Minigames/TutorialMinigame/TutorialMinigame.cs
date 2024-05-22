@@ -61,7 +61,7 @@ public class TutorialMinigame : MonoBehaviour
                 ExplanationText.text = "Move with the Left Stick to be the first to reach the aisle with the desired product!";
                 _sceneName = "Game_FindInStore";
                 break;
-            case 12:
+            case 14:
                 TitleText.text = "Mash Race!";
                 ExplanationText.text = "Spam the A button to climb the shelves! \nFirst one to climb to the top, wins!";
                 _sceneName = "MashRace";
@@ -71,7 +71,7 @@ public class TutorialMinigame : MonoBehaviour
                 ExplanationText.text = "Move with the Left Stick to catch the items falling down! \nBe sure to avoid the bombs though! \nThe one with the most items wins!";
                 _sceneName = "ProductFall";
                 break;
-            case 14:
+            case 12:
                 TitleText.text = "Cross The Road!";
                 ExplanationText.text = "Move with the Left Stick and cross the road! \nGather as many items from the other side and bring them back! \nThe one with the most items wins!";
                 _sceneName = "CrossTheRoad";
