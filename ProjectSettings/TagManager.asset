@@ -20,6 +20,7 @@ TagManager:
   - FinishLineLoose/2
   - FinishLineLoose/4
   - FinishLineLoose/3
+  - Emote
   layers:
   - Default
   - TransparentFX
