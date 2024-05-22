@@ -2635,6 +2635,8 @@ MonoBehaviour:
   - {fileID: 919132149155446097, guid: 667974dc8644c7b438cbedf0dafd4390, type: 3}
   - {fileID: 919132149155446097, guid: 667974dc8644c7b438cbedf0dafd4390, type: 3}
   - {fileID: 919132149155446097, guid: 667974dc8644c7b438cbedf0dafd4390, type: 3}
+  _4x4Map: {fileID: 5259469410905012465, guid: f76412fdbedf0714ea2b0f16b235cbd0, type: 3}
+  _5x5Map: {fileID: 5259469410905012465, guid: 47a2e7d6d751fc14da437991a72f9ced, type: 3}
 --- !u!4 &1696435475
 Transform:
   m_ObjectHideFlags: 0

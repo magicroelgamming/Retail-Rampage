@@ -39,36 +39,36 @@ public class TutorialMinigame : MonoBehaviour
         {
             case 1:
                 TitleText.text = "Pong!";
-                ExplanationText.text = "";
+                ExplanationText.text = "Move up and down with the Left Stick to move your paddle! \nWhen the ball hits the edge, the other player gets a point!";
                 _sceneName = "Pong";
                 break;
             case 2:
                 TitleText.text = "Time Stop!";
-                ExplanationText.text = "";
+                ExplanationText.text = "Press A to press the button first! \nHit it before the other player and you win!";
                 break;
             case 3:
                 TitleText.text = "Pull The Rope!";
-                ExplanationText.text = "";
+                ExplanationText.text = "Repeatedly move the Left Stick back and forth to pull the rope! \nThe first one to pull the rope to their side, wins!";
                 break;
             case 4:
                 TitleText.text = "Button Mash!";
-                ExplanationText.text = "";
+                ExplanationText.text = "Spam the B button! \nThe one who presses it the most, wins!";
                 break;
             case 11:
                 TitleText.text = "Find In Store";
-                ExplanationText.text = "";
+                ExplanationText.text = "Move with the Left Stick to be the first to reach the aisle with the desired product!";
                 break;
             case 12:
                 TitleText.text = "Mash Race!";
-                ExplanationText.text = "";
+                ExplanationText.text = "Spam the A button to climb the shelves! \nFirst one to climb to the top, wins!";
                 break;
             case 13:
                 TitleText.text = "Product Fall!";
-                ExplanationText.text = "";
+                ExplanationText.text = "Move with the Left Stick to catch the items falling down! \nBe sure to avoid the bombs though! \nThe one with the most items wins!";
                 break;
             case 14:
                 TitleText.text = "Cross The Road!";
-                ExplanationText.text = "";
+                ExplanationText.text = "Move with the Left Stick and cross the road! \nGather as many items from the other side and bring them back! \nThe one with the most items wins!";
                 break;
         }
         

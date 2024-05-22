@@ -51,6 +51,12 @@ public class BoardControl : MonoBehaviour
     [SerializeField]
     private GameObject[] _shopPrefabs;
 
+    [SerializeField]
+    private GameObject _4x4Map;
+
+    [SerializeField]
+    private GameObject _5x5Map;
+
 
     private bool _animRotation;
 
@@ -110,6 +116,12 @@ public class BoardControl : MonoBehaviour
         static public TextMeshProUGUI _playerNumberDisplay;
 
         static public GameObject[] _shopPrefabs;
+
+        [SerializeField]
+        static public GameObject _4x4Map;
+
+        [SerializeField]
+        static public GameObject _5x5Map;
 
 
         static public GameObject _orbit;
@@ -174,6 +186,8 @@ public class BoardControl : MonoBehaviour
             DataManager._playerMoneyDisplay = _playerMoneyDisplay;
             DataManager._playerNumberDisplay = _playerNumberDisplay;
             DataManager._shopPrefabs = _shopPrefabs;
+            DataManager._4x4Map = _4x4Map;
+            DataManager._5x5Map = _5x5Map;
             DataManager._orbit = _orbit;
 
 
@@ -551,6 +565,17 @@ public class BoardControl : MonoBehaviour
 
     private void GroundPlatePlacing()
     {
+        //places environment around tiles
+        if (DataManager._columns * DataManager._rows == 16) //for 4x4 grid
+        {
+            GameObject map = Instantiate(DataManager._4x4Map, new Vector3(2.1f,-1f,8.1f), Quaternion.identity);
+        }
+        else if (DataManager._columns * DataManager._rows == 25) //for 5x5 grid
+        {
+            GameObject map = Instantiate(DataManager._5x5Map, new Vector3(3.1f, -1f, 8.25f), Quaternion.identity);
+        }
+
+        //places gound plates and buildings
         for (int i = 0; i < DataManager._columns; i++)
         {
             for (int j = 0; j < DataManager._rows; j++)
@@ -562,6 +587,7 @@ public class BoardControl : MonoBehaviour
                 NewBuilding.transform.localScale = NewBuilding.transform.localScale / 4;
                 NewBuilding.transform.parent = NewGroundPlate.transform;
                 NewBuilding.transform.position = NewGroundPlate.transform.position + new Vector3(0, 0.32f, 0);
+                NewBuilding.transform.rotation = Quaternion.Euler(0,-90,0); //rotates the buildings to the camera
 
                 //Tell me te explain this if you don't get this part -M
                 Material NewGroundPlateMaterial = (Material)((ArrayList)DataManager._tiles[i, j])[0];
