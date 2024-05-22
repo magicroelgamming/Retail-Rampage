@@ -855,7 +855,6 @@ public class BoardControl : MonoBehaviour
         DataManager._selectedTile[1] += row;
         //Debug.Log(DataManager._selectedTile[0].ToString() + " _ "+ DataManager._selectedTile[1].ToString());
         DataManager._tilespots[DataManager._selectedTile[0], DataManager._selectedTile[1]].GetComponent<MeshRenderer>().material = _selected;
-        CameraStartPlacement();
         //Debug.Log("--------------------------------------------------------------");
     }
     private void TheShowDetailAndBuyMethod(int changeBy)
