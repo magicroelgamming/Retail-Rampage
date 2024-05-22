@@ -48,7 +48,7 @@ public class CrossRoadPlayerInput : MonoBehaviour
         if (other.tag == "PlayerStart" && other.GetComponent<PlayerStartPoint>().ID == PlayerId && _hasItem)
         {
             Score++;
-            _playerScore.text = "Player " + (PlayerId) + " \n Score: " + Score;
+            _playerScore.text = "Player " + (PlayerId) + " \nScore: " + Score;
             _hasItem = false;
             transform.GetChild(0).gameObject.SetActive(false);
         }
