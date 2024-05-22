@@ -689,7 +689,7 @@ public class BoardControl : MonoBehaviour
 
                 //change DataManager._contestNumber to whezre your code is and make DataManager._contesting = true to test your minigame;
                 int minigame = rn.Next(1, 4);
-                WriteForMiniGames((DataManager.PlayerCount+10).ToString(), minigame);
+                WriteForMiniGames((DataManager.PlayerCount).ToString(), minigame + 10);
                 SceneManager.LoadScene("TutorialMinigame");
                 InvisibleBoard();
                 DataManager._playerMoneyDisplay.text = DataManager._PlayerInfo[1].ToString();
