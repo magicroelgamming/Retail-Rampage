@@ -739,8 +739,9 @@ public class BoardControl : MonoBehaviour
     private void WriteForMiniGames(string neededForMiniGame, int minigameNumber)
     {
         StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
+        Debug.Log(minigameNumber);
         Debug.Log(neededForMiniGame);
-        string toSend = minigameNumber + ";" + neededForMiniGame;
+        string toSend = minigameNumber + "!" + neededForMiniGame;
         writer.WriteLine(toSend);
         writer.Close();
     }
