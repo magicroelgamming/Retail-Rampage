@@ -12,7 +12,6 @@ public class TutorialMinigame : MonoBehaviour
 {
     private VideoPlayer _player;
     public VideoSource[] Sources;
-    public string[] Scenes;
     public TextMeshProUGUI TitleText, ExplanationText;
     private int _minigameId;
     private string _message;
@@ -45,30 +44,37 @@ public class TutorialMinigame : MonoBehaviour
             case 2:
                 TitleText.text = "Time Stop!";
                 ExplanationText.text = "Press A to press the button first! \nHit it before the other player and you win!";
+                _sceneName = "TimeStop";
                 break;
             case 3:
                 TitleText.text = "Pull The Rope!";
                 ExplanationText.text = "Repeatedly move the Left Stick back and forth to pull the rope! \nThe first one to pull the rope to their side, wins!";
+                _sceneName = "PullTheRope";
                 break;
             case 4:
                 TitleText.text = "Button Mash!";
                 ExplanationText.text = "Spam the B button! \nThe one who presses it the most, wins!";
+                _sceneName = "ButtonMashingMinigame";
                 break;
             case 11:
                 TitleText.text = "Find In Store";
                 ExplanationText.text = "Move with the Left Stick to be the first to reach the aisle with the desired product!";
+                _sceneName = "Game_FindInStore";
                 break;
             case 12:
                 TitleText.text = "Mash Race!";
                 ExplanationText.text = "Spam the A button to climb the shelves! \nFirst one to climb to the top, wins!";
+                _sceneName = "MashRace";
                 break;
             case 13:
                 TitleText.text = "Product Fall!";
                 ExplanationText.text = "Move with the Left Stick to catch the items falling down! \nBe sure to avoid the bombs though! \nThe one with the most items wins!";
+                _sceneName = "ProductFall";
                 break;
             case 14:
                 TitleText.text = "Cross The Road!";
                 ExplanationText.text = "Move with the Left Stick and cross the road! \nGather as many items from the other side and bring them back! \nThe one with the most items wins!";
+                _sceneName = "CrossTheRoad";
                 break;
         }
         
@@ -82,7 +88,7 @@ public class TutorialMinigame : MonoBehaviour
             StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
             writer.Write(_message.Split("!")[1]);
             writer.Close();
-            SceneManager.LoadScene(Scenes[_minigameId]);
+            SceneManager.LoadScene(_sceneName);
         }
     }
 }
