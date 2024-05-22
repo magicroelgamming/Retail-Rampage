@@ -51,6 +51,12 @@ public class BoardControl : MonoBehaviour
     [SerializeField]
     private GameObject[] _shopPrefabs;
 
+    [SerializeField]
+    private GameObject _4x4Map;
+
+    [SerializeField]
+    private GameObject _5x5Map;
+
 
     private bool _animRotation;
 
@@ -110,6 +116,12 @@ public class BoardControl : MonoBehaviour
         static public TextMeshProUGUI _playerNumberDisplay;
 
         static public GameObject[] _shopPrefabs;
+
+        [SerializeField]
+        static public GameObject _4x4Map;
+
+        [SerializeField]
+        static public GameObject _5x5Map;
 
 
         static public GameObject _orbit;
@@ -174,6 +186,8 @@ public class BoardControl : MonoBehaviour
             DataManager._playerMoneyDisplay = _playerMoneyDisplay;
             DataManager._playerNumberDisplay = _playerNumberDisplay;
             DataManager._shopPrefabs = _shopPrefabs;
+            DataManager._4x4Map = _4x4Map;
+            DataManager._5x5Map = _5x5Map;
             DataManager._orbit = _orbit;
 
 
@@ -551,6 +565,12 @@ public class BoardControl : MonoBehaviour
 
     private void GroundPlatePlacing()
     {
+        //places environment around tiles
+        if (DataManager._columns * DataManager._rows == 16) //4x4 grid
+        {
+            GameObject map = Instantiate(DataManager._4x4Map, new Vector3(2.1f,-1f,8.1f), Quaternion.identity);
+        }
+        
         for (int i = 0; i < DataManager._columns; i++)
         {
             for (int j = 0; j < DataManager._rows; j++)
