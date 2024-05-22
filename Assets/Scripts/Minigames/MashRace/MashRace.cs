@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -15,7 +14,8 @@ public class MashRace : MonoBehaviour
     private bool[] playersFinished = new bool[4];
     private bool[] moveIsActive = new bool[4];
 
-    private int playerPlacement = 1;
+    private int[] playerPlacements = new int[4];
+    private int currentPlacement = 1;
 
     public bool startDelayBeforeMainBoard = false;
 
@@ -36,23 +36,27 @@ public class MashRace : MonoBehaviour
 
     void MessengerBoy()
     {
-        StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
-
-        Player[] players = (FindObjectsOfType<Player>()).OrderBy(i => i._score).Reverse().ToArray();
-
-        string message = "234:";
-
-        for (int i = 0; i < players.Length; i++)
+        using (StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt"))
         {
-            message += i+1;
-            if (i+1 != players.Length)
+            List<(int playerIndex, int placement)> placements = new List<(int, int)>();
+            for (int i = 0; i < playerPlacements.Length; i++)
             {
-                message += ",";
+                placements.Add((i, playerPlacements[i]));
             }
-        }
-        writer.Write(message);
-        writer.Close();
 
+            placements.Sort((a, b) => a.placement.CompareTo(b.placement));
+            string message = "234:";
+            for (int i = 0; i < placements.Count; i++)
+            {
+                message += (placements[i].playerIndex + 1).ToString();
+                if (i != placements.Count - 1)
+                {
+                    message += ",";
+                }
+            }
+
+            writer.Write(message);
+        }
         SceneManager.LoadScene("TheBoard");
     }
 
@@ -83,22 +87,28 @@ public class MashRace : MonoBehaviour
             }
         }
     }
+
     private void OnTriggerEnter(Collider hit)
     {
         for (int i = 0; i < 4; i++)
         {
             if (hit.CompareTag($"FinishLine/{i + 1}"))
             {
-                string winText = $"Player {i + 1} Wins!";
-                ShowWinText(i, winText);
-                for (int j = 0; j < 4; j++)
+                if (!playersFinished[i])
                 {
-                    if (j + 1 != i + 1)
+                    string winText = $"Player {i + 1} Wins!";
+                    ShowWinText(i, winText);
+                    playersFinished[i] = true;
+                    playerPlacements[i] = currentPlacement++;
+                    for (int j = 0; j < 4; j++)
                     {
-                        GameObject[] finishLines = GameObject.FindGameObjectsWithTag($"FinishLine/{j + 1}");
-                        foreach (GameObject finishLine in finishLines)
+                        if (j != i)
                         {
-                            Destroy(finishLine);
+                            GameObject[] finishLines = GameObject.FindGameObjectsWithTag($"FinishLine/{j + 1}");
+                            foreach (GameObject finishLine in finishLines)
+                            {
+                                Destroy(finishLine);
+                            }
                         }
                     }
                 }
@@ -106,6 +116,7 @@ public class MashRace : MonoBehaviour
         }
         ShowPlacementText(hit);
     }
+
     private void ShowWinText(int playerIndex, string winText)
     {
         switch (playerIndex)
@@ -131,8 +142,8 @@ public class MashRace : MonoBehaviour
                 hudRaceScript.loose4.enabled = false;
                 break;
         }
-        playerPlacement++;
     }
+
     private void ShowPlacementText(Collider hit)
     {
         List<GameObject> nonFinishers = new List<GameObject>();
@@ -150,7 +161,7 @@ public class MashRace : MonoBehaviour
 
         for (int i = 0; i < nonFinishers.Count; i++)
         {
-            string placementText = $"Player place {i + playerPlacement}";
+            string placementText = $"Player place {i + currentPlacement}";
             SetPlacementText(nonFinishers[i], placementText);
         }
 
@@ -160,6 +171,7 @@ public class MashRace : MonoBehaviour
             ShowWinText(int.Parse(hit.gameObject.tag.Substring(11)) - 1, winText);
         }
     }
+
     private void SetPlacementText(GameObject player, string placementText)
     {
         switch (player.tag)
