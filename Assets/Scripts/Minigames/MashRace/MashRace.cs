@@ -14,7 +14,7 @@ public class MashRace : MonoBehaviour
     private bool[] playersFinished = new bool[4];
     private bool[] moveIsActive = new bool[4];
 
-    private int[] playerPlacements = new int[4];
+    private float[] playerPlacements = new float[4];
     private int currentPlacement = 1;
 
     public bool startDelayBeforeMainBoard = false;
@@ -38,17 +38,29 @@ public class MashRace : MonoBehaviour
     {
         using (StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt"))
         {
-            List<(int playerIndex, int placement)> placements = new List<(int, int)>();
+
+            List<(int playerIndex, float placement)> placements = new List<(int, float)>();
             for (int i = 0; i < playerPlacements.Length; i++)
             {
-                placements.Add((i, playerPlacements[i]));
+                placements.Add((1, playerPlacements[i]));
+                Debug.Log(playerPlacements[i]);
             }
 
-            placements.Sort((a, b) => a.placement.CompareTo(b.placement));
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < playerPlacements.Length; j++)
+                {
+                    if (placements[i].placement < placements[j].placement && i!=j)
+                    {
+                        placements[i]=(placements[i].playerIndex + 1, placements[i].placement);
+                    }
+                }
+            }
+
             string message = "234:";
             for (int i = 0; i < placements.Count; i++)
             {
-                message += (placements[i].playerIndex + 1).ToString();
+                message += (placements[i].playerIndex).ToString();
                 if (i != placements.Count - 1)
                 {
                     message += ",";
@@ -56,6 +68,7 @@ public class MashRace : MonoBehaviour
             }
 
             writer.Write(message);
+            writer.Close();
         }
         SceneManager.LoadScene("TheBoard");
     }
