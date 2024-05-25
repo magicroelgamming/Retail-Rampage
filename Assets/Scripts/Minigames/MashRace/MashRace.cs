@@ -48,7 +48,7 @@ public class MashRace : MonoBehaviour
 
             for (int i = 0; i < 4; i++)
             {
-                for (int j = 0; j < playerPlacements.Length; j++)
+                for (int j = 0; j < targetPositions.Length; j++)
                 {
                     if (placements[i].placement < placements[j].placement && i!=j)
                     {
