@@ -42,8 +42,8 @@ public class MashRace : MonoBehaviour
             List<(int playerIndex, float placement)> placements = new List<(int, float)>();
             for (int i = 0; i < playerPlacements.Length; i++)
             {
-                placements.Add((1, playerPlacements[i]));
-                Debug.Log(playerPlacements[i]);
+                placements.Add((1, targetPositions[i].z));
+                Debug.Log(targetPositions[i].z);
             }
 
             for (int i = 0; i < 4; i++)
