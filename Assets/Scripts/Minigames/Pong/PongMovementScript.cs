@@ -4,9 +4,20 @@ public class PongMovementScript : MonoBehaviour
 {
     [SerializeField] private Camera camera;
     private float speed = 40f;
+    private int[] _players;
+
     private void Start()
     {
-      
+        _players = new int[2];
+
+        StreamReader Reader = new StreamReader("Assets/Resources/MessengerBoy.txt");
+        string message = Reader.ReadToEnd();
+        Reader.Close();
+        string[] playerBuString = message.Split(':');
+        for (int i = 0; i < playerBuString.Length; i++)
+        {
+            _players[i] = int.Parse(playerBuString[i]);
+        }
     }
     void Update()
     {
@@ -18,9 +29,10 @@ public class PongMovementScript : MonoBehaviour
         float screenWidthOffset = 16f;
         for (int i = 0; i < 2; i++)
         {
+            Debug.Log(_players[i]);
             if (CompareTag($"Player/{i+1}"))
             {
-                float verticalInput = Input.GetAxis($"LeftStickVertical{i+1}");
+                float verticalInput = Input.GetAxis($"LeftStickVertical{_players[i]}");
                 combinedMovement += Vector3.forward * verticalInput * speed;
 
                 float camHeight = camera.orthographicSize;

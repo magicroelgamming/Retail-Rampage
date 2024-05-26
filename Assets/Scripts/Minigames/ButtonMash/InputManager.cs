@@ -63,11 +63,11 @@ public class InputManager : MonoBehaviour
                 StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
                 if (_counterPlayer1 > _counterPlayer2)
                 {
-                    writer.Write("1v1:true");
+                    writer.Write("1V1:true");
                 }
                 else
                 {
-                    writer.Write("1v1:false");
+                    writer.Write("1V1:false");
                 }
                 writer.Close();
 

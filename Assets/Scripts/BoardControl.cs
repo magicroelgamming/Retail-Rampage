@@ -715,7 +715,7 @@ public class BoardControl : MonoBehaviour
                 // You need to add the method ContestConceeded(int[]) to add the money and who goes when to each player. the int[] is to see which spot they ended in the contest spot 0 in the array is always player 1 the number you add on that spot is how well player 1 did and so on for the other players -M
 
                 //change DataManager._contestNumber to whezre your code is and make DataManager._contesting = true to test your minigame;
-                int minigame = rn.Next(4, 5);
+                int minigame = rn.Next(1, 5);
                 WriteForMiniGames((DataManager.PlayerCount).ToString(), minigame + 10);
                 SceneManager.LoadScene("TutorialMinigame");
                 InvisibleBoard();
