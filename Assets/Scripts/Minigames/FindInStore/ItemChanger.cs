@@ -10,6 +10,8 @@ public class ItemChanger : MonoBehaviour
 {
     public string __currentItem;
 
+    private string _prevItem;
+
     [SerializeField]
     private TextMeshProUGUI _currentItemDisplay;
 
@@ -59,54 +61,66 @@ public class ItemChanger : MonoBehaviour
 
         if (_countdown <= 0)
         {
-            _countdown = _baseCountdown;
-            System.Random random = new System.Random();
-            int rand = random.Next(0, _itemCount);
-            switch (rand)
-            {
-                case 0:
-                    __currentItem = ("Banana");
-                    break;
-                case 1:
-                    __currentItem = ("Flour");
-                    break;
-                case 2:
-                    __currentItem = ("Cheese");
-                    break;
-                case 3:
-                    __currentItem = ("Milk");
-                    break;
-                case 4:
-                    __currentItem = ("Sugar");
-                    break;
-                case 5:
-                    __currentItem = ("Fish");
-                    break;
-                case 6:
-                    __currentItem = ("Steak");
-                    break;
-                case 7:
-                    __currentItem = ("Cabbage");
-                    break;
-                case 8:
-                    __currentItem = ("Bread");
-                    break;
-                case >= 9:
-                    __currentItem = ("Untagged");
-                    break;
-            }
+            _prevItem = __currentItem;
 
-            //setall all items back to active
-            Collider[] childrenItems = GetComponentsInChildren<Collider>(true);
-            foreach (Collider child in childrenItems)
-            {
-                child.gameObject.SetActive(true);
-            }
-
-            _currentItemDisplay.text = "Gather " + __currentItem + "!";
-            Debug.Log(__currentItem);
+            RandomizeItem();
         }
     }
+
+    void RandomizeItem()
+    {
+        _countdown = _baseCountdown;
+        System.Random random = new System.Random();
+        int rand = random.Next(0, _itemCount);
+        switch (rand)
+        {
+            case 0:
+                __currentItem = ("Banana");
+                break;
+            case 1:
+                __currentItem = ("Flour");
+                break;
+            case 2:
+                __currentItem = ("Cheese");
+                break;
+            case 3:
+                __currentItem = ("Milk");
+                break;
+            case 4:
+                __currentItem = ("Sugar");
+                break;
+            case 5:
+                __currentItem = ("Fish");
+                break;
+            case 6:
+                __currentItem = ("Steak");
+                break;
+            case 7:
+                __currentItem = ("Cabbage");
+                break;
+            case 8:
+                __currentItem = ("Bread");
+                break;
+            case >= 9:
+                __currentItem = ("Untagged");
+                break;
+        }
+        if (_prevItem == __currentItem)
+        {
+            RandomizeItem();
+        }
+
+        //setall all items back to active
+        Collider[] childrenItems = GetComponentsInChildren<Collider>(true);
+        foreach (Collider child in childrenItems)
+        {
+            child.gameObject.SetActive(true);
+        }
+
+        _currentItemDisplay.text = "Gather " + __currentItem + "!";
+        Debug.Log(__currentItem);
+    }
+
     void MessengerBoy()
     {
         StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
