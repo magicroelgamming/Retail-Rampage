@@ -27,6 +27,7 @@ public class EmoteScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.position = Camera.main.transform.position;
         waitTimePlayer1 += Time.deltaTime;
         waitTimePlayer2 += Time.deltaTime;
         waitTimePlayer3 += Time.deltaTime;
