@@ -57,6 +57,8 @@ public class BoardControl : MonoBehaviour
     [SerializeField]
     private GameObject _5x5Map;
 
+    static public GameObject _mapEnvironment;
+
 
     private bool _animRotation;
 
@@ -123,6 +125,8 @@ public class BoardControl : MonoBehaviour
         [SerializeField]
         static public GameObject _5x5Map;
 
+        static public GameObject _mapEnvironment;
+
 
         static public GameObject _orbit;
 
@@ -188,6 +192,7 @@ public class BoardControl : MonoBehaviour
             DataManager._shopPrefabs = _shopPrefabs;
             DataManager._4x4Map = _4x4Map;
             DataManager._5x5Map = _5x5Map;
+            DataManager._mapEnvironment = _mapEnvironment;
             DataManager._orbit = _orbit;
 
 
@@ -222,6 +227,7 @@ public class BoardControl : MonoBehaviour
 
 
             MapGeneration();
+            EnvironmentGeneration();
             PlayerInitialization();
             GroundPlatePlacing();
             CameraStartPlacement();
@@ -232,6 +238,8 @@ public class BoardControl : MonoBehaviour
         }
         else
         {
+            //sets environment back to active
+            DataManager._mapEnvironment.SetActive(true);
 
             foreach (GameObject tile in DataManager._tilespots)
             {
@@ -313,6 +321,20 @@ public class BoardControl : MonoBehaviour
         DataManager._cameraMain.transform.localPosition = new Vector3(_tileToCameraX, 4, _tileToCameraZ + _onBoardCameraOffset);
         DataManager._cameraMain.transform.localEulerAngles = new Vector3(45, 0, 0);
         _animRotation = false;
+    }
+
+    private void EnvironmentGeneration()
+    {
+        //places environment around tiles
+        if (DataManager._columns * DataManager._rows == 16) //for 4x4 grid
+        {
+            DataManager._mapEnvironment = Instantiate(DataManager._4x4Map, new Vector3(2.1f, -1f, 8.1f), Quaternion.identity);
+        }
+        else if (DataManager._columns * DataManager._rows == 25) //for 5x5 grid
+        {
+            DataManager._mapEnvironment = Instantiate(DataManager._5x5Map, new Vector3(3.1f, -1f, 8.25f), Quaternion.identity);
+        }
+        DataManager._mapEnvironment.transform.parent = this.gameObject.transform; //sets the map to be child of the board
     }
 
     private void MapGeneration()
@@ -566,18 +588,6 @@ public class BoardControl : MonoBehaviour
 
     private void GroundPlatePlacing()
     {
-        //places environment around tiles
-        if (DataManager._columns * DataManager._rows == 16) //for 4x4 grid
-        {
-            GameObject map = Instantiate(DataManager._4x4Map, new Vector3(2.1f,-0.8f,8.1f), Quaternion.identity);
-            map.transform.parent = this.transform;
-        }
-        else if (DataManager._columns * DataManager._rows == 25) //for 5x5 grid
-        {
-            GameObject map = Instantiate(DataManager._5x5Map, new Vector3(3.1f, -0.8f, 8.25f), Quaternion.identity);
-            map.transform.parent = this.transform;
-        }
-
         //places gound plates and buildings
         for (int i = 0; i < DataManager._columns; i++)
         {
@@ -751,6 +761,9 @@ public class BoardControl : MonoBehaviour
 
     private void InvisibleBoard()
     {
+        //first sets the environment to inactive
+        DataManager._mapEnvironment.SetActive(false);
+        
         foreach (GameObject tile in DataManager._tilespots)
         {
             tile.SetActive(false);
