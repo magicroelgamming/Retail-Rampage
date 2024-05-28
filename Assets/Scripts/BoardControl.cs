@@ -4,6 +4,7 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class BoardControl : MonoBehaviour
 {
@@ -47,6 +48,9 @@ public class BoardControl : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI _playerNumberDisplay;
+
+    [SerializeField]
+    private Image _playerColourDisplay;
 
     [SerializeField]
     private GameObject[] _shopPrefabs;
@@ -116,6 +120,8 @@ public class BoardControl : MonoBehaviour
         static public TextMeshProUGUI _playerMoneyDisplay;
 
         static public TextMeshProUGUI _playerNumberDisplay;
+
+        static public Image _playerColourDisplay;
 
         static public GameObject[] _shopPrefabs;
 
@@ -189,6 +195,7 @@ public class BoardControl : MonoBehaviour
             DataManager._costBuildingDisplay = _costBuildingDisplay;
             DataManager._playerMoneyDisplay = _playerMoneyDisplay;
             DataManager._playerNumberDisplay = _playerNumberDisplay;
+            DataManager._playerColourDisplay = _playerColourDisplay;
             DataManager._shopPrefabs = _shopPrefabs;
             DataManager._4x4Map = _4x4Map;
             DataManager._5x5Map = _5x5Map;
@@ -583,6 +590,7 @@ public class BoardControl : MonoBehaviour
             DataManager._PlayerInfo[i] = NewPlayerIntialization;
             DataManager._playerMoneyDisplay.text = ((int)DataManager._PlayerInfo[DataManager._currentPlayer][1]).ToString();
             DataManager._playerNumberDisplay.text = "Current Player: " + (DataManager._currentPlayer + 1);
+            DataManager._playerColourDisplay.color = _playerColors[DataManager._currentPlayer].color;
         }
     }
 
@@ -849,6 +857,7 @@ public class BoardControl : MonoBehaviour
                 Debug.Log(i);
                 DataManager._currentPlayer = i;
                 DataManager._playerNumberDisplay.text = "Current Player: " + (DataManager._currentPlayer + 1);
+                DataManager._playerColourDisplay.color = _playerColors[DataManager._currentPlayer].color;
             }
             Debug.Log("---------------------");
         }
