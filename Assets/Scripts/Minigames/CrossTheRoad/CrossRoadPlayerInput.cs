@@ -32,7 +32,7 @@ public class CrossRoadPlayerInput : MonoBehaviour
     {
         Vector3 movement = new Vector3(Input.GetAxis("LeftStickHorizontal" + PlayerId), 0f, Input.GetAxis("LeftStickVertical" + PlayerId)).normalized;
         if (IsPlaying)
-            _rb.velocity += movement * Speed * Time.deltaTime;
+            _rb.velocity += (movement * Speed * Time.deltaTime) + new Vector3(0,-0.1f,0);
     }
     private void OnTriggerEnter(Collider other)
     {
