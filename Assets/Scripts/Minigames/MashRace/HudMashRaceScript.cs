@@ -1,16 +1,17 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 public class HudMashRaceScript : MonoBehaviour
 {
-    [SerializeField] public Text win1;
-    [SerializeField] public Text win2;
-    [SerializeField] public Text win3;
-    [SerializeField] public Text win4;
+    [SerializeField] public TextMeshProUGUI win1;
+    [SerializeField] public TextMeshProUGUI win2;
+    [SerializeField] public TextMeshProUGUI win3;
+    [SerializeField] public TextMeshProUGUI win4;
 
-    [SerializeField] public Text loose1;
-    [SerializeField] public Text loose2;
-    [SerializeField] public Text loose3;
-    [SerializeField] public Text loose4;
+    [SerializeField] public TextMeshProUGUI loose1;
+    [SerializeField] public TextMeshProUGUI loose2;
+    [SerializeField] public TextMeshProUGUI loose3;
+    [SerializeField] public TextMeshProUGUI loose4;
     void Start()
     {
         win1.enabled = false;

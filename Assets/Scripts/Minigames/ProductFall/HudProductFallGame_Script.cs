@@ -1,4 +1,5 @@
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -6,20 +7,20 @@ public class HudProductFallGameScript : MonoBehaviour
 {
     [SerializeField] private GameObject[] productprefabs;
 
-    [SerializeField] public Text camera1Text;
-    [SerializeField] public Text camera2Text;
-    [SerializeField] public Text camera3Text;
-    [SerializeField] public Text camera4Text;
+    [SerializeField] public TextMeshProUGUI camera1Text;
+    [SerializeField] public TextMeshProUGUI camera2Text;
+    [SerializeField] public TextMeshProUGUI camera3Text;
+    [SerializeField] public TextMeshProUGUI camera4Text;
 
-    [SerializeField] public Text win1;
-    [SerializeField] public Text win2;
-    [SerializeField] public Text win3;
-    [SerializeField] public Text win4;
+    [SerializeField] public TextMeshProUGUI win1;
+    [SerializeField] public TextMeshProUGUI win2;
+    [SerializeField] public TextMeshProUGUI win3;
+    [SerializeField] public TextMeshProUGUI win4;
 
-    [SerializeField] public Text loose1;
-    [SerializeField] public Text loose2;
-    [SerializeField] public Text loose3;
-    [SerializeField] public Text loose4;
+    [SerializeField] public TextMeshProUGUI loose1;
+    [SerializeField] public TextMeshProUGUI loose2;
+    [SerializeField] public TextMeshProUGUI loose3;
+    [SerializeField] public TextMeshProUGUI loose4;
 
     float[] productCollected = new float[4];
 
@@ -132,25 +133,25 @@ public class HudProductFallGameScript : MonoBehaviour
         {
             if (productCollected[0] < winLooseAmount)
             {
-                loose1.text = "Player 1 Looses";
+                loose1.text = "Player 1 Loses";
                 CameraTextDisabled();
                 loose1.enabled = true;
             }
             if (productCollected[1] < winLooseAmount)
             {
-                loose2.text = "Player 2 Looses";
+                loose2.text = "Player 2 Loses";
                 CameraTextDisabled();
                 loose2.enabled = true;
             }
             if (productCollected[2] < winLooseAmount)
             {
-                loose3.text = "Player 3 Looses";
+                loose3.text = "Player 3 Loses";
                 CameraTextDisabled();
                 loose3.enabled = true;
             }
             if (productCollected[3] < winLooseAmount)
             {
-                loose4.text = "Player 4 Looses";
+                loose4.text = "Player 4 Loses";
                 CameraTextDisabled();
                 loose4.enabled = true;
             }

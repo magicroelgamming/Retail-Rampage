@@ -1,16 +1,17 @@
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class HudPongScript : MonoBehaviour
 {
-    [SerializeField] private Text Player1;
-    [SerializeField] private Text Player2;
-    [SerializeField] private Text Player1Win;
-    [SerializeField] private Text Player2Win;
-    [SerializeField] private Text Player1Loose;
-    [SerializeField] private Text Player2Loose;
-    [SerializeField] private Text timeText;
+    [SerializeField] private TextMeshProUGUI Player1;
+    [SerializeField] private TextMeshProUGUI Player2;
+    [SerializeField] private TextMeshProUGUI Player1Win;
+    [SerializeField] private TextMeshProUGUI Player2Win;
+    [SerializeField] private TextMeshProUGUI Player1Loose;
+    [SerializeField] private TextMeshProUGUI Player2Loose;
+    [SerializeField] private TextMeshProUGUI timeText;
 
     private Color[] colors = {Color.red, Color.green, Color.blue, Color.yellow};
 
@@ -104,16 +105,16 @@ public class HudPongScript : MonoBehaviour
             Player1Win.enabled = true;
             Player1Win.text = "Player 1 WINS!";
             Player2Loose.enabled = true;
-            Player2Loose.text = "Player 2 LOOSES!";
-            Invoke("GameOver", 4f);
+            Player2Loose.text = "Player 2 LOSES!";
+            Invoke("GameOver", 10f);
         }
         else if (player2Score == 1)
         {
             Player2Win.enabled = true;
             Player2Win.text = "Player 2 WINS!";
             Player1Loose.enabled = true;
-            Player1Loose.text = "Player 1 LOOSES!";
-            Invoke("GameOver", 4f);
+            Player1Loose.text = "Player 1 LOSES!";
+            Invoke("GameOver", 10f);
         }
     }
     public void Scored(int amount, float ballPositionZ)

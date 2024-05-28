@@ -1,4 +1,5 @@
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,11 +8,11 @@ public class Timer : MonoBehaviour
 {
     public GameObject Button1;
     public GameObject Button2;
-    public Text timerTextCamera1;
-    public Text timerTextCamera2;
-    public Text resultText1;
-    public Text resultText2;
-    public Text tieText;
+    public TextMeshProUGUI timerTextCamera1;
+    public TextMeshProUGUI timerTextCamera2;
+    public TextMeshProUGUI resultText1;
+    public TextMeshProUGUI resultText2;
+    public TextMeshProUGUI tieText;
     //public Text loseText1;
     //public Text loseText2;
     public Image FlashLight;

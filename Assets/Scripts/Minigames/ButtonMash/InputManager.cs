@@ -41,7 +41,7 @@ public class InputManager : MonoBehaviour
         PlayerInput();
 
         _timer -= Time.deltaTime;
-        TextTimer.text = _timer.ToString();
+        TextTimer.text = ((int)(_timer)).ToString();
         if (_timer < 0)
             EndGame();
     }
@@ -83,13 +83,13 @@ public class InputManager : MonoBehaviour
         if (Input.GetButtonDown("BButton" + _players[0]))
         {
             _counterPlayer1++;
-            TextPlayer1.text = "Player 1 Score: " + _counterPlayer1;    
+            TextPlayer1.text = "Player 1\nScore: " + _counterPlayer1;    
         }
 
         if (Input.GetButtonDown("BButton" + _players[1]))
         {
             _counterPlayer2++;
-            TextPlayer2.text = "Player 2 Score: " + _counterPlayer2;
+            TextPlayer2.text = "Player 2\nScore:" + _counterPlayer2;
         }
 
         if (Input.GetButton("BButton" + _players[0]))
