@@ -19,6 +19,9 @@ public class ItemChanger : MonoBehaviour
     private TextMeshProUGUI _counterDisplay;
 
     [SerializeField]
+    private TextMeshProUGUI _results;
+
+    [SerializeField]
     private float _gameCountdown = 60;
 
     [SerializeField]
@@ -27,6 +30,7 @@ public class ItemChanger : MonoBehaviour
 
     [SerializeField]
     private int _itemCount;
+
 
     [SerializeField]
     private AudioScript _audioScript;
@@ -39,6 +43,8 @@ public class ItemChanger : MonoBehaviour
         _countdown = _baseCountdown;
 
         _currentItemDisplay.text = "Ready?";
+
+        _results.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -52,7 +58,7 @@ public class ItemChanger : MonoBehaviour
             MessengerBoy();
         }
 
-        if (__currentItem == null)
+        if (__currentItem == null && _gameCountdown > 0)
         {
             _counterDisplay.text = ((int)(_countdown)).ToString();
         }
@@ -62,7 +68,7 @@ public class ItemChanger : MonoBehaviour
         }
 
 
-        if (_countdown <= 0)
+        if (_countdown <= 0 && _gameCountdown > 0)
         {
             _prevItem = __currentItem;
 
@@ -121,8 +127,15 @@ public class ItemChanger : MonoBehaviour
             child.gameObject.SetActive(true);
         }
 
-        _currentItemDisplay.text = "Gather " + __currentItem + "!";
-        Debug.Log(__currentItem);
+        if (_gameCountdown > 0)
+        {
+            _currentItemDisplay.text = "Gather " + __currentItem + "!";
+            Debug.Log(__currentItem);
+        }
+        else
+        {
+            _currentItemDisplay.gameObject.SetActive(false);
+        }
     }
 
     void MessengerBoy()
@@ -133,9 +146,23 @@ public class ItemChanger : MonoBehaviour
         Player[] players = (FindObjectsOfType<Player>()).OrderBy(i => i._score).Reverse().ToArray();
 
         writer.Write("234:" + players[0]._playerID + "," + players[1]._playerID + "," + players[2]._playerID + "," + players[3]._playerID);
+
+        _results.gameObject.SetActive(true);
+        _results.text = "Winner: Player " + players[0]._playerID +
+            "\n2nd: Player " + players[1]._playerID +
+            "\n3rd: Player " + players[2]._playerID +
+            "\nLast: Player " + players[3]._playerID;
+
         Debug.Log(writer.ToString());
         writer.Close();
-        
+
+        Invoke("SwitchScene", 4);
+    }
+
+    void SwitchScene()
+    {
         SceneManager.LoadScene("TheBoard");
     }
 }
+
+

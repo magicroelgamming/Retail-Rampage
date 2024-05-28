@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,9 @@ public class RopePull : MonoBehaviour
 
     [SerializeField]
     private float _speed = 3f; //this value might still need some works, so might the drag of the rigidbody
+
+    [SerializeField]
+    private TextMeshProUGUI _result;
 
     private bool _canPull1 = true;
     private bool _canPull2 = true;
@@ -31,6 +35,8 @@ public class RopePull : MonoBehaviour
         {
             players[i] = int.Parse(playerBuString[i]);
         }
+
+        _result.gameObject.SetActive(false);
 
     }
 
@@ -64,10 +70,14 @@ public class RopePull : MonoBehaviour
         if (this.transform.position.z >= 1)
         {
             //player 1 wins
+            _result.gameObject.SetActive(true);
+            _result.text = "Attacker wins!";
             MessengerBoy("1V1:true");
         }
         if (this.transform.position.z <= -1)
         {
+            _result.gameObject.SetActive(true);
+            _result.text = "Defender wins!";
             MessengerBoy("1V1:false");
         }
 
@@ -83,6 +93,11 @@ public class RopePull : MonoBehaviour
 
         writer.Close();
 
+        Invoke("LoadBoard", 4);
+    }
+
+    void LoadBoard()
+    {
         SceneManager.LoadScene("TheBoard");
     }
 }

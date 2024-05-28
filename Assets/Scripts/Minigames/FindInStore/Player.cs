@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -15,7 +16,11 @@ public class Player : MonoBehaviour
     public int _playerID;
 
     [SerializeField]
+    private TextMeshPro _scoreDisplay;
+
+    [SerializeField]
     private ItemChanger _itemChanger;
+
 
     public int _score = 0;
     
@@ -43,6 +48,8 @@ public class Player : MonoBehaviour
             other.gameObject.SetActive(false);
 
             Debug.Log("Player" + _playerID + " Score: " + _score);
+
+            _scoreDisplay.text = "Score: " + _score;
         }
     }
 }
