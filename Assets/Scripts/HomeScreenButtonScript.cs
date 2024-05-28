@@ -32,7 +32,8 @@ public class HomeScreenButtonScript : MonoBehaviour
 
     System.Random rn = new System.Random();
 
-
+    [SerializeField]
+    private GameObject _5x5Map;
     void Start()
     {
         _brandNames = new string[] { "Garry's", "Irish", "WcDonalds", "Jeff's", "Roel's", "Andre's", "Evy's", "Sander's", "Jasper's", "Grigory's", "Mintendo", "OCircle", "Moist", "TrainConsole", "Baldur Studios", "Sun 8", "Goal", "Trottoir", "Adequate Purchase", "Taco Hut", "Pizza Bell", "Repairing Good", "6 Woman", "Out Of The Closet", "Forever 12", "M&H", "Belgian Tomorrow", "Forest", "Florida", "Webflex", "Ball Cluster", "1/77", "StarMeadow", "M.A.H.", "8008", "Nalop", "Calm Susan", "1 Minute", "Drop In" };
@@ -215,6 +216,9 @@ public class HomeScreenButtonScript : MonoBehaviour
 
     private void GroundPlatePlacing()
     {
+        GameObject map = Instantiate(_5x5Map, new Vector3(3.1f, -0.8f, 8.25f), Quaternion.identity);
+        map.transform.parent = this.transform;
+
         for (int i = 0; i <  5; i++)
         {
             for (int j = 0; j <  5; j++)

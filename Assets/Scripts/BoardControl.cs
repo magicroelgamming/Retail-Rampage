@@ -569,11 +569,13 @@ public class BoardControl : MonoBehaviour
         //places environment around tiles
         if (DataManager._columns * DataManager._rows == 16) //for 4x4 grid
         {
-            GameObject map = Instantiate(DataManager._4x4Map, new Vector3(2.1f,-1f,8.1f), Quaternion.identity);
+            GameObject map = Instantiate(DataManager._4x4Map, new Vector3(2.1f,-0.8f,8.1f), Quaternion.identity);
+            map.transform.parent = this.transform;
         }
         else if (DataManager._columns * DataManager._rows == 25) //for 5x5 grid
         {
-            GameObject map = Instantiate(DataManager._5x5Map, new Vector3(3.1f, -1f, 8.25f), Quaternion.identity);
+            GameObject map = Instantiate(DataManager._5x5Map, new Vector3(3.1f, -0.8f, 8.25f), Quaternion.identity);
+            map.transform.parent = this.transform;
         }
 
         //places gound plates and buildings
