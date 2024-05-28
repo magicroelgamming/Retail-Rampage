@@ -28,6 +28,9 @@ public class ItemChanger : MonoBehaviour
     [SerializeField]
     private int _itemCount;
 
+    [SerializeField]
+    private AudioScript _audioScript;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -109,6 +112,7 @@ public class ItemChanger : MonoBehaviour
         {
             RandomizeItem();
         }
+        _audioScript.PlaySound(rand);
 
         //setall all items back to active
         Collider[] childrenItems = GetComponentsInChildren<Collider>(true);
