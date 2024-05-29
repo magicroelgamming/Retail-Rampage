@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.IO;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -187,17 +189,19 @@ public class BoardControl : MonoBehaviour
             DataManager._prefabBasePlate = _prefabBasePlate;
             DataManager._playerColors = _playerColors;
             DataManager._selected = _selected;
-            DataManager._TildeDetailDisplay = _TildeDetailDisplay;
-            DataManager._BuyButtonDisplay = _BuyButtonDisplay;
-            DataManager._nameBuildingDisplay = _nameBuildingDisplay;
-            DataManager._ownerBuildingDisplay = _ownerBuildingDisplay;
-            DataManager._levelBuildingDisplay = _levelBuildingDisplay;
-            DataManager._costBuildingDisplay = _costBuildingDisplay;
-            DataManager._playerMoneyDisplay = _playerMoneyDisplay;
-            DataManager._playerNumberDisplay = _playerNumberDisplay;
-            DataManager._playerColourDisplay = _playerColourDisplay;
+
+            DataManager._cameraMain = Camera.main;
+            DataManager._TildeDetailDisplay = GameObject.Find("TileDetailScreen");
+            DataManager._BuyButtonDisplay = GameObject.Find("BuyButton");
+
+            DataManager._nameBuildingDisplay = GameObject.Find("Name").GetComponent<TextMeshProUGUI>();
+            DataManager._ownerBuildingDisplay = GameObject.Find("Owner").GetComponent<TextMeshProUGUI>();
+            DataManager._levelBuildingDisplay = GameObject.Find("LVL").GetComponent<TextMeshProUGUI>();
+            DataManager._costBuildingDisplay = GameObject.Find("Cost").GetComponent<TextMeshProUGUI>();
+            DataManager._playerMoneyDisplay = GameObject.Find("Money").GetComponent<TextMeshProUGUI>();
+            DataManager._playerNumberDisplay = GameObject.Find("PlayerNumber").GetComponent<TextMeshProUGUI>();
+            DataManager._playerColourDisplay = GameObject.Find("PlayerColour").GetComponent<Image>();
             DataManager._shopPrefabs = _shopPrefabs;
-            DataManager._playerColourDisplay = _playerColourDisplay;
             DataManager._4x4Map = _4x4Map;
             DataManager._5x5Map = _5x5Map;
             DataManager._mapEnvironment = _mapEnvironment;
@@ -217,6 +221,8 @@ public class BoardControl : MonoBehaviour
             DataManager._tilespots = new GameObject[0, 0];
 
             DataManager._PlayerInfo = new ArrayList[DataManager.PlayerCount];
+
+            DataManager._currentPlayer = 0;
 
             switch (DataManager.PlayerCount)
             {
@@ -317,6 +323,11 @@ public class BoardControl : MonoBehaviour
                 ContestConceeded(messangerBoySplit[1].Split(','));
                 DataManager._contesting = false;
             }
+
+            /*if ()
+            {
+
+            }*/
         }
     }
     private void CameraStartPlacement()
@@ -590,9 +601,9 @@ public class BoardControl : MonoBehaviour
             NewPlayerIntialization.Add(i);
             NewPlayerIntialization.Add(500);
             DataManager._PlayerInfo[i] = NewPlayerIntialization;
-            DataManager._playerMoneyDisplay.text = ((int)DataManager._PlayerInfo[DataManager._currentPlayer][1]).ToString();
-            DataManager._playerNumberDisplay.text = "Current Player: " + (DataManager._currentPlayer + 1);
-            DataManager._playerColourDisplay.color = _playerColors[DataManager._currentPlayer].color;
+            //DataManager._playerMoneyDisplay.text = ((int)DataManager._PlayerInfo[DataManager._currentPlayer][1]).ToString();
+            //DataManager._playerNumberDisplay.text = "Current Player: " + (DataManager._currentPlayer + 1);
+            //DataManager._playerColourDisplay.color = _playerColors[DataManager._currentPlayer].color;
         }
     }
 
@@ -730,7 +741,7 @@ public class BoardControl : MonoBehaviour
         {
             DataManager._playerturn = 0;
             DataManager._roundNumber++;
-            if (DataManager._roundNumber <5)
+            if (DataManager._roundNumber <1)
             {
                 DataManager._contesting = true;
 
@@ -752,6 +763,84 @@ public class BoardControl : MonoBehaviour
                 write.Write(CalculateWhoEndedWhere());
                  
                 write.Close();
+                DataManager.PlayerCount = 0;
+
+                string MessangerBoy = null;
+
+                 Camera _cameraMain= null;
+
+
+                 int PlayerCount= 0;
+
+                 GameObject _prefabBasePlate= null;
+
+                 Material[] _playerColors= null;
+
+                //temp
+                 Material _selected= null;
+                //
+
+                 GameObject _TildeDetailDisplay= null;
+
+                 GameObject _BuyButtonDisplay= null;
+
+                 TextMeshProUGUI _nameBuildingDisplay= null;
+
+                 TextMeshProUGUI _ownerBuildingDisplay= null;
+
+                 TextMeshProUGUI _levelBuildingDisplay= null;
+
+                 TextMeshProUGUI _costBuildingDisplay= null;
+
+                 TextMeshProUGUI _playerMoneyDisplay= null;
+
+                 TextMeshProUGUI _playerNumberDisplay= null;
+
+                 Image _playerColourDisplay= null;
+
+                 GameObject[] _shopPrefabs= null;
+
+                 GameObject _4x4Map= null;
+
+                 GameObject _5x5Map= null;
+
+                 GameObject _mapEnvironment= null;
+
+
+                 GameObject _orbit= null;
+
+
+                 ArrayList[] _PlayerInfo= null;
+
+                 GameObject[,] _tilespots= null;
+
+                 ArrayList[,] _tiles= null;
+
+                 string[] _shopNames, _brandNames= null;
+
+                 int _columns, _rows= 0;
+
+                 int _rounds= 0;
+
+                 int _playerturn= 0;
+
+                 int _currentPlayer= 0;
+
+                 int[] _selectedTile = null;
+
+                 int _tileView= 0;
+
+                 bool _allowedToMove= false;
+
+                 bool _batteling= false;
+
+                 bool _contesting= false;
+
+                 int _battleNumber= 0;
+
+                 int _contestNumber= 0;
+
+                 int _roundNumber= 0;
 
                 SceneManager.LoadScene("EndScreen");
                 DestroyObject(this);
@@ -1026,4 +1115,5 @@ public class BoardControl : MonoBehaviour
         DataManager._currentPlayer = 0;
         PlayerTurn();
     }
+
 }
