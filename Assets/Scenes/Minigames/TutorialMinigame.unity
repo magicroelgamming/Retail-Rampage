@@ -536,8 +536,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -695,7 +695,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 341, y: 193}
+  m_AnchoredPosition: {x: 319, y: 193}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4134209361696770907
@@ -793,15 +793,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Sources: 
-  Scenes:
-  - Pong
-  - TimeStop
-  - PullTheRope
-  - ButtonMashingMinigame
-  - Game_FindInStore
-  - MashRace
-  - ProductFall
-  - CrossTheRoad
   TitleText: {fileID: 7963285701284253776}
   ExplanationText: {fileID: 2306352593807592082}
 --- !u!114 &7097929792937898820
@@ -917,7 +908,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: -14.309509, z: -462.91125, w: 0}
+  m_margin: {x: -168.5904, y: -14.309509, z: -629.1835, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

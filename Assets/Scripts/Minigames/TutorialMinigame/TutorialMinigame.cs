@@ -43,7 +43,7 @@ public class TutorialMinigame : MonoBehaviour
                 break;
             case 2:
                 TitleText.text = "Time Stop!";
-                ExplanationText.text = "Press A to press the button first! \nHit it before the other player and you win!";
+                ExplanationText.text = "Press A to press the button first! \nWhen the light turns green, hit the button before the other player and you win!";
                 _sceneName = "TimeStop";
                 break;
             case 3:
@@ -83,7 +83,7 @@ public class TutorialMinigame : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("AButton1"))
+        if (Input.GetButtonDown("AButton1") || Input.GetButtonDown("AButton2") || Input.GetButtonDown("AButton3") || Input.GetButtonDown("AButton4"))
         {
             StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
             writer.Write(_message.Split("!")[1]);

@@ -8,6 +8,7 @@ public class Timer : MonoBehaviour
 {
     public GameObject Button1;
     public GameObject Button2;
+    public TextMeshProUGUI explanationText;
     public TextMeshProUGUI timerTextCamera1;
     public TextMeshProUGUI timerTextCamera2;
     public TextMeshProUGUI resultText1;
@@ -18,7 +19,7 @@ public class Timer : MonoBehaviour
     public Image FlashLight;
 
     private float minRedTime = 2f;
-    private float maxRedTime = 20f;
+    private float maxRedTime = 10f;
     private float currentTimeCamera1;
     private float currentTimeCamera2;
 
@@ -47,11 +48,12 @@ public class Timer : MonoBehaviour
         tieText.enabled = false;
         resultText1.enabled = false;
         resultText2.enabled = false;
+        explanationText.text = "Don't Push!";
 
         delayBefotreMainBoard = 5f;
         startDelayBeforeMainBoard = false;
         timerRed = false;
-        timerBeforeTie = 5f;
+        timerBeforeTie = 1f;
         gameOver = false;
 
         players = new int[2];
@@ -137,6 +139,7 @@ public class Timer : MonoBehaviour
             if (redDuration <= 0)
             {
                 FlashLight.color = Color.green;
+                explanationText.text = "Push!";
                 timerRed = false;
             }
         }
@@ -150,7 +153,7 @@ public class Timer : MonoBehaviour
                     currentTimeCamera1 = 0;
                     timerRunningCamera1 = false;
                 }
-                UpdateTimerDisplay("Camera/1");
+                //UpdateTimerDisplay("Camera/1"); //this timer is not neccesary for players
             }
 
             if (timerRunningCamera2)
@@ -161,7 +164,7 @@ public class Timer : MonoBehaviour
                     currentTimeCamera2 = 0;
                     timerRunningCamera2 = false;
                 }
-                UpdateTimerDisplay("Camera/2");
+                //UpdateTimerDisplay("Camera/2"); //this timer is not neccesary for players
             }
         }
         if (!timerRunningCamera1 && !timerRunningCamera2)
@@ -211,16 +214,16 @@ public class Timer : MonoBehaviour
         timerRed = false;
         if (cameraTag == "Camera/1")
         {
-            resultText1.text = "Camera 1\nFalse Start!";
+            resultText1.text = "Attacker\nFalse Start!";
             resultText1.enabled = true;
-            resultText2.text = "Camera 2 Wins!";
+            resultText2.text = "Defender Wins!";
             resultText2.enabled = true;
         }
         else if (cameraTag == "Camera/2")
         {
-            resultText2.text = "Camera 2\nFalse Start!";
+            resultText2.text = "Attacker\nFalse Start!";
             resultText2.enabled = true;
-            resultText1.text = "Camera 1 Wins!";
+            resultText1.text = "Defender Wins!";
             resultText1.enabled = true;
         }
         Invoke("GameOver", delayBefotreMainBoard);
@@ -233,16 +236,16 @@ public class Timer : MonoBehaviour
 
         if (camera2Time < camera1Time)
         {
-            resultText1.text = "Camera 1 Wins! " + (timerBeforeTie - camera1Time);
+            resultText1.text = "Attacker Wins! ";// + (timerBeforeTie - camera1Time);
             resultText1.enabled = true;
-            resultText2.text = "Camera 2 Lost! " + (timerBeforeTie - camera2Time);
+            resultText2.text = "Defender Lost! ";// + (timerBeforeTie - camera2Time);
             resultText2.enabled = true;
         }
         else if (camera1Time < camera2Time)
         {
-            resultText2.text = "Camera 2 Wins! " + (timerBeforeTie - camera2Time);
+            resultText2.text = "Attacker Wins! ";// + (timerBeforeTie - camera2Time);
             resultText2.enabled = true;
-            resultText1.text = "Camera 1 Lost! " + (timerBeforeTie - camera1Time);
+            resultText1.text = "Defender Lost! ";// + (timerBeforeTie - camera1Time);
             resultText1.enabled = true;
         }
         else if (camera2Time == camera1Time)
@@ -252,12 +255,12 @@ public class Timer : MonoBehaviour
         }
         if (camera2Time <= 0)
         {
-            resultText2.text = "Camera 2 Lost!";
+            resultText2.text = "Defender Lost!";
             resultText2.enabled = true;
         }
         if (camera1Time <= 0)
         {
-            resultText1.text = "Camera 1 Lost!";
+            resultText1.text = "Attacker Lost!";
             resultText1.enabled = true;
         }
 
