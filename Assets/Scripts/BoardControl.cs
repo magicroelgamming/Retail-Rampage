@@ -197,6 +197,7 @@ public class BoardControl : MonoBehaviour
             DataManager._playerNumberDisplay = _playerNumberDisplay;
             DataManager._playerColourDisplay = _playerColourDisplay;
             DataManager._shopPrefabs = _shopPrefabs;
+            DataManager._playerColourDisplay = _playerColourDisplay;
             DataManager._4x4Map = _4x4Map;
             DataManager._5x5Map = _5x5Map;
             DataManager._mapEnvironment = _mapEnvironment;
@@ -276,6 +277,7 @@ public class BoardControl : MonoBehaviour
             DataManager._costBuildingDisplay = GameObject.Find("Cost").GetComponent<TextMeshProUGUI>();
             DataManager._playerMoneyDisplay = GameObject.Find("Money").GetComponent<TextMeshProUGUI>();
             DataManager._playerNumberDisplay = GameObject.Find("PlayerNumber").GetComponent<TextMeshProUGUI>();
+            DataManager._playerColourDisplay = GameObject.Find("PlayerColour").GetComponent<Image>();
 
             DataManager._TildeDetailDisplay.GetComponentInParent<CanvasGroup>().alpha = 0;
 
