@@ -18,7 +18,7 @@ public class BoardControl : MonoBehaviour
     private GameObject _prefabBasePlate;
 
     [SerializeField]
-    private Material[] _playerColors;
+    public Material[] _playerColors;
 
     //temp
     [SerializeField]
