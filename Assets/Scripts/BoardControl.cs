@@ -779,82 +779,83 @@ public class BoardControl : MonoBehaviour
                 write.Close();
                 DataManager.PlayerCount = 0;
 
-                string MessangerBoy = null;
+                DataManager.MessangerBoy = null;
 
-                 Camera _cameraMain= null;
+                DataManager._cameraMain = null;
 
 
-                 int PlayerCount= 0;
+                DataManager.PlayerCount = 0;
 
-                 GameObject _prefabBasePlate= null;
+                DataManager._prefabBasePlate = null;
 
-                 Material[] _playerColors= null;
+                DataManager._playerColors = null;
 
                 //temp
-                 Material _selected= null;
+                DataManager._selected = null;
                 //
 
-                 GameObject _TildeDetailDisplay= null;
+                DataManager._TildeDetailDisplay = null;
 
-                 GameObject _BuyButtonDisplay= null;
+                DataManager._BuyButtonDisplay = null;
 
-                 TextMeshProUGUI _nameBuildingDisplay= null;
+                DataManager._nameBuildingDisplay = null;
 
-                 TextMeshProUGUI _ownerBuildingDisplay= null;
+                DataManager._ownerBuildingDisplay = null;
 
-                 TextMeshProUGUI _levelBuildingDisplay= null;
+                DataManager._levelBuildingDisplay = null;
 
-                 TextMeshProUGUI _costBuildingDisplay= null;
+                DataManager._costBuildingDisplay = null;
 
-                 TextMeshProUGUI _playerMoneyDisplay= null;
+                DataManager._playerMoneyDisplay = null;
 
-                 TextMeshProUGUI _playerNumberDisplay= null;
+                DataManager._playerNumberDisplay = null;
 
-                 Image _playerColourDisplay= null;
+                DataManager._playerColourDisplay = null;
 
-                 GameObject[] _shopPrefabs= null;
+                DataManager._shopPrefabs = null;
 
-                 GameObject _4x4Map= null;
+                DataManager._4x4Map = null;
 
-                 GameObject _5x5Map= null;
+                DataManager._5x5Map = null;
 
-                 GameObject _mapEnvironment= null;
-
-
-                 GameObject _orbit= null;
+                DataManager._mapEnvironment = null;
 
 
-                 ArrayList[] _PlayerInfo= null;
+                DataManager._orbit = null;
 
-                 GameObject[,] _tilespots= null;
 
-                 ArrayList[,] _tiles= null;
+                DataManager._PlayerInfo = null;
 
-                 string[] _shopNames, _brandNames= null;
+                DataManager._tilespots = null;
 
-                 int _columns, _rows= 0;
+                DataManager._tiles = null;
 
-                 int _rounds= 0;
+                DataManager._shopNames = null;
+                DataManager._brandNames = null;
 
-                 int _playerturn= 0;
+                DataManager._columns = 0; 
+                DataManager._rows = 0;
+                DataManager._rounds = 0;
 
-                 int _currentPlayer= 0;
+                DataManager._playerturn = 0;
 
-                 int[] _selectedTile = null;
+                DataManager._currentPlayer = 0;
 
-                 int _tileView= 0;
+                DataManager._selectedTile = null;
 
-                 bool _allowedToMove= false;
+                DataManager._tileView = 0;
 
-                 bool _batteling= false;
+                DataManager._allowedToMove = false;
 
-                 bool _contesting= false;
+                DataManager._batteling = false;
 
-                 int _battleNumber= 0;
+                DataManager._contesting = false;
 
-                 int _contestNumber= 0;
+                DataManager._battleNumber = 0;
 
-                 int _roundNumber= 0;
+                DataManager._contestNumber = 0;
+
+                DataManager._roundNumber = 0;
 
                 SceneManager.LoadScene("EndScreen");
                 DestroyObject(this);

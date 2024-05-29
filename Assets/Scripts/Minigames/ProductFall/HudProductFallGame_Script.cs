@@ -26,8 +26,12 @@ public class HudProductFallGameScript : MonoBehaviour
 
     public bool startDelayBeforeMainBoard = false;
 
-    private int winLooseAmount = 6;
+    private int winLooseTime = 20;
     public bool _winIsActive = false;
+
+    private float _timePassed;
+
+    int[] PlayerEndingSpots;
     void Start()
     {
         win1.enabled = false;
@@ -41,6 +45,7 @@ public class HudProductFallGameScript : MonoBehaviour
     }
     void Update()
     {
+        _timePassed += Time.deltaTime;
         ProductsText();
         HudWinLoose();
         if(startDelayBeforeMainBoard)
@@ -50,17 +55,7 @@ public class HudProductFallGameScript : MonoBehaviour
     }
     void MessengerBoy()
     {
-        int[] PlayerEndingSpots = new int[] {1,1,1,1};
-        for (int i = 0; i < productCollected.Length; i++)
-        {
-            for (int j = 0; j < productCollected.Length; j++)
-            {
-                if (productCollected[i] < productCollected[j] && i!=j)
-                {
-                    PlayerEndingSpots[i] = PlayerEndingSpots[i] +1;
-                }
-            }
-        }
+        
         StreamWriter writer = new StreamWriter("Assets/Resources/MessengerBoy.txt");
         string PlayerRanking = "234:";
         for (int i = 0; i < PlayerEndingSpots.Length; i++)
@@ -96,7 +91,7 @@ public class HudProductFallGameScript : MonoBehaviour
         camera4Text.color = Color.blue;
     }
     void HudWinLoose()
-    {
+    {/*
         if (productCollected[0] >= winLooseAmount)
         {
             win1.text = "Player 1 Wins!";
@@ -155,6 +150,43 @@ public class HudProductFallGameScript : MonoBehaviour
                 CameraTextDisabled();
                 loose4.enabled = true;
             }
+        }
+        */
+
+        if (winLooseTime < _timePassed)
+        {
+            PlayerEndingSpots = new int[] { 1, 1, 1, 1 };
+            for (int i = 0; i < productCollected.Length; i++)
+            {
+                for (int j = 0; j < productCollected.Length; j++)
+                {
+                    if (productCollected[i] < productCollected[j] && i != j)
+                    {
+                        PlayerEndingSpots[i] = PlayerEndingSpots[i] + 1;
+                    }
+                }
+            }
+
+            TextMeshProUGUI[] wintext = new TextMeshProUGUI[] {camera1Text,camera2Text,camera3Text,camera4Text };
+
+            for (int i = 0; i < PlayerEndingSpots.Length; i++)
+            {
+                switch (PlayerEndingSpots[i])
+                {
+                    case 1:
+                        wintext[i].text = "WINNER";
+                        break;
+                    default:
+                        wintext[i].text = PlayerEndingSpots[i].ToString();
+                        break;
+                    case 4:
+                        wintext[i].text = "LAST";
+                        break;
+                }
+            }
+            
+            _winIsActive = true;
+            Invoke("GameOver", 4f);
         }
     }
     void CameraTextDisabled()

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BombScript : MonoBehaviour
 {
-    private float fallSpeed = 3f;
+    private float fallSpeed = 20f;
     void Update()
     {
         transform.Translate(Vector3.down * fallSpeed * Time.deltaTime);
