@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1245,14 +1245,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   source: {fileID: 1500443391}
   _clipsGood:
-  - {fileID: 8300000, guid: 472e5cbbf09eb1e4287fa5877c8ea792, type: 3}
   - {fileID: 8300000, guid: 7c51a901a7c406f4a94ce37337caca20, type: 3}
   - {fileID: 8300000, guid: 9b2b7c29e626f124a8891dd1eba9b14e, type: 3}
   - {fileID: 8300000, guid: 034fa0d11621687419bacd3d2b41ca0a, type: 3}
   - {fileID: 8300000, guid: d4b104e74739bcf4e83b9b9110c7bb55, type: 3}
   - {fileID: 8300000, guid: 138dfa8fda7c3ec47976376febd1d781, type: 3}
   _clipsBad:
-  - {fileID: 8300000, guid: ee11146e81cf8144c9cfc4e41e55ddc6, type: 3}
   - {fileID: 8300000, guid: dce602fc1f71ed7408ea1828df24e101, type: 3}
   - {fileID: 8300000, guid: a8859fbbfab93984395a3f92962cc2f2, type: 3}
   - {fileID: 8300000, guid: ceaffdd992a47ba45abafc44654f4513, type: 3}
