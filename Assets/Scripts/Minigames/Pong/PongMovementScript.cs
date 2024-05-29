@@ -50,9 +50,13 @@ public class PongMovementScript : MonoBehaviour
 
     private void SetColour()
     {
-        for (int i = 0; i < 2; i++) //has to also write it like this, just a very werid way to do movement... -S
+        if (this.gameObject.tag == "Player/1") //had to also write it like this, just a very werid way to do movement... -S
         {
-            this.GetComponent<Renderer>().material.color = BoardControl.DataManager._playerColors[_players[i] - 1].color;
+            this.GetComponent<Renderer>().material = BoardControl.DataManager._playerColors[_players[0] - 1];
+        }
+        else if (this.gameObject.tag == "Player/2")
+        {
+            this.GetComponent<Renderer>().material = BoardControl.DataManager._playerColors[_players[1] - 1];
         }
     }
 }
