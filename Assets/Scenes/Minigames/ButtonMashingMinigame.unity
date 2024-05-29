@@ -478,6 +478,8 @@ MonoBehaviour:
   TimerMaxTime: 10
   ButtonP1: {fileID: 1806610413}
   ButtonP2: {fileID: 1294171948}
+  _floorLeft: {fileID: 67113786}
+  _floorRight: {fileID: 68136169}
 --- !u!4 &241555440
 Transform:
   m_ObjectHideFlags: 0
