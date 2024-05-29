@@ -34,11 +34,20 @@ public class EndScreen : MonoBehaviour
         string[] winnersSplit = _winners.Split(':');
 
         string[] playerPlaces = winnersSplit[1].Split(',');
+        try
+        {
+            _winnerText.text = "Player " + playerPlaces[0] + " Won!";
+            _2ndtext.text = "2nd: Player " + playerPlaces[1];
+            _3rdtext.text = "3rd: Player " + playerPlaces[2];
+            _4thtext.text = "4th: Player " + playerPlaces[3];
+        }
+        catch (System.Exception)
+        {
 
-        _winnerText.text = "Player " + playerPlaces[0] + " Won!";
-        _2ndtext.text = "2nd: Player " + playerPlaces[1];
-        _3rdtext.text = "3rd: Player " + playerPlaces[2];
-        _4thtext.text = "4th: Player " + playerPlaces[3];
+        }
+        
+
+        Destroy(GameObject.FindGameObjectWithTag("Board"));
     }
 
     // Update is called once per frame
