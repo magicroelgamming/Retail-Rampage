@@ -23,7 +23,7 @@ public class CrossRoadPlayerInput : MonoBehaviour
         //_rb.velocity = Vector3.zero;
         ReturnToStart();
         _rb = GetComponent<Rigidbody>();
-
+        _rb.constraints = RigidbodyConstraints.FreezeRotation;
         _playerScore = GameObject.Find("ScorePlayer" + PlayerId).GetComponent<TextMeshProUGUI>();
         
     }
