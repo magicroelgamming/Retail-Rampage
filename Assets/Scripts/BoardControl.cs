@@ -63,6 +63,9 @@ public class BoardControl : MonoBehaviour
 
     static public GameObject _mapEnvironment;
 
+    private int _prevBattle;
+    private int _prevContest;
+
 
     private bool _animRotation;
 
@@ -137,6 +140,9 @@ public class BoardControl : MonoBehaviour
         static public GameObject _orbit;
 
 
+        static public int _prevBattle;
+        static public int _prevContest;
+
         static public ArrayList[] _PlayerInfo;
 
         static public GameObject[,] _tilespots;
@@ -187,6 +193,8 @@ public class BoardControl : MonoBehaviour
             DataManager._prefabBasePlate = _prefabBasePlate;
             DataManager._playerColors = _playerColors;
             DataManager._selected = _selected;
+            DataManager._prevBattle = _prevBattle;
+            DataManager._prevContest = _prevContest;
             DataManager._TildeDetailDisplay = _TildeDetailDisplay;
             DataManager._BuyButtonDisplay = _BuyButtonDisplay;
             DataManager._nameBuildingDisplay = _nameBuildingDisplay;
@@ -738,10 +746,15 @@ public class BoardControl : MonoBehaviour
 
                 //change DataManager._contestNumber to whezre your code is and make DataManager._contesting = true to test your minigame;
                 int minigame = rn.Next(1, 5);
+                while (minigame == DataManager._prevContest)
+                {
+                    minigame = rn.Next(1, 5);
+                }
                 WriteForMiniGames((DataManager.PlayerCount).ToString(), minigame + 10);
                 SceneManager.LoadScene("TutorialMinigame");
                 InvisibleBoard();
                 DataManager._playerMoneyDisplay.text = DataManager._PlayerInfo[1].ToString();
+                DataManager._prevContest = minigame;
             }
             else
             {
@@ -967,6 +980,11 @@ public class BoardControl : MonoBehaviour
             {
                 _animRotation = false;
                 DataManager._battleNumber = rn.Next(1, 5);
+                while (DataManager._battleNumber == DataManager._prevBattle)
+                {
+                    DataManager._battleNumber = rn.Next(1, 5);
+                }
+
                 DataManager._batteling = true;
                 DataManager._tileView = 0;
                 int otherPlayer = 0;
@@ -981,7 +999,7 @@ public class BoardControl : MonoBehaviour
                 WriteForMiniGames((DataManager._currentPlayer + 1).ToString() + ":" + otherPlayer.ToString(), DataManager._battleNumber);
                 SceneManager.LoadScene("TutorialMinigame");
                 InvisibleBoard();
-
+                DataManager._prevBattle = DataManager._battleNumber;
                 
             }
             else
