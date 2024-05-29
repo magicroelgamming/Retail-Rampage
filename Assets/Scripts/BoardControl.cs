@@ -750,7 +750,7 @@ public class BoardControl : MonoBehaviour
         {
             DataManager._playerturn = 0;
             DataManager._roundNumber++;
-            if (DataManager._roundNumber <5)
+            if (DataManager._roundNumber <1)
             {
                 DataManager._contesting = true;
 
@@ -775,86 +775,11 @@ public class BoardControl : MonoBehaviour
                 StreamWriter write = new StreamWriter("Assets/Resources/MessengerBoy.txt");
 
                 write.Write(CalculateWhoEndedWhere());
-                 
+
                 write.Close();
-                DataManager.PlayerCount = 0;
-
-                DataManager.MessangerBoy = null;
-
-                DataManager._cameraMain = null;
-
-
-                DataManager.PlayerCount = 0;
-
-                DataManager._prefabBasePlate = null;
-
-                DataManager._playerColors = null;
-
-                //temp
-                DataManager._selected = null;
-                //
-
-                DataManager._TildeDetailDisplay = null;
-
-                DataManager._BuyButtonDisplay = null;
-
-                DataManager._nameBuildingDisplay = null;
-
-                DataManager._ownerBuildingDisplay = null;
-
-                DataManager._levelBuildingDisplay = null;
-
-                DataManager._costBuildingDisplay = null;
-
-                DataManager._playerMoneyDisplay = null;
-
-                DataManager._playerNumberDisplay = null;
-
-                DataManager._playerColourDisplay = null;
-
-                DataManager._shopPrefabs = null;
-
-                DataManager._4x4Map = null;
-
-                DataManager._5x5Map = null;
-
-                DataManager._mapEnvironment = null;
-
-
-                DataManager._orbit = null;
-
-
-                DataManager._PlayerInfo = null;
-
-                DataManager._tilespots = null;
-
-                DataManager._tiles = null;
-
-                DataManager._shopNames = null;
-                DataManager._brandNames = null;
-
-                DataManager._columns = 0; 
-                DataManager._rows = 0;
-                DataManager._rounds = 0;
-
                 DataManager._playerturn = 0;
-
                 DataManager._currentPlayer = 0;
-
-                DataManager._selectedTile = null;
-
-                DataManager._tileView = 0;
-
-                DataManager._allowedToMove = false;
-
-                DataManager._batteling = false;
-
-                DataManager._contesting = false;
-
-                DataManager._battleNumber = 0;
-
-                DataManager._contestNumber = 0;
-
+                DataManager.PlayerCount = 0;
                 DataManager._roundNumber = 0;
 
                 SceneManager.LoadScene("EndScreen");
