@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,6 +17,12 @@ public class InputManager : MonoBehaviour
     private bool _isPlaying = true;
     public GameObject ButtonP1, ButtonP2;
     private float _buttonY;
+
+    [SerializeField]
+    private Renderer _floorLeft;
+
+    [SerializeField]
+    private Renderer _floorRight;
 
     private int[] _players;
 
@@ -34,6 +41,9 @@ public class InputManager : MonoBehaviour
         {
             _players[i] = int.Parse(playerBuString[i]);
         }
+
+        SetColours();
+
     }
 
     void Update()
@@ -101,4 +111,11 @@ public class InputManager : MonoBehaviour
         else
             ButtonP2.transform.position = new Vector3(ButtonP2.transform.position.x, _buttonY, ButtonP2.transform.position.z);
     }
+
+    private void SetColours()
+    {
+        _floorLeft.material.color = BoardControl.DataManager._playerColors[_players[1] - 1].color;
+        _floorRight.material.color = BoardControl.DataManager._playerColors[_players[0] - 1].color;
+    }
+
 }

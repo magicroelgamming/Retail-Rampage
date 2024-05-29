@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class RopePull : MonoBehaviour
 {
@@ -16,6 +17,12 @@ public class RopePull : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI _result;
+
+    [SerializeField]
+    private Image _attacker;
+
+    [SerializeField]
+    private Image _defender;
 
     private bool _canPull1 = true;
     private bool _canPull2 = true;
@@ -38,6 +45,7 @@ public class RopePull : MonoBehaviour
 
         _result.gameObject.SetActive(false);
 
+        GetColours();
     }
 
     // Update is called once per frame
@@ -99,5 +107,11 @@ public class RopePull : MonoBehaviour
     void LoadBoard()
     {
         SceneManager.LoadScene("TheBoard");
+    }
+
+    void GetColours()
+    {
+        _defender.color = BoardControl.DataManager._playerColors[players[1] - 1].color;
+        _attacker.color = BoardControl.DataManager._playerColors[players[0] - 1].color;
     }
 }

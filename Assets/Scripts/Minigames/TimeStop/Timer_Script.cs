@@ -1,5 +1,6 @@
 using System.IO;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -37,6 +38,12 @@ public class Timer : MonoBehaviour
 
     private float timer;
 
+    [SerializeField]
+    private Image _attacker;
+
+    [SerializeField]
+    private Image _defender;
+
     private int[] players;
     void Start()
     {
@@ -66,6 +73,8 @@ public class Timer : MonoBehaviour
         {
             players[i] = int.Parse(playerBuString[i]);
         }
+
+        GetColours();
     }
 
     void Update()
@@ -269,5 +278,11 @@ public class Timer : MonoBehaviour
     void GameOver()
     {
         startDelayBeforeMainBoard = true;
+    }
+
+    void GetColours()
+    {
+        _defender.color = BoardControl.DataManager._playerColors[players[1] - 1].color;
+        _attacker.color = BoardControl.DataManager._playerColors[players[0] - 1].color;
     }
 }
