@@ -113,8 +113,8 @@ public class InputManager : MonoBehaviour
 
     private void SetColours()
     {
-        _floorLeft.material.color = BoardControl.DataManager._playerColors[_players[1] - 1].color;
-        _floorRight.material.color = BoardControl.DataManager._playerColors[_players[0] - 1].color;
+        _floorLeft.material.color = BoardControl.DataManager._playerColors[_players[0] - 1].color;
+        _floorRight.material.color = BoardControl.DataManager._playerColors[_players[1] - 1].color;
     }
 
 }

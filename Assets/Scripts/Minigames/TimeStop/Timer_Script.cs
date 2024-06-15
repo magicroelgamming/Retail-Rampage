@@ -65,7 +65,7 @@ public class Timer : MonoBehaviour
         players = new int[2];
 
         StreamReader Reader = new StreamReader("Assets/Resources/MessengerBoy.txt");
-        string message = Reader.ReadToEnd();
+        string message = Reader.ReadLine();
         Reader.Close();
         string[] playerBuString = message.Split(':');
         for (int i = 0; i < playerBuString.Length; i++)
@@ -113,7 +113,7 @@ public class Timer : MonoBehaviour
             timerStarted = true;
         }
 
-        if (Input.GetButtonDown("AButton" + players[0]) && GameObject.FindGameObjectWithTag("Camera/1"))
+        if (Input.GetButtonDown("AButton" + players[0]))
         {
             if (!timerRed)
             {
@@ -127,7 +127,7 @@ public class Timer : MonoBehaviour
             Debug.Log("Player 1 Pressed");
         }
 
-        if (Input.GetButtonDown("AButton" + players[1]) && GameObject.FindGameObjectWithTag("Camera/2"))
+        if (Input.GetButtonDown("AButton" + players[1]))
         {
             if (!timerRed)
             {
